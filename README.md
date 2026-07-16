@@ -53,19 +53,53 @@ src/
   assets/logo.svg       # PLACEHOLDER logo — replace with the real mark
   config.ts             # single source for env-driven values in pages
   env.d.ts              # typed env vars
-  pages/index.astro     # docs landing (StarlightPage, so it can use config)
+  pages/index.astro     # English docs landing (StarlightPage, uses config)
+  pages/de/index.astro  # German docs landing (/de/)
   styles/custom.css     # brand color overrides (Starlight custom props)
-  content/docs/         # the documentation content
+  content/docs/         # English content (root locale, served at /)
     getting-started/    # introduction, installation, quick-start
     concepts/           # blocks & elements, modes, presets, definitions, behaviors
-    guides/             # stubs, badged "Soon" in the sidebar
-astro.config.mjs        # Starlight config: sidebar, env-driven title/social
+    guides/             # custom toolbox, codespace, preview, highlighting, …
+    de/                 # German content, mirroring the same slugs (served at /de/)
+astro.config.mjs        # Starlight config: sidebar, locales, env-driven title/social
 ```
 
 ## Content notes
 
 - Pages that need config values (package name, links) are `.mdx` and import
   `src/config.ts`; plain prose pages stay `.md`.
-- The sidebar is explicit in `astro.config.mjs`; guide stubs carry a `Soon`
-  badge. An API Reference section is planned once the public API stabilises.
+- The sidebar is explicit in `astro.config.mjs`. An API Reference section is
+  planned once the public API stabilises.
 - Deploy target: Cloudflare Pages (static output).
+
+## Translations (i18n)
+
+English is the **root locale** (served at `/`, no prefix) and the fallback for
+any untranslated page. German lives under `/de/`.
+
+- **Page content** = parallel Markdown/MDX files, not JSON. A German page is
+  `src/content/docs/de/<same-slug>` mirroring the English file. `.mdx` pages in
+  `de/` import config from `../../../../config` (one level deeper than English).
+- **Internal links inside a `de/` page** are written with the `/de/` prefix so
+  navigation stays in-locale.
+- **UI strings** (search, "On this page", nav) come from Starlight's built-in
+  translations — no JSON needed for supported languages. The header language
+  picker appears automatically.
+- **Untranslated pages** auto-fall-back to English with a notice, so partial
+  translation is safe.
+- **Terminology:** product and Blockly terms stay in English — *Morphic
+  Blocks, Morphic Elements, Modes, Views, Workspace, Codespace, Toolbox,
+  Preset, Behavior, Blockly, shadow, placeholder* — only surrounding prose is
+  translated.
+- **First-visit routing:** an inline script on the English home
+  (`src/pages/index.astro`) sends a German-preferring browser to `/de/` once,
+  storing the choice in `localStorage` (`mb-docs-lang`) so it never overrides a
+  manual pick.
+
+**To add a language** (e.g. `fr`): add it to `locales` in `astro.config.mjs`,
+add `translations: { fr: '…' }` to each sidebar group label, create
+`src/content/docs/fr/…` pages, and add `src/pages/fr/index.astro`. Translate
+what you can; the rest falls back to English.
+
+German prose is machine-drafted — have a native/technical speaker review it
+before it's treated as final.
