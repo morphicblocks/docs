@@ -49,14 +49,14 @@ export default defineConfig({
 				{
 					label: 'Guides',
 					items: [
-						{ slug: 'guides/custom-toolbox', badge: { text: 'Soon', variant: 'caution' } },
-						{ slug: 'guides/codespace', badge: { text: 'Soon', variant: 'caution' } },
-						{ slug: 'guides/preview-and-code-editor', badge: { text: 'Soon', variant: 'caution' } },
-						{ slug: 'guides/syntax-highlighting', badge: { text: 'Soon', variant: 'caution' } },
-						{ slug: 'guides/selection-sync', badge: { text: 'Soon', variant: 'caution' } },
-						{ slug: 'guides/toolbars', badge: { text: 'Soon', variant: 'caution' } },
-						{ slug: 'guides/styling-modes', badge: { text: 'Soon', variant: 'caution' } },
-						{ slug: 'guides/saving-and-loading', badge: { text: 'Soon', variant: 'caution' } },
+						{ slug: 'guides/custom-toolbox' },
+						{ slug: 'guides/codespace' },
+						{ slug: 'guides/preview-and-code-editor' },
+						{ slug: 'guides/syntax-highlighting' },
+						{ slug: 'guides/selection-sync' },
+						{ slug: 'guides/toolbars' },
+						{ slug: 'guides/styling-modes' },
+						{ slug: 'guides/saving-and-loading' },
 					],
 				},
 				// An API Reference section will slot in here once the public

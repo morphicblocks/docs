@@ -3,8 +3,74 @@ title: Codespace
 description: An editable-by-structure text view of the workspace.
 ---
 
-:::note[Coming soon]
-This guide is not written yet.
-:::
+The **codespace** shows the block model as text — rendered from the codespace
+mode's [source element](/concepts/modes/#the-source-element) — and lets users
+*edit the program through its structure*: dragging, dropping, reordering, and
+editing values, all against the same underlying Blockly model as the
+workspace. It is not free-text editing; every change is a model operation, so
+the program can never become syntactically broken.
 
-**What this page will cover:** Mounting the codespace, how it stays in sync with the block model, structural editing (drag, drop, reorder via grips), inline field edits, and empty-slot placeholders.
+## Mounting
+
+Declare the container at `mount()` time, then mount the codespace:
+
+```ts
+engine.mount({
+  workspaceContainer,            // optional — see headless mode below
+  codespaceContainer: document.getElementById("codespace")!,
+  modes: definitions.modes,
+  // …
+});
+
+await engine.mountCodespace();
+```
+
+`mountCodespace()` is async because CodeMirror is lazy-loaded (see
+[Installation](/getting-started/installation/#optional-code-editor-packages)).
+Which mode the codespace shows is driven by `codespaceMode` /
+[presets](/concepts/presets-and-views/).
+
+**Headless mode:** `mount()` accepts `workspaceContainer`,
+`codespaceContainer`, or both. With only a `codespaceContainer`, Blockly runs
+headless (offscreen) — the block model stays authoritative while users only
+ever see text.
+
+## What users can do
+
+- **Drop from the toolbox** — tiles dragged onto the codespace insert blocks,
+  with a drop-position indicator. Drops resolve to real slots: into empty
+  `for`/`if` bodies, between statements, and into **value slots** (numbers,
+  strings, variables).
+- **Reorder via the grip** — a grip gutter (`⋮⋮`) appears on draggable block
+  lines; dragging it moves the block, including same-chain reordering.
+- **Right-click drag** (or Ctrl-click on macOS) — drag directly from a block's
+  text, with hover affordances: blue outline on the innermost editable value,
+  grey background on the enclosing block.
+- **Edit values inline** — clicking an editable placeholder (text, number,
+  dropdown) overlays an input on the exact range;
+  [shadows](/concepts/definitions-format/#shadows-placeholders-and-empty-slots)
+  materialise to real blocks on first edit.
+- **Delete** — Delete/Backspace on a block's line, or the gutter `✕`.
+
+Empty value slots render their configured
+[empty defaults](/concepts/definitions-format/#shadows-placeholders-and-empty-slots),
+or an editable `___` marker when none is set.
+
+## Options
+
+`mountCodespace(options?)` takes the same options as the code editor
+(`theme`, `extensions`, `highlightRules`, …). Two have codespace-specific
+defaults you can override:
+
+| Option         | Default behavior                                            |
+| --- | --- |
+| `onDelete`     | Deletes the block at the given line from the model          |
+| `canDragBlock` | Grips appear for all movable blocks (statement and value)   |
+
+Theme at runtime: `engine.setCodespaceTheme(theme)`.
+
+## Related
+
+- [Preview & Code Editor](/guides/preview-and-code-editor/) — the read-only siblings
+- [Syntax Highlighting](/guides/syntax-highlighting/) — coloring the rendered text
+- [Selection Sync](/guides/selection-sync/) — linked highlighting across views
