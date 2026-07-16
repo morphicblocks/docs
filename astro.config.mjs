@@ -24,8 +24,41 @@ export default defineConfig({
 			title: env.PUBLIC_SITE_NAME || 'Docs',
 			description: env.PUBLIC_SITE_DESCRIPTION || undefined,
 			social,
-			// Sidebar is auto-generated from src/content/docs/ for now; an
-			// explicit sidebar arrives with the page structure.
+			sidebar: [
+				{
+					label: 'Getting Started',
+					items: [
+						{ slug: 'getting-started/introduction' },
+						{ slug: 'getting-started/installation' },
+						{ slug: 'getting-started/quick-start' },
+					],
+				},
+				{
+					label: 'Core Concepts',
+					items: [
+						{ slug: 'concepts/blocks-and-elements' },
+						{ slug: 'concepts/modes' },
+						{ slug: 'concepts/presets-and-views' },
+						{ slug: 'concepts/definitions-format' },
+						{ slug: 'concepts/behaviors-and-codegen' },
+					],
+				},
+				{
+					label: 'Guides',
+					items: [
+						{ slug: 'guides/custom-toolbox', badge: { text: 'Soon', variant: 'caution' } },
+						{ slug: 'guides/codespace', badge: { text: 'Soon', variant: 'caution' } },
+						{ slug: 'guides/preview-and-code-editor', badge: { text: 'Soon', variant: 'caution' } },
+						{ slug: 'guides/syntax-highlighting', badge: { text: 'Soon', variant: 'caution' } },
+						{ slug: 'guides/selection-sync', badge: { text: 'Soon', variant: 'caution' } },
+						{ slug: 'guides/toolbars', badge: { text: 'Soon', variant: 'caution' } },
+						{ slug: 'guides/styling-modes', badge: { text: 'Soon', variant: 'caution' } },
+						{ slug: 'guides/saving-and-loading', badge: { text: 'Soon', variant: 'caution' } },
+					],
+				},
+				// An API Reference section will slot in here once the public
+				// API stabilises.
+			],
 		}),
 	],
 });
