@@ -1,0 +1,55 @@
+---
+title: Installation
+description: Install Morphic Blocks and its peer dependencies.
+---
+
+import { Code, Tabs, TabItem, Aside } from '@astrojs/starlight/components';
+import { site } from '../../../config';
+
+<Aside type="caution" title="Work in progress">
+  The package is not yet released — the npm name is reserved while the library
+  is being prepared for its first public version.
+</Aside>
+
+Morphic Blocks needs [Blockly](https://www.npmjs.com/package/blockly) as a peer dependency:
+
+<Tabs syncKey="pkg">
+  <TabItem label="npm">
+    <Code code={`npm install ${site.npmPackage} blockly`} lang="sh" />
+  </TabItem>
+  <TabItem label="bun">
+    <Code code={`bun add ${site.npmPackage} blockly`} lang="sh" />
+  </TabItem>
+  <TabItem label="pnpm">
+    <Code code={`pnpm add ${site.npmPackage} blockly`} lang="sh" />
+  </TabItem>
+</Tabs>
+
+## Optional: code editor packages
+
+The code editor, codespace, and preview views are built on CodeMirror 6. The
+CodeMirror packages are **optional peer dependencies** — install them only if
+you use those views:
+
+<Tabs syncKey="pkg">
+  <TabItem label="npm">
+    <Code code={`npm install @codemirror/state @codemirror/view @codemirror/lang-javascript`} lang="sh" />
+  </TabItem>
+  <TabItem label="bun">
+    <Code code={`bun add @codemirror/state @codemirror/view @codemirror/lang-javascript`} lang="sh" />
+  </TabItem>
+  <TabItem label="pnpm">
+    <Code code={`pnpm add @codemirror/state @codemirror/view @codemirror/lang-javascript`} lang="sh" />
+  </TabItem>
+</Tabs>
+
+They are loaded lazily: a project that never mounts a code editor never pays
+for them.
+
+## Requirements
+
+- A bundler-based setup (Vite, or anything that resolves modern ESM). The
+  library ships ES modules plus TypeScript declarations.
+- TypeScript is recommended — the public API is fully typed — but not required.
+
+Next: the [Quick Start](/getting-started/quick-start/).
