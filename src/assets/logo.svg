@@ -1,0 +1,16 @@
+<!-- PLACEHOLDER LOGO — replace public/logo.svg with the real mark later.
+     Kept as a self-contained SVG so the layout works as if the real logo exists. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" role="img" aria-label="Morphic Blocks logo">
+  <defs>
+    <linearGradient id="mb-a" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0a66c2"/>
+      <stop offset="1" stop-color="#00509b"/>
+    </linearGradient>
+    <linearGradient id="mb-b" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#55bdcb"/>
+      <stop offset="1" stop-color="#2fa6b6"/>
+    </linearGradient>
+  </defs>
+  <rect x="4" y="4" width="25" height="25" rx="7" fill="url(#mb-a)"/>
+  <rect x="19" y="19" width="25" height="25" rx="7" fill="url(#mb-b)" fill-opacity="0.92"/>
+</svg>

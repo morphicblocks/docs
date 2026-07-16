@@ -23,6 +23,9 @@ export default defineConfig({
 		starlight({
 			title: env.PUBLIC_SITE_NAME || 'Docs',
 			description: env.PUBLIC_SITE_DESCRIPTION || undefined,
+			// PLACEHOLDER logo — swap src/assets/logo.svg for the real mark.
+			logo: { src: './src/assets/logo.svg', alt: env.PUBLIC_SITE_NAME || '' },
+			customCss: ['./src/styles/custom.css'],
 			social,
 			sidebar: [
 				{
