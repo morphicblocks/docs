@@ -51,3 +51,21 @@ import { site } from '../config';
 		</Card>
 	</CardGrid>
 </StarlightPage>
+
+<!--
+  First-visit language routing: send a German-preferring browser to /de/.
+  Fires at most once per browser (a stored choice is never overridden), so it
+  never fights a manual pick from the header language selector.
+-->
+<script is:inline>
+	try {
+		if (!localStorage.getItem('mb-docs-lang')) {
+			const lang = (navigator.language || '').toLowerCase();
+			const choice = lang.startsWith('de') ? 'de' : 'en';
+			localStorage.setItem('mb-docs-lang', choice);
+			if (choice === 'de') window.location.replace('/de/');
+		}
+	} catch (e) {
+		/* localStorage unavailable — stay on the English home. */
+	}
+</script>

@@ -1,0 +1,56 @@
+---
+title: Installation
+description: Morphic Blocks und seine Peer-Dependencies installieren.
+---
+
+import { Code, Tabs, TabItem, Aside } from '@astrojs/starlight/components';
+import { site } from '../../../../config';
+
+<Aside type="caution" title="In Arbeit">
+  Das Paket ist noch nicht veröffentlicht — der npm-Name ist reserviert, während
+  die Bibliothek für ihre erste öffentliche Version vorbereitet wird.
+</Aside>
+
+Morphic Blocks benötigt [Blockly](https://www.npmjs.com/package/blockly) als Peer-Dependency:
+
+<Tabs syncKey="pkg">
+  <TabItem label="npm">
+    <Code code={`npm install ${site.npmPackage} blockly`} lang="sh" />
+  </TabItem>
+  <TabItem label="bun">
+    <Code code={`bun add ${site.npmPackage} blockly`} lang="sh" />
+  </TabItem>
+  <TabItem label="pnpm">
+    <Code code={`pnpm add ${site.npmPackage} blockly`} lang="sh" />
+  </TabItem>
+</Tabs>
+
+## Optional: Pakete für den Code-Editor
+
+Der Code-Editor, der Codespace und die Preview basieren auf CodeMirror 6. Die
+CodeMirror-Pakete sind **optionale Peer-Dependencies** — installiere sie nur,
+wenn du diese Views nutzt:
+
+<Tabs syncKey="pkg">
+  <TabItem label="npm">
+    <Code code={`npm install @codemirror/state @codemirror/view @codemirror/lang-javascript`} lang="sh" />
+  </TabItem>
+  <TabItem label="bun">
+    <Code code={`bun add @codemirror/state @codemirror/view @codemirror/lang-javascript`} lang="sh" />
+  </TabItem>
+  <TabItem label="pnpm">
+    <Code code={`pnpm add @codemirror/state @codemirror/view @codemirror/lang-javascript`} lang="sh" />
+  </TabItem>
+</Tabs>
+
+Sie werden verzögert geladen (lazy): Ein Projekt, das nie einen Code-Editor
+einbindet, zahlt auch nicht dafür.
+
+## Voraussetzungen
+
+- Ein bundler-basiertes Setup (Vite oder alles, was modernes ESM auflöst). Die
+  Bibliothek liefert ES-Module plus TypeScript-Deklarationen.
+- TypeScript wird empfohlen — die öffentliche API ist vollständig typisiert —
+  ist aber nicht erforderlich.
+
+Weiter zum [Schnellstart](/de/getting-started/quick-start/).

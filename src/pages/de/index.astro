@@ -1,0 +1,54 @@
+---
+import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
+import { Card, CardGrid } from '@astrojs/starlight/components';
+import { site } from '../../config';
+
+// German landing page (/de/). Mirrors src/pages/index.astro with translated
+// copy; env-driven values (name, links) still come from src/config.ts.
+// Technical terms (Morphic Blocks, Blockly, Modes) stay in English by design.
+---
+
+<StarlightPage
+	frontmatter={{
+		title: site.name,
+		description: site.description,
+		template: 'splash',
+		hero: {
+			tagline:
+				'Ein Block-Modell, viele Darstellungen — für den schrittweisen Übergang von block- zu textbasierter Programmierung.',
+			actions: [
+				{
+					text: 'Loslegen',
+					link: '/de/getting-started/introduction/',
+					icon: 'right-arrow',
+					variant: 'primary',
+				},
+				{
+					text: 'Website',
+					link: site.links.landing,
+					icon: 'external',
+					variant: 'minimal',
+				},
+			],
+		},
+	}}
+>
+	<CardGrid stagger>
+		<Card title="Ein Modell, viele Modes" icon="puzzle">
+			Definiere Blöcke einmal und stelle sie als Icons, Blöcke oder Quelltext
+			dar — die Modes sind vollständig entwicklerdefiniert.
+		</Card>
+		<Card title="Schrittweiser Übergang zu Text" icon="pencil">
+			Führe Lernende Schritt für Schritt von block- zu textbasierter
+			Programmierung, ohne das Werkzeug zu wechseln.
+		</Card>
+		<Card title="Deine eigene Oberfläche" icon="setting">
+			Eine einbettbare Bibliothek, keine App: unstilisierte Komponenten, die du
+			frei gestalten und anordnen kannst.
+		</Card>
+		<Card title="Auf Blockly aufgebaut" icon="open-book">
+			Die bewährte Google-Blockly-Engine bleibt darunter maßgeblich — mit
+			morphischem Rendering obendrauf.
+		</Card>
+	</CardGrid>
+</StarlightPage>

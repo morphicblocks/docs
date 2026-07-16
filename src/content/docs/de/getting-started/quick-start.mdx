@@ -1,0 +1,125 @@
+---
+title: Schnellstart
+description: Von den Definitionen zu einem eingebundenen Multi-Mode-Workspace.
+---
+
+import { Code, Steps } from '@astrojs/starlight/components';
+import { site } from '../../../../config';
+
+Diese Anleitung baut das kleinste sinnvolle Setup: ein Block, zwei Modes, eine
+Toolbox und ein Workspace — mit einem Mode-Wechsel zur Laufzeit am Ende.
+
+<Steps>
+
+1. **Definiere deine Blöcke** in einer Definitions-JSON. Ein Block deklariert
+   benannte *Elements* (seine visuellen Bestandteile); die globale
+   `elementTypes`-Registry legt fest, was jeder Element-Name ist; *Modes* wählen
+   aus, welche Elements gezeigt werden.
+
+   ```json
+   // definitions.json
+   {
+     "elementTypes": {
+       "title":      "text",
+       "conceptual": "code",
+       "python":     "code"
+     },
+     "modes": [
+       { "name": "conceptual", "elements": ["title", "conceptual"] },
+       { "name": "python",     "elements": ["title", "python"] }
+     ],
+     "categories": [
+       { "name": "Output", "color": "#5C81A6" }
+     ],
+     "blocks": [
+       {
+         "identifier": "text_print",
+         "category": "Output",
+         "elements": {
+           "title":      "Print",
+           "conceptual": "Output %1",
+           "python":     "print(%1)"
+         },
+         "inputSlots": {
+           "1": { "kind": "value", "name": "TEXT" }
+         }
+       }
+     ]
+   }
+   ```
+
+   `%1` ist ein Input-Slot — er wird zu einem Blockly-Input am Block und zu einer
+   Einsetzstelle in Textdarstellungen.
+
+2. **Schreibe ein Behavior** für den Block. Behaviors erzeugen das ausführbare
+   JavaScript, eine Funktion pro Block-Identifier:
+
+   ```ts
+   // behaviors.ts
+   import type { MorphicBehaviorMap } from "morphic-blocks";
+
+   export const behaviors: MorphicBehaviorMap = {
+     text_print(proxy) {
+       return `console.log(${proxy.inputs.TEXT ?? "undefined"});\n`;
+     },
+   };
+   ```
+
+3. **Füge Container** zu deiner Seite hinzu:
+
+   ```html
+   <div id="toolbox"></div>
+   <div id="workspace"></div>
+   ```
+
+4. **Binde die Engine ein:**
+
+   <Code
+     lang="ts"
+     title="main.ts"
+     code={`import { MorphicBlocks } from "${site.npmPackage}";
+import definitions from "./definitions.json";
+import { behaviors } from "./behaviors";
+
+const engine = new MorphicBlocks(
+  definitions.blocks,
+  behaviors,
+  definitions.elementTypes,
+);
+
+engine.mount({
+  workspaceContainer: document.getElementById("workspace")!,
+  modes: definitions.modes,
+  workspaceMode: "conceptual",
+  toolboxMode: "conceptual",
+});
+
+engine.mountToolbox(document.getElementById("toolbox")!, {
+  categories: definitions.categories,
+});`}
+   />
+
+   Ziehe die *Print*-Kachel aus der Toolbox in den Workspace — dabei entsteht
+   ein echter Blockly-Block.
+
+5. **Wechsle den Mode zur Laufzeit.** Dieselben Blöcke werden mit dem
+   `python`-Element als Template neu gerendert:
+
+   ```ts
+   engine.setModes({ workspaceMode: "python", toolboxMode: "python" });
+   ```
+
+6. **Erzeuge Code** aus dem Workspace über deine Behaviors:
+
+   ```ts
+   const js = engine.generateJavaScript();
+   ```
+
+</Steps>
+
+## Wie es weitergeht
+
+- [Blocks & Elements](/de/concepts/blocks-and-elements/) — das Modell hinter dem, was du gerade geschrieben hast.
+- [Presets & Views](/de/concepts/presets-and-views/) — Mode-Kombinationen benennen und ganze Layouts steuern.
+- [Das Definitions-Format](/de/concepts/definitions-format/) — jedes Feld erklärt.
+- Gestalte deine Modes mit CSS — siehe [Modes mit CSS gestalten](/de/guides/styling-modes/).

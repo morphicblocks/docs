@@ -27,9 +27,19 @@ export default defineConfig({
 			logo: { src: './src/assets/logo.svg', alt: env.PUBLIC_SITE_NAME || '' },
 			customCss: ['./src/styles/custom.css'],
 			social,
+			// English is the root locale (served at `/`, no prefix) and the
+			// fallback for any page not yet translated. German lives under
+			// `/de/`. Starlight ships its own UI-string translations, and the
+			// header language picker appears automatically.
+			defaultLocale: 'root',
+			locales: {
+				root: { label: 'English', lang: 'en' },
+				de: { label: 'Deutsch', lang: 'de' },
+			},
 			sidebar: [
 				{
 					label: 'Getting Started',
+					translations: { de: 'Erste Schritte' },
 					items: [
 						{ slug: 'getting-started/introduction' },
 						{ slug: 'getting-started/installation' },
@@ -38,6 +48,7 @@ export default defineConfig({
 				},
 				{
 					label: 'Core Concepts',
+					translations: { de: 'Kernkonzepte' },
 					items: [
 						{ slug: 'concepts/blocks-and-elements' },
 						{ slug: 'concepts/modes' },
@@ -48,6 +59,7 @@ export default defineConfig({
 				},
 				{
 					label: 'Guides',
+					translations: { de: 'Anleitungen' },
 					items: [
 						{ slug: 'guides/custom-toolbox' },
 						{ slug: 'guides/codespace' },
