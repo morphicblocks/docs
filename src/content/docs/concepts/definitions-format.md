@@ -12,8 +12,22 @@ Everything a block *is* lives in one JSON document. A complete, small example:
     "title":      "text",
     "description":"text",
     "concept":    "code",
-    "python":     { "type": "code", "empty": { "Number": "0", "String": "\"text\"", "Boolean": "True", "default": "None" } },
-    "javascript": { "type": "code", "empty": { "Number": "0", "String": "\"text\"", "Boolean": "true", "default": "null" } }
+    "python": {
+      "type": "code",
+      "stringQuote": "\"",
+      "empty": {
+        "Number": { "shadow": "math_number", "fieldValues": { "NUM": "42" } },
+        "String": { "shadow": "text", "fieldValues": { "TEXT": "world" } }
+      }
+    },
+    "javascript": {
+      "type": "code",
+      "stringQuote": "\"",
+      "empty": {
+        "Number": { "shadow": "math_number", "fieldValues": { "NUM": "42" } },
+        "String": { "shadow": "text", "fieldValues": { "TEXT": "world" } }
+      }
+    }
   },
   "modes": [
     { "name": "iconic",     "elements": ["icon", "title", "description"] },
@@ -57,19 +71,51 @@ Everything a block *is* lives in one JSON document. A complete, small example:
 Global registry mapping element names to their type. A value is either a bare
 type string — `"text" | "code" | "image"` — or a config object:
 
+| Field | Applies to | Purpose |
+| --- | --- | --- |
+| `type` | all | `"text"`, `"code"`, or `"image"` |
+| `empty` | `code` | Defaults for empty value slots (see [below](#shadows-placeholders-and-empty-slots)) |
+| `stringQuote` | `code` | Delimiter wrapped around framework-supplied literals in `String`-checked slots, so the codespace renders `print("hello")` rather than `print(hello)`. Omit to disable quoting. |
+| `size` | `image` | Display size when the value is a file path auto-wrapped as `<img>`: a number (`32` → 32×32), `"32"`, or `"32x32"`. Defaults to 16×16. |
+
+See [Blocks & Elements](/concepts/blocks-and-elements/#element-types) for what
+each type means.
+
+## Shadows, placeholders, and empty slots
+
+What should a value slot show when nothing is attached? An **empty-default
+config** answers that, and appears in two places with the same shape:
+
+- `elementTypes.<name>.empty` — per element (per "language"), keyed by the
+  slot's `check` (`"Number"`, `"String"`, `"Boolean"`, …)
+- `inputSlots.<n>.default` — per block slot; **highest priority**, beats the
+  elementType-level lookup
+
 ```json
-"python": {
-  "type": "code",
-  "empty": { "Number": "0", "String": "\"text\"", "Boolean": "True", "default": "None" }
+"inputSlots": {
+  "1": {
+    "kind": "value", "name": "TEXT", "check": "String",
+    "default": { "shadow": "text", "fieldValues": { "TEXT": "Hello, world!" } }
+  }
 }
 ```
 
-The `empty` map provides defaults for **empty value slots** in text renderings,
-keyed by the slot's `check` (`"Number"`, `"String"`, `"Boolean"`, plus
-`"default"` for unchecked slots). With defaults set, a `print` block with
-nothing attached renders as `print("text")` instead of `print()` — generated
-text stays syntactically valid. See [Blocks & Elements](/concepts/blocks-and-elements/#element-types)
-for what each type means.
+| Field | Purpose |
+| --- | --- |
+| `shadow` | Blockly block type used as a **shadow** — ghosted, immutable, auto-replaced when a real block connects, restored when it disconnects. E.g. `"math_number"`, `"text"`, `"logic_boolean"`. |
+| `placeholder` | Blockly block type attached as a **real block** on render — movable, editable, deletable. When both are set, the placeholder takes priority on the visible slot; Blockly's native shadow restoration brings the shadow back if the user removes the placeholder. |
+| `fieldValues` | Initial values for the chosen block's fields, e.g. `{ "NUM": "42" }` for `math_number` or `{ "TEXT": "hello" }` for `text`. |
+
+The `shadow` / `placeholder` values resolve against *your* block identifiers
+first, then Blockly stock types — see
+[Block identifiers](/concepts/blocks-and-elements/#block-identifiers). A
+shadow's output type must be compatible with the slot's `check`, otherwise
+Blockly silently rejects it.
+
+With defaults set, a `print` block with nothing attached renders as
+`print("hello")` instead of `print()` — generated text stays syntactically
+valid. With **no** default configured, the codespace renders an editable
+marker (`___`) and the workspace shows an empty socket.
 
 ## `modes`
 
@@ -137,7 +183,7 @@ A flat array of block definitions:
 | `check`   | Type check (`"Number"`, `"String"`, …), also keys empty defaults   |
 | `label`   | Optional label text                                                |
 | `align`   | Input alignment                                                    |
-| `default` | Block-level empty-default override (beats the `elementTypes` one)  |
+| `default` | Per-slot shadow/placeholder config — highest priority, beats the `elementTypes` `empty` lookup (see [Shadows, placeholders, and empty slots](#shadows-placeholders-and-empty-slots)) |
 
 ## Template syntax
 
