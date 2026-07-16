@@ -1,0 +1,53 @@
+---
+import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
+import { Card, CardGrid } from '@astrojs/starlight/components';
+import { site } from '../config';
+
+// The docs landing page lives here (instead of src/content/docs/index.mdx)
+// so that every displayed value can come from `src/config.ts` — markdown
+// frontmatter cannot interpolate environment variables.
+---
+
+<StarlightPage
+	frontmatter={{
+		title: site.name,
+		description: site.description,
+		template: 'splash',
+		hero: {
+			tagline: site.description,
+			actions: [
+				{
+					text: 'Get started',
+					link: '/getting-started/introduction/',
+					icon: 'right-arrow',
+					variant: 'primary',
+				},
+				{
+					text: 'Website',
+					link: site.links.landing,
+					icon: 'external',
+					variant: 'minimal',
+				},
+			],
+		},
+	}}
+>
+	<CardGrid stagger>
+		<Card title="One block model, many modes" icon="puzzle">
+			Define blocks once and render them as icons, blocks, or source text —
+			modes are fully developer-defined.
+		</Card>
+		<Card title="Gradual block-to-text transition" icon="pencil">
+			Move learners from block-based to text-based programming step by step,
+			without switching tools.
+		</Card>
+		<Card title="Bring your own UI" icon="setting">
+			An embeddable library, not an app: headless components you can style
+			and arrange freely.
+		</Card>
+		<Card title="Built on Blockly" icon="open-book">
+			The proven Google Blockly engine stays authoritative underneath — with
+			morphic rendering on top.
+		</Card>
+	</CardGrid>
+</StarlightPage>
