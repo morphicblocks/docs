@@ -1,0 +1,49 @@
+---
+title: Willkommen
+description: Die Morphic-Blocks-Dokumentation — hier starten.
+---
+
+import { Card, CardGrid, LinkCard } from '@astrojs/starlight/components';
+import { site } from '../../../config';
+
+Willkommen in der **Morphic-Blocks**-Dokumentation. Morphic Blocks ist eine
+quelloffene TypeScript-Bibliothek auf Basis von Google Blockly, die ein
+einziges Block-Modell in mehreren entwicklerdefinierten **Modes** darstellt —
+zur Unterstützung des schrittweisen Übergangs zwischen block- und textbasierter
+Programmierung. Diese Doku zeigt, wie du sie installierst, deine Blöcke
+definierst und ihre Views steuerst.
+
+<CardGrid>
+	<Card title="Ein Modell, viele Modes" icon="puzzle">
+		Definiere Blöcke einmal und stelle sie als Icons, Blöcke oder Quelltext
+		dar — die Modes sind vollständig entwicklerdefiniert.
+	</Card>
+	<Card title="Schrittweiser Übergang zu Text" icon="pencil">
+		Führe Lernende Schritt für Schritt von block- zu textbasierter
+		Programmierung, ohne das Werkzeug zu wechseln.
+	</Card>
+	<Card title="Deine eigene Oberfläche" icon="setting">
+		Eine einbettbare Bibliothek, keine App: unstilisierte Komponenten, die du
+		frei gestalten und anordnen kannst.
+	</Card>
+	<Card title="Auf Blockly aufgebaut" icon="open-book">
+		Die bewährte Google-Blockly-Engine bleibt darunter maßgeblich — mit
+		morphischem Rendering obendrauf.
+	</Card>
+</CardGrid>
+
+## Hier starten
+
+<CardGrid>
+	<LinkCard title="Einführung" href="/de/getting-started/introduction/" description="Was Morphic Blocks ist und die Idee hinter den Modes." />
+	<LinkCard title="Installation" href="/de/getting-started/installation/" description="Das Paket und seine Peer-Dependencies ins Projekt aufnehmen." />
+	<LinkCard title="Schnellstart" href="/de/getting-started/quick-start/" description="Ein minimales End-to-End-Beispiel: Definitionen → Behaviors → mount." />
+	<LinkCard title="Kernkonzepte" href="/de/concepts/blocks-and-elements/" description="Blocks, Elements, Modes, Presets und das Definitions-Format." />
+	<LinkCard title="Anleitungen" href="/de/guides/custom-toolbox/" description="Toolbox, Codespace, Preview, Highlighting, Selection-Sync und mehr." />
+</CardGrid>
+
+## Nützliche Links
+
+- <a href={site.links.playground}>Playground</a> — Morphic Blocks im Browser ausprobieren.
+- <a href={site.links.github}>GitHub</a> — Quelltext, Issues und Releases.
+- <a href={site.links.npm}>npm</a> — das veröffentlichte Paket.

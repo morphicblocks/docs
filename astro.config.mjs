@@ -37,6 +37,7 @@ export default defineConfig({
 				de: { label: 'Deutsch', lang: 'de' },
 			},
 			sidebar: [
+				{ label: 'Welcome', translations: { de: 'Willkommen' }, slug: '' },
 				{
 					label: 'Getting Started',
 					translations: { de: 'Erste Schritte' },

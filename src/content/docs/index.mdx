@@ -1,0 +1,61 @@
+---
+title: Welcome
+description: The Morphic Blocks documentation — start here.
+head:
+  - tag: script
+    content: |
+      /* First-visit language routing: send a German-preferring browser to
+         /de/ once. Runs in <head> before paint, so no flash; fires only when
+         no choice is stored, so it never fights the language picker later. */
+      try {
+        if (!localStorage.getItem('mb-docs-lang')) {
+          var de = (navigator.language || '').toLowerCase().indexOf('de') === 0;
+          localStorage.setItem('mb-docs-lang', de ? 'de' : 'en');
+          if (de) window.location.replace('/de/');
+        }
+      } catch (e) {}
+---
+
+import { Card, CardGrid, LinkCard } from '@astrojs/starlight/components';
+import { site } from '../../config';
+
+Welcome to the **Morphic Blocks** documentation. Morphic Blocks is an
+open-source TypeScript library built on Google Blockly that renders one block
+model in multiple developer-defined **modes** — to support the gradual
+transition between block-based and text-based programming. These docs cover how
+to install it, define your blocks, and drive its views.
+
+<CardGrid>
+	<Card title="One block model, many modes" icon="puzzle">
+		Define blocks once and render them as icons, blocks, or source text —
+		modes are fully developer-defined.
+	</Card>
+	<Card title="Gradual block-to-text transition" icon="pencil">
+		Move learners from block-based to text-based programming step by step,
+		without switching tools.
+	</Card>
+	<Card title="Bring your own UI" icon="setting">
+		An embeddable library, not an app: headless components you can style and
+		arrange freely.
+	</Card>
+	<Card title="Built on Blockly" icon="open-book">
+		The proven Google Blockly engine stays authoritative underneath — with
+		morphic rendering on top.
+	</Card>
+</CardGrid>
+
+## Start here
+
+<CardGrid>
+	<LinkCard title="Introduction" href="/getting-started/introduction/" description="What Morphic Blocks is and the idea behind modes." />
+	<LinkCard title="Installation" href="/getting-started/installation/" description="Add the package and its peer dependencies to your project." />
+	<LinkCard title="Quick Start" href="/getting-started/quick-start/" description="A minimal end-to-end example: definitions → behaviors → mount." />
+	<LinkCard title="Core Concepts" href="/concepts/blocks-and-elements/" description="Blocks, elements, modes, presets, and the definitions format." />
+	<LinkCard title="Guides" href="/guides/custom-toolbox/" description="Toolbox, codespace, preview, highlighting, selection sync, and more." />
+</CardGrid>
+
+## Useful links
+
+- <a href={site.links.playground}>Playground</a> — try Morphic Blocks in the browser.
+- <a href={site.links.github}>GitHub</a> — source, issues, and releases.
+- <a href={site.links.npm}>npm</a> — the published package.
