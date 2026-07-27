@@ -164,6 +164,7 @@ Ein flaches Array von Block-Definitionen:
 | `category` | Optionaler Kategorie-Name |
 | `elements` | Die `name: content`-Map der visuellen Bestandteile |
 | `inputSlots` | Konfiguration der `%N`-Slots (unten) |
+| `fields` | Inline-Feld-Widgets — Dropdown/Text/Number/Checkbox (unten) |
 | `output` | Output-Typ eines Value-Blocks (z. B. `"Number"`) |
 | `previousStatement` / `nextStatement` | Statement-Verbindungen |
 | `color` | Block-Farbe (kann auch aus CSS kommen) |
@@ -189,6 +190,51 @@ Nummer:
 | `align` | Ausrichtung des Inputs |
 | `default` | Shadow-/Placeholder-Konfiguration pro Slot — höchste Priorität, schlägt die `empty`-Suche auf `elementTypes`-Ebene (siehe [Shadows, Placeholder und leere Slots](#shadows-placeholder-und-leere-slots)) |
 
+### Felder
+
+Während `inputSlots` die `%N`-**Steckplätze** konfiguriert, in die andere Blöcke
+eingesteckt werden, deklariert `fields` die Inline-**Widgets**, die auf dem
+Block selbst sitzen — Dropdowns, Textfelder, Zahlenfelder, Checkboxen —
+geschlüsselt nach ihrem `%FIELDNAME`-Token:
+
+```json
+"elements": { "python": "%1 %OP %2" },
+"fields": {
+  "OP": {
+    "type": "dropdown",
+    "options": ["+", ["-", "−"], ["*", "×"], ["/", "÷"]],
+    "default": "+"
+  }
+}
+```
+
+| Typ        | Zusätzliche Konfiguration                        |
+| ---------- | ------------------------------------------------ |
+| `dropdown` | `options` (unten), `default` (ausgewählter Wert) |
+| `text`     | `default`                                        |
+| `number`   | `default`, `min`, `max`, `precision`             |
+| `checkbox` | `default` (boolean)                              |
+
+Eine Dropdown-**Option** ist eine der Formen:
+
+| Form                             | Bedeutung                                    |
+| -------------------------------- | -------------------------------------------- |
+| `"=="`                           | Wert = Label = `"=="`                        |
+| `["-", "−"]`                     | `[Wert, Label]` — Wert `-`, angezeigt als `−` |
+| `{ "value": "-", "label": "−" }` | Objekt-Form                                  |
+
+Der **Wert** ist die Quelle der Wahrheit: Er ist das, was der Block *generiert*
+und was Codespace und Preview darstellen. Das optionale **Label** ist nur eine
+Anzeige-Überschreibung auf dem Workspace-Block, sodass eine Option `÷` zeigen
+kann, während Text-Views und generierter Code `/` verwenden. Es gibt keinen
+separaten Serialisierungs-Schlüssel — Blockly speichert den Wert.
+
+Felder außerhalb dieser vier Typen (Variablen, Farbe, Plugin/Custom) werden von
+einem
+[`onViewApplied`](/de/concepts/behaviors-and-codegen/#das-vollständige-behavior-objekt)
+einer Behavior angehängt — ein nicht deklariertes `%FIELDNAME`-Token bleibt der
+Behavior überlassen.
+
 ## Template-Syntax
 
 Der Inhalt eines `code`-Elements ist ein Template:
@@ -196,7 +242,7 @@ Der Inhalt eines `code`-Elements ist ein Template:
 | Syntax | Ergebnis |
 | --- | --- |
 | `%1`, `%2` | Input-Slot — ein Blockly-Input *und* eine Einsetzstelle in Text-Views |
-| `%FIELDNAME` | Feldwert (Großbuchstaben-Token, z. B. `%NUM`) — in Text-Views eingesetzt |
+| `%FIELDNAME` | Inline-Feld deklariert in [`fields`](#felder) (Großbuchstaben-Token, z. B. `%NUM`) — auf dem Block gerendert, in Text-Views eingesetzt |
 | `<img …>` | Bild (Blockly `FieldImage` auf Workspace-Blöcken) |
 | Klartext | Wird zu einem Blockly-Label-Feld |
 

@@ -49,7 +49,8 @@ export const behaviors: MorphicBehaviorMap = {
       // one-time setup when the block is created
     },
     onViewApplied(block, context) {
-      // called after a mode/view is applied — attach Blockly fields here
+      // called after a mode/view is applied — attach *custom* Blockly fields
+      // here (dropdown/text/number/checkbox are declared in `fields` instead)
     },
     generate(proxy) {
       return `console.log(${proxy.inputs.TEXT ?? "undefined"});\n`;
@@ -61,7 +62,7 @@ export const behaviors: MorphicBehaviorMap = {
 | Hook            | When it runs                                                   |
 | --------------- | -------------------------------------------------------------- |
 | `init`          | Once, when the block is instantiated                           |
-| `onViewApplied` | After each mode application — the place to attach fields (dropdowns, text inputs, …) |
+| `onViewApplied` | After each mode application — attach *custom* fields (standard dropdown/text/number/checkbox go in [`fields`](/concepts/definitions-format/#fields)) |
 | `generate`      | During code generation                                         |
 
 A bare function is shorthand for `{ generate }`.
