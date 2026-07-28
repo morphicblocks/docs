@@ -13,20 +13,26 @@ changes the underlying block model.
   "modes": [
     { "name": "iconic",     "elements": ["icon", "title", "description"] },
     { "name": "conceptual", "elements": ["title", "concept"] },
-    { "name": "python",     "elements": ["title", "python"] }
+    { "name": "syntax-py",  "elements": ["title", "python"] }
   ]
 }
 ```
 
 | Field      | Required | Purpose                                                    |
 | ---------- | -------- | ---------------------------------------------------------- |
-| `name`     | yes      | Mode identifier (arbitrary, no coupling to element names)  |
+| `name`     | yes      | Mode identifier — keep it distinct from element and preset names |
 | `elements` | yes      | Element names rendered on the toolbox tile                 |
 
 Mode names are up to you. A "mode" can be a scaffolding level (`iconic` →
-`conceptual` → `python`), a natural language (`english`, `deutsch`), a target
-syntax (`python`, `javascript`), an accessibility variant — whatever your
+`conceptual` → `syntax-py`), a natural language (`english`, `deutsch`), a target
+syntax (`syntax-py`, `syntax-js`), an accessibility variant — whatever your
 application needs.
+
+Keep each mode name **distinct from your element and preset names**. Naming a
+mode after its source element (a `python` mode whose source is the `python`
+element) makes one word mean two things; the framework emits a warning when an
+element, mode, or preset name collides. That's why the mode above is `syntax-py`,
+not `python`.
 
 ## The source element
 
@@ -35,7 +41,7 @@ framework needs to know *which* element to render as source text. That is the
 mode's **source element**: the first `type: "code"` element listed in its
 `elements` array.
 
-For the `python` mode above, the source element is `python` — a codespace in
+For the `syntax-py` mode above, the source element is `python` — a codespace in
 that mode renders each block's `python` template as text.
 
 How a mode's code elements render on a **toolbox tile** (as a mini block or as

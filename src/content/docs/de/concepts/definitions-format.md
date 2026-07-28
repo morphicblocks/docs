@@ -255,3 +255,33 @@ Einrückung summiert sich über die Verschachtelung:
 
 rendert mehrzeilig mit eingerücktem Rumpf — verschachtelte Blöcke rücken
 automatisch weiter ein.
+
+## Validierung
+
+Das Framework prüft deine Definitionen beim `mount()`, damit Probleme, die sonst
+still beim Rendern fehlschlagen würden, als klare Meldungen mit Nennung des
+Blocks auftauchen. Es **wirft** bei struktureller Beschädigung, die falsche
+Ausgabe garantiert, und **warnt** bei bloß beeinträchtigter oder toter Konfiguration.
+
+Wirft (alle Probleme werden gesammelt und auf einmal gemeldet):
+
+- ein Block, dessen `code`-Elemente sich über ihre `%N`-Menge uneinig sind — ein
+  Input, und jeder daran gesteckte Block, würde beim Mode-Wechsel verschwinden
+- ein `%FIELDNAME`-Token ohne [`fields`](#felder)-Eintrag und ohne `onViewApplied`
+- ein `shadow` / `placeholder`, der weder einen deiner Blöcke noch einen echten
+  Blockly-Typ benennt
+
+Warnt:
+
+- ein `%N` ohne `inputSlots`-Eintrag, oder ein `inputSlots`-Eintrag ohne
+  passendes `%N`
+- ein Element-Name, der nicht in `elementTypes` deklariert ist, oder ein Mode,
+  der ein Element auflistet, das kein Block definiert
+- ein `highlighting`-Schlüssel, der kein `code`-Element ist
+- eine Block-`category`, die nicht in `categories` steht
+- ein Name, der über Element / Mode / Preset hinweg mehrfach verwendet wird
+  (siehe [Modes](/de/concepts/modes/))
+
+Um eine Datei *vor* dem Mounten zu prüfen — in einem Test oder Build-Schritt —
+rufe das exportierte `validateDefinitions(...)` auf, das `{ errors, warnings }`
+zurückgibt, statt zu werfen.

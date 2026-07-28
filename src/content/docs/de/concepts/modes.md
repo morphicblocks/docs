@@ -14,20 +14,26 @@ zugrunde liegende Block-Modell.
   "modes": [
     { "name": "iconic",     "elements": ["icon", "title", "description"] },
     { "name": "conceptual", "elements": ["title", "concept"] },
-    { "name": "python",     "elements": ["title", "python"] }
+    { "name": "syntax-py",  "elements": ["title", "python"] }
   ]
 }
 ```
 
 | Feld       | Erforderlich | Zweck                                                        |
 | ---------- | ------------ | ------------------------------------------------------------ |
-| `name`     | ja           | Mode-Identifier (beliebig, keine Kopplung an Element-Namen)   |
+| `name`     | ja           | Mode-Identifier — halte ihn getrennt von Element- und Preset-Namen |
 | `elements` | ja           | Element-Namen, die auf der Toolbox-Kachel gerendert werden    |
 
 Die Mode-Namen liegen bei dir. Ein „Mode" kann eine Hilfestellungs-Stufe sein
-(`iconic` → `conceptual` → `python`), eine natürliche Sprache (`english`,
-`deutsch`), eine Zielsyntax (`python`, `javascript`), eine Barrierefreiheits-
+(`iconic` → `conceptual` → `syntax-py`), eine natürliche Sprache (`english`,
+`deutsch`), eine Zielsyntax (`syntax-py`, `syntax-js`), eine Barrierefreiheits-
 Variante — was auch immer deine Anwendung braucht.
+
+Halte jeden Mode-Namen **getrennt von deinen Element- und Preset-Namen**. Einen
+Mode nach seinem Quell-Element zu benennen (ein `python`-Mode, dessen Quelle das
+`python`-Element ist) lässt ein Wort zwei Dinge bedeuten; das Framework gibt eine
+Warnung aus, wenn ein Element-, Mode- oder Preset-Name kollidiert. Deshalb heißt
+der Mode oben `syntax-py`, nicht `python`.
 
 ## Das Quell-Element
 
@@ -36,7 +42,7 @@ zugewiesen, muss das Framework wissen, *welches* Element es als Quelltext
 rendert. Das ist das **Quell-Element** des Mode: das erste `type: "code"`-Element
 in seinem `elements`-Array.
 
-Für den obigen `python`-Mode ist das Quell-Element `python` — ein Codespace in
+Für den obigen `syntax-py`-Mode ist das Quell-Element `python` — ein Codespace in
 diesem Mode rendert das `python`-Template jedes Blocks als Text.
 
 Wie die Code-Elements eines Mode auf einer **Toolbox-Kachel** rendern (als

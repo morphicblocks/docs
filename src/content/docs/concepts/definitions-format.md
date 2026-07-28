@@ -250,3 +250,32 @@ compounds across nesting:
 
 renders multi-line with its body indented — nested blocks indent further
 automatically.
+
+## Validation
+
+The framework checks your definitions when you `mount()`, so problems that would
+otherwise fail silently at render time surface as clear messages naming the
+block. It **throws** on structural breakage that guarantees wrong output, and
+**warns** on config that is merely degraded or dead.
+
+Throws (every problem is collected and reported at once):
+
+- a block whose `code` elements disagree on their `%N` set — an input, and any
+  block plugged into it, would vanish when switching modes
+- a `%FIELDNAME` token with no [`fields`](#fields) entry and no `onViewApplied`
+  to supply the field
+- a `shadow` / `placeholder` that names neither one of your blocks nor a real
+  Blockly type
+
+Warns:
+
+- a `%N` with no `inputSlots` entry, or an `inputSlots` entry with no matching `%N`
+- an element name not declared in `elementTypes`, or a mode listing an element
+  no block defines
+- a `highlighting` key that isn't a `code` element
+- a block `category` not listed in `categories`
+- a name reused across element / mode / preset (see [Modes](/concepts/modes/))
+
+To check a file *before* mounting — in a test or build step — call the exported
+`validateDefinitions(...)`, which returns `{ errors, warnings }` instead of
+throwing.
