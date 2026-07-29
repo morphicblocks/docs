@@ -105,9 +105,14 @@ What should a value slot show when nothing is attached? An **empty-default
 config** answers that, and appears in two places with the same shape:
 
 - `elementTypes.<name>.empty` — per element (per "language"), keyed by the
-  slot's `check` (`"Number"`, `"String"`, `"Boolean"`, …)
+  slot's `check` (`"Number"`, `"String"`, `"Boolean"`, …). A `default` key acts
+  as a catch-all, used when the slot's check isn't listed or the slot has no
+  `check` at all.
 - `inputSlots.<n>.default` — per block slot; **highest priority**, beats the
   elementType-level lookup
+
+The resolution order is `inputSlots.<n>.default` → `empty[<check>]` →
+`empty.default`.
 
 ```json
 "inputSlots": {

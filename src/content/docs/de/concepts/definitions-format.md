@@ -109,9 +109,14 @@ Was soll ein Value-Slot zeigen, wenn nichts angehängt ist? Eine
 derselben Form auf:
 
 - `elementTypes.<name>.empty` — pro Element (pro „Sprache"), geschlüsselt nach
-  dem `check` des Slots (`"Number"`, `"String"`, `"Boolean"`, …)
+  dem `check` des Slots (`"Number"`, `"String"`, `"Boolean"`, …). Ein
+  `default`-Schlüssel dient als Auffangwert — verwendet, wenn der `check` des
+  Slots nicht gelistet ist oder der Slot gar keinen `check` hat.
 - `inputSlots.<n>.default` — pro Block-Slot; **höchste Priorität**, schlägt die
   Suche auf elementType-Ebene
+
+Die Auflösungsreihenfolge ist `inputSlots.<n>.default` → `empty[<check>]` →
+`empty.default`.
 
 ```json
 "inputSlots": {
