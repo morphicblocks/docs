@@ -67,6 +67,25 @@ kleines Beispiel:
 }
 ```
 
+## `$schema` und `version`
+
+Verweise mit deiner Datei auf das mit dem Paket ausgelieferte JSON-Schema, und
+Editoren (VS Code, …) geben **Autovervollständigung und Inline-Validierung**
+beim Tippen — das Gegenstück zur Laufzeit-[Validierung](#validierung) beim
+Mounten:
+
+```json
+{
+  "$schema": "./node_modules/morphic-blocks/definitions.schema.json",
+  "version": 1,
+  "blocks": [ /* … */ ]
+}
+```
+
+`$schema` kann ein relativer Pfad (zu `morphic-blocks/definitions.schema.json`)
+oder eine URL sein. `version` markiert die Format-Revision (aktuell `1`). Beide
+sind optional und werden vom Framework zur Laufzeit ignoriert.
+
 ## `elementTypes`
 
 Globale Registry, die Element-Namen ihrem Typ zuordnet. Ein Wert ist entweder

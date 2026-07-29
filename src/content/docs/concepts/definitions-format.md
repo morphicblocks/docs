@@ -66,6 +66,24 @@ Everything a block *is* lives in one JSON document. A complete, small example:
 }
 ```
 
+## `$schema` and `version`
+
+Point your file at the JSON Schema shipped with the package and editors
+(VS Code, …) give **autocomplete and inline validation** as you type — the
+author-time counterpart to the mount-time [validation](#validation):
+
+```json
+{
+  "$schema": "./node_modules/morphic-blocks/definitions.schema.json",
+  "version": 1,
+  "blocks": [ /* … */ ]
+}
+```
+
+`$schema` may be a relative path (to `morphic-blocks/definitions.schema.json`)
+or a URL. `version` marks the format revision (currently `1`). Both are optional
+and ignored by the framework at runtime.
+
 ## `elementTypes`
 
 Global registry mapping element names to their type. A value is either a bare
