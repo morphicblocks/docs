@@ -81,22 +81,18 @@ Toolbox und ein Workspace — mit einem Mode-Wechsel zur Laufzeit am Ende.
 import definitions from "./definitions.json";
 import { behaviors } from "./behaviors";
 
-const engine = new MorphicBlocks(
-  definitions.blocks,
-  behaviors,
-  definitions.elementTypes,
-);
+// Der Konstruktor nimmt die ganze Definitionsdatei plus deine Behaviors.
+// mount() und mountToolbox() erben deren modes / presets / highlighting /
+// categories, sodass ein Aufruf nur Laufzeit-Belange trägt.
+const engine = new MorphicBlocks(definitions, behaviors);
 
 engine.mount({
   workspaceContainer: document.getElementById("workspace")!,
-  modes: definitions.modes,
   workspaceMode: "conceptual",
   toolboxMode: "conceptual",
 });
 
-engine.mountToolbox(document.getElementById("toolbox")!, {
-  categories: definitions.categories,
-});`}
+engine.mountToolbox(document.getElementById("toolbox")!);`}
    />
 
    Ziehe die *Print*-Kachel aus der Toolbox in den Workspace — dabei entsteht

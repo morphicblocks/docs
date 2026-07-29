@@ -80,22 +80,18 @@ toolbox, and a workspace — with a runtime mode switch at the end.
 import definitions from "./definitions.json";
 import { behaviors } from "./behaviors";
 
-const engine = new MorphicBlocks(
-  definitions.blocks,
-  behaviors,
-  definitions.elementTypes,
-);
+// The constructor takes the whole definitions file plus your behaviors.
+// mount() and mountToolbox() inherit its modes / presets / highlighting /
+// categories, so a call only carries runtime concerns.
+const engine = new MorphicBlocks(definitions, behaviors);
 
 engine.mount({
   workspaceContainer: document.getElementById("workspace")!,
-  modes: definitions.modes,
   workspaceMode: "conceptual",
   toolboxMode: "conceptual",
 });
 
-engine.mountToolbox(document.getElementById("toolbox")!, {
-  categories: definitions.categories,
-});`}
+engine.mountToolbox(document.getElementById("toolbox")!);`}
    />
 
    Drag the *Print* tile from the toolbox into the workspace — it creates a
