@@ -56,6 +56,11 @@ A preset's `toolbox` is either:
 template as source text on the tile instead of a block. Because this choice
 lives in the preset, the same mode can render differently across presets.
 
+Any `code` element **not** named in `render` renders as a **block** — `render`
+only overrides the ones you list. And `render` applies to the **toolbox tile
+only**: the codespace, preview, and workspace always render the assigned mode's
+[source element](/concepts/modes/#the-source-element), regardless of `render`.
+
 ## Using presets
 
 Pass presets in the mount config and switch at runtime:

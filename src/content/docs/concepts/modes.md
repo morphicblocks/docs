@@ -21,7 +21,10 @@ changes the underlying block model.
 | Field      | Required | Purpose                                                    |
 | ---------- | -------- | ---------------------------------------------------------- |
 | `name`     | yes      | Mode identifier — keep it distinct from element and preset names |
-| `elements` | yes      | Element names rendered on the toolbox tile                 |
+| `elements` | yes      | Element names rendered on the toolbox tile, **in list order** |
+
+The **order** of `elements` is the order the parts appear on the toolbox tile —
+reorder the list to rearrange the tile.
 
 Mode names are up to you. A "mode" can be a scaffolding level (`iconic` →
 `conceptual` → `syntax-py`), a natural language (`english`, `deutsch`), a target

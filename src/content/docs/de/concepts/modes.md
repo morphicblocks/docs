@@ -22,7 +22,10 @@ zugrunde liegende Block-Modell.
 | Feld       | Erforderlich | Zweck                                                        |
 | ---------- | ------------ | ------------------------------------------------------------ |
 | `name`     | ja           | Mode-Identifier — halte ihn getrennt von Element- und Preset-Namen |
-| `elements` | ja           | Element-Namen, die auf der Toolbox-Kachel gerendert werden    |
+| `elements` | ja           | Element-Namen, die auf der Toolbox-Kachel gerendert werden, **in Listenreihenfolge** |
+
+Die **Reihenfolge** von `elements` ist die Reihenfolge, in der die Teile auf der
+Toolbox-Kachel erscheinen — die Liste umsortieren, um die Kachel umzuordnen.
 
 Die Mode-Namen liegen bei dir. Ein „Mode" kann eine Hilfestellungs-Stufe sein
 (`iconic` → `conceptual` → `syntax-py`), eine natürliche Sprache (`english`,

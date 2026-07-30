@@ -59,6 +59,12 @@ Python-Template als Quelltext auf der Kachel statt als Block. Weil diese
 Entscheidung im Preset liegt, kann derselbe Mode in verschiedenen Presets
 unterschiedlich rendern.
 
+Jedes `code`-Element, das **nicht** in `render` genannt ist, rendert als
+**Block** — `render` überschreibt nur die aufgeführten. Und `render` gilt
+**nur für die Toolbox-Kachel**: Codespace, Preview und Workspace rendern immer
+das [Quell-Element](/de/concepts/modes/#das-quell-element) des zugewiesenen
+Mode, unabhängig von `render`.
+
 ## Presets verwenden
 
 Übergib Presets in der Mount-Konfiguration und wechsle zur Laufzeit:
