@@ -309,6 +309,9 @@ Warnt:
 - ein Element-Name, der nicht in `elementTypes` deklariert ist, oder ein Mode,
   der ein Element auflistet, das kein Block definiert
 - ein `highlighting`-Schlüssel, der kein `code`-Element ist
+- ein `elementTypes`-Konfigurationsfeld am falschen Typ — `stringQuote` oder
+  `empty` an einem Nicht-`code`-Element, oder `size` an einem
+  Nicht-`image`-Element — das ignoriert wird
 - eine Block-`category`, die nicht in `categories` steht
 - ein Name, der über Element / Mode / Preset hinweg mehrfach verwendet wird
   (siehe [Modes](/de/concepts/modes/))

@@ -303,6 +303,8 @@ Warns:
 - an element name not declared in `elementTypes`, or a mode listing an element
   no block defines
 - a `highlighting` key that isn't a `code` element
+- an `elementTypes` config field on the wrong type — `stringQuote` or `empty` on
+  a non-`code` element, or `size` on a non-`image` element — which is ignored
 - a block `category` not listed in `categories`
 - a name reused across element / mode / preset (see [Modes](/concepts/modes/))
 
