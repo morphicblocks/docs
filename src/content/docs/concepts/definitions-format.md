@@ -249,11 +249,40 @@ A dropdown **option** is one of:
 | `["-", "−"]`                     | `[value, label]` — value `-`, shown as `−` |
 | `{ "value": "-", "label": "−" }` | object form                                |
 
-The **value** is the source of truth: it is what the block *generates* and what
-the codespace and preview render. The optional **label** is a display-only
-override shown on the workspace block, so one option can show `÷` while the text
-views and generated code use `/`. There is no separate serialization key —
-Blockly stores the value.
+The **value** is the source of truth: it is what the block *generates*,
+serializes, and executes. The optional **label** is a display-only override
+shown on the workspace block, so one option can show `÷` while the text views
+and generated code use `/`. There is no separate serialization key — Blockly
+stores the value.
+
+#### Per-mode option text
+
+`display` makes an option's *shown* text follow the active mode while the value
+stays single — the same mode-awareness the element system gives content, now for
+fields. It maps an **element name** (keyed like [`highlighting`](#highlighting))
+to the text shown when that element renders, so Python source reads `True` while
+JavaScript reads `true`, both storing and executing `true`:
+
+```json
+"fields": {
+  "BOOL": {
+    "type": "dropdown",
+    "options": [
+      { "value": "true",  "display": { "python": "True" } },
+      { "value": "false", "display": { "python": "False" } }
+    ],
+    "default": "true"
+  }
+}
+```
+
+Resolution when element `E` renders: the workspace block shows
+`display[E] ?? label ?? value`; the codespace and preview show
+`display[E] ?? value` (`label` stays block-only). Execution, codegen, and
+serialization always use the **value**. This is the *representation* axis only
+(Python vs JavaScript spelling) — natural-language translation is a separate
+concern. Only `dropdown` fields take `display`; `text`/`number` hold user data
+or language-neutral values.
 
 Fields outside these four types (variables, colour, plugin/custom) are attached
 by a behavior's

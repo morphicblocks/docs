@@ -254,11 +254,41 @@ Eine Dropdown-**Option** ist eine der Formen:
 | `["-", "−"]`                     | `[Wert, Label]` — Wert `-`, angezeigt als `−` |
 | `{ "value": "-", "label": "−" }` | Objekt-Form                                  |
 
-Der **Wert** ist die Quelle der Wahrheit: Er ist das, was der Block *generiert*
-und was Codespace und Preview darstellen. Das optionale **Label** ist nur eine
+Der **Wert** ist die Quelle der Wahrheit: Er ist das, was der Block *generiert*,
+serialisiert und ausführt. Das optionale **Label** ist nur eine
 Anzeige-Überschreibung auf dem Workspace-Block, sodass eine Option `÷` zeigen
 kann, während Text-Views und generierter Code `/` verwenden. Es gibt keinen
 separaten Serialisierungs-Schlüssel — Blockly speichert den Wert.
+
+#### Options-Text pro Modus
+
+`display` lässt den *angezeigten* Text einer Option dem aktiven Modus folgen,
+während der Wert einzeln bleibt — dieselbe Modus-Bewusstheit, die das
+Element-System dem Inhalt gibt, jetzt für Felder. Es bildet einen
+**Element-Namen** (geschlüsselt wie [`highlighting`](#highlighting)) auf den
+Text ab, der beim Rendern dieses Elements gezeigt wird — Python-Quelltext zeigt
+also `True`, JavaScript `true`, wobei beide `true` speichern und ausführen:
+
+```json
+"fields": {
+  "BOOL": {
+    "type": "dropdown",
+    "options": [
+      { "value": "true",  "display": { "python": "True" } },
+      { "value": "false", "display": { "python": "False" } }
+    ],
+    "default": "true"
+  }
+}
+```
+
+Auflösung beim Rendern von Element `E`: der Workspace-Block zeigt
+`display[E] ?? label ?? value`; Codespace und Preview zeigen
+`display[E] ?? value` (`label` bleibt block-only). Ausführung, Codegen und
+Serialisierung nutzen immer den **Wert**. Das betrifft nur die
+*Repräsentations*-Achse (Python- vs. JavaScript-Schreibweise) — die Übersetzung
+natürlicher Sprache ist ein separates Thema. Nur `dropdown`-Felder nehmen
+`display`; `text`/`number` halten Nutzerdaten oder sprachneutrale Werte.
 
 Felder außerhalb dieser vier Typen (Variablen, Farbe, Plugin/Custom) werden von
 einem
