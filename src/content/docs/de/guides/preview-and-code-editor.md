@@ -47,7 +47,15 @@ engine.isCodeEditorVisible();
 engine.setCodeEditorTheme(theme);
 ```
 
-## Gemeinsame Optionen
+Er zeigt immer **JavaScript** — das Ausführungsziel — unabhängig von den aktiven
+Modi, und trägt anders als die Vorschau standardmäßig **kein** Definitions-
+Highlighting. Er ist damit vor allem eine **Entwicklerhilfe**: ein Live-Blick
+darauf, was deine Behaviors tatsächlich erzeugen, beim Bauen und Debuggen. Für
+eine lesefreundliche Ansicht des Programms besser die **Vorschau** nutzen, die
+das Quell-Element eines beliebigen Modus *mit* dem
+[Syntax-Highlighting](/de/guides/syntax-highlighting/) der Definitionen rendert.
+Der Code-Editor bleibt verfügbar, wann immer du den rohen erzeugten JavaScript-
+Code zeigen willst.
 
 `mountPreview` / `mountCodeEditor` (und `mountCodespace`) akzeptieren
 `MorphicCodeEditorOptions`:

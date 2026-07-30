@@ -47,6 +47,15 @@ engine.isCodeEditorVisible();
 engine.setCodeEditorTheme(theme);
 ```
 
+It always shows **JavaScript** — the execution target — regardless of the
+active modes, and unlike the preview it carries **no** definition highlighting
+by default. So it's primarily a **developer aid**: a live look at what your
+behaviors actually generate while building and debugging. For a reader-facing
+view of the program, prefer the **preview**, which renders any mode's source
+element *with* the definitions'
+[syntax highlighting](/guides/syntax-highlighting/). The code editor stays
+available whenever exposing the raw generated JavaScript is what you want.
+
 ## Shared options
 
 `mountPreview` / `mountCodeEditor` (and `mountCodespace`) accept
