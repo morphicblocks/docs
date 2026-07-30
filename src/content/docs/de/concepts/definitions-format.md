@@ -139,10 +139,17 @@ Block-Identifier aufgelöst, dann gegen Blockly-Stock-Typen — siehe
 Output-Typ eines Shadow muss mit dem `check` des Slots kompatibel sein, sonst
 lehnt Blockly ihn stillschweigend ab.
 
-Mit gesetzten Vorgaben rendert ein `print`-Block, an dem nichts hängt, als
-`print("hello")` statt `print()` — der erzeugte Text bleibt syntaktisch
-gültig. Ist **keine** Vorgabe konfiguriert, rendert der Codespace eine
-editierbare Markierung (`___`) und der Workspace zeigt einen leeren Socket.
+Eine **Shadow**-Vorgabe füllt den Slot in beiden Ansichten: der Workspace zeigt
+den ausgegrauten Block und der Codespace seinen Wert, direkt editierbar (ein
+`print` mit einem `String`-Shadow rendert also `print("hello")` — der Text
+bleibt syntaktisch gültig). Ein **Placeholder** setzt einen *echten* Block ein,
+der, einmal gelöscht, den Slot wirklich leer zurücklässt.
+
+Für einen wirklich leeren Slot — gelöschter Placeholder oder gar keine Vorgabe —
+zeigt der Workspace einen leeren Socket, und der Codespace (der „nichts“ nicht
+rendern kann) zeigt eine eingeklammerte **Typmarkierung** aus dem `check` des
+Slots: `[NUMBER]`, `[TEXT]`, `[BOOL]` oder `[VALUE]`, wenn der Slot kein `check`
+hat. Zum Füllen einen Wert-Block in den Slot ziehen.
 
 ## `modes`
 

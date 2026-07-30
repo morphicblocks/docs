@@ -135,10 +135,17 @@ first, then Blockly stock types — see
 shadow's output type must be compatible with the slot's `check`, otherwise
 Blockly silently rejects it.
 
-With defaults set, a `print` block with nothing attached renders as
-`print("hello")` instead of `print()` — generated text stays syntactically
-valid. With **no** default configured, the codespace renders an editable
-marker (`___`) and the workspace shows an empty socket.
+A **shadow** default fills the slot in both views: the workspace shows the
+ghosted block and the codespace shows its value, editable in place (so a `print`
+with a `String` shadow renders `print("hello")` — text stays syntactically
+valid). A **placeholder** seats a *real* block that, once deleted, leaves the
+slot truly empty.
+
+For a truly empty slot — a deleted placeholder, or no default at all — the
+workspace shows an empty socket, and the codespace (which can't render
+"nothing") shows a bracketed **type marker** derived from the slot's `check`:
+`[NUMBER]`, `[TEXT]`, `[BOOL]`, or `[VALUE]` when the slot has no `check`. Fill
+it by dragging a value block into the slot.
 
 ## `modes`
 
