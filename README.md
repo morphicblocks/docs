@@ -103,3 +103,15 @@ what you can; the rest falls back to English.
 
 German prose is machine-drafted — have a native/technical speaker review it
 before it's treated as final.
+
+## License
+
+This repository is dual-licensed:
+
+- **Site code** — Apache-2.0, see [LICENSE](LICENSE).
+- **Documentation content** (the Markdown under `src/content/docs/`, English and
+  German) — Creative Commons **CC BY 4.0**, see [LICENSE-docs](LICENSE-docs). You
+  may reuse, translate, and adapt it with attribution.
+
+© Gottfried Wilhelm Leibniz Universität Hannover. The "Morphic Blocks" name and
+logo are trademarks and are not covered by these licenses.
