@@ -27,7 +27,10 @@ export default defineConfig({
 			logo: { src: './src/assets/logo.svg', alt: env.PUBLIC_SITE_NAME || '' },
 			customCss: ['./src/styles/custom.css'],
 			// Adds the required legal links beneath Starlight's default footer.
-			components: { Footer: './src/components/Footer.astro' },
+			components: {
+				Footer: './src/components/Footer.astro',
+				SocialIcons: './src/components/SocialIcons.astro',
+			},
 			social,
 			// English is the root locale (served at `/`, no prefix) and the
 			// fallback for any page not yet translated. German lives under
