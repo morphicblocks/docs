@@ -44,6 +44,16 @@ definierst und ihre Views steuerst.
 
 ## Nützliche Links
 
-- <a href={site.links.playground} {...externalAttrs(site.links.playground)}>Playground</a> — Morphic Blocks im Browser ausprobieren.
-- <a href={site.links.github} {...externalAttrs(site.links.github)}>GitHub</a> — Quelltext, Issues und Releases.
-- <a href={site.links.npm} {...externalAttrs(site.links.npm)}>npm</a> — das veröffentlichte Paket.
+<ul>
+  {[
+    { href: site.links.playground, label: 'Playground', note: 'Morphic Blocks im Browser ausprobieren.' },
+    { href: site.links.github, label: 'GitHub', note: 'Quelltext, Issues und Releases.' },
+    { href: site.links.npm, label: 'npm', note: 'das veröffentlichte Paket.' },
+  ]
+    .filter((l) => l.href)
+    .map((l) => (
+      <li>
+        <a href={l.href} {...externalAttrs(l.href)}>{l.label}</a> — {l.note}
+      </li>
+    ))}
+</ul>

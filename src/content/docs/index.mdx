@@ -56,6 +56,16 @@ to install it, define your blocks, and drive its views.
 
 ## Useful links
 
-- <a href={site.links.playground} {...externalAttrs(site.links.playground)}>Playground</a> — try Morphic Blocks in the browser.
-- <a href={site.links.github} {...externalAttrs(site.links.github)}>GitHub</a> — source, issues, and releases.
-- <a href={site.links.npm} {...externalAttrs(site.links.npm)}>npm</a> — the published package.
+<ul>
+  {[
+    { href: site.links.playground, label: 'Playground', note: 'try Morphic Blocks in the browser.' },
+    { href: site.links.github, label: 'GitHub', note: 'source, issues, and releases.' },
+    { href: site.links.npm, label: 'npm', note: 'the published package.' },
+  ]
+    .filter((l) => l.href)
+    .map((l) => (
+      <li>
+        <a href={l.href} {...externalAttrs(l.href)}>{l.label}</a> — {l.note}
+      </li>
+    ))}
+</ul>

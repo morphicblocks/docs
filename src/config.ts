@@ -27,11 +27,11 @@ export const site = {
   npmPackage: env.PUBLIC_NPM_PACKAGE ?? "",
   university: env.PUBLIC_UNIVERSITY ?? "",
   links: {
-    landing: env.PUBLIC_LANDING_URL ?? "#",
-    playground: env.PUBLIC_PLAYGROUND_URL ?? "#",
-    github: env.PUBLIC_GITHUB_URL ?? "#",
-    npm: env.PUBLIC_NPM_URL ?? "#",
-    university: env.PUBLIC_UNIVERSITY_URL ?? "#",
+    landing: link(env.PUBLIC_LANDING_URL),
+    playground: link(env.PUBLIC_PLAYGROUND_URL),
+    github: link(env.PUBLIC_GITHUB_URL),
+    npm: link(env.PUBLIC_NPM_URL),
+    university: link(env.PUBLIC_UNIVERSITY_URL),
   },
   /**
    * Required on every university web presence, rendered by the footer
