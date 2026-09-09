@@ -37,6 +37,12 @@ cp .env.example .env   # then edit .env
 | `PUBLIC_PLAYGROUND_URL` | Playground link in the header |
 | `PUBLIC_UNIVERSITY` | University attribution (currently unused on pages) |
 | `PUBLIC_UNIVERSITY_URL` | Link target for the attribution |
+| `PUBLIC_IMPRINT_URL` | Imprint link in the footer |
+| `PUBLIC_PRIVACY_URL` | Privacy policy link in the footer |
+| `PUBLIC_DISCLAIMER_URL` | Disclaimer (Haftungsausschluss) link in the footer |
+| `PUBLIC_IMPRINT_URL_EN` | English imprint, if a translated page exists |
+| `PUBLIC_PRIVACY_URL_EN` | English privacy page, if one exists |
+| `PUBLIC_DISCLAIMER_URL_EN` | English disclaimer, if one exists |
 
 These are build-time `PUBLIC_*` vars baked into the static output. On
 Cloudflare Pages, set them in the project's environment variables. Reading

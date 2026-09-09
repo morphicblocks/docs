@@ -1,0 +1,70 @@
+---
+/**
+ * Starlight `Footer` override: the default footer plus the legal links every
+ * university web presence has to carry (imprint, privacy policy, disclaimer).
+ *
+ * URLs come from `src/config.ts`; the labels live here because they are the
+ * only strings this component needs and Starlight already tells us the page
+ * language via `Astro.locals.starlightRoute`.
+ */
+import Default from '@astrojs/starlight/components/Footer.astro';
+import { site, externalAttrs } from '../config';
+
+const lang = Astro.locals.starlightRoute.lang.startsWith('de') ? 'de' : 'en';
+
+const labels = {
+  en: {
+    aria: 'Legal',
+    imprint: 'Imprint',
+    privacy: 'Privacy',
+    disclaimer: 'Disclaimer',
+  },
+  de: {
+    aria: 'Rechtliches',
+    imprint: 'Impressum',
+    privacy: 'Datenschutz',
+    disclaimer: 'Haftungsausschluss',
+  },
+}[lang];
+
+// A link whose PUBLIC_* variable is unset is dropped rather than rendered dead.
+const legalLinks = [
+  { label: labels.imprint, href: site.legal.imprint[lang] },
+  { label: labels.privacy, href: site.legal.privacy[lang] },
+  { label: labels.disclaimer, href: site.legal.disclaimer[lang] },
+].filter((l) => l.href);
+---
+
+<Default><slot /></Default>
+
+{
+  legalLinks.length > 0 && (
+    <nav class="legal" aria-label={labels.aria}>
+      {legalLinks.map((l) => (
+        <a href={l.href} {...externalAttrs(l.href)}>
+          {l.label}
+        </a>
+      ))}
+    </nav>
+  )
+}
+
+<style>
+  .legal {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 1.2rem;
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--sl-color-gray-5);
+    font-size: var(--sl-text-xs);
+  }
+  .legal a {
+    color: var(--sl-color-gray-3);
+    text-decoration: none;
+  }
+  .legal a:hover {
+    color: var(--sl-color-white);
+    text-decoration: underline;
+  }
+</style>
