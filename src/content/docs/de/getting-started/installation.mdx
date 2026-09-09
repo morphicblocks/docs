@@ -1,6 +1,6 @@
 ---
 title: Installation
-description: Morphic Blocks und seine Peer-Dependencies installieren.
+description: Morphic Blocks und seine optionalen Peer-Dependencies installieren.
 ---
 
 import { Code, Tabs, TabItem, Aside } from '@astrojs/starlight/components';
@@ -11,17 +11,18 @@ import { site } from '../../../../config';
   die Bibliothek für ihre erste öffentliche Version vorbereitet wird.
 </Aside>
 
-Morphic Blocks benötigt [Blockly](https://www.npmjs.com/package/blockly) als Peer-Dependency:
+Morphic Blocks bringt [Blockly](https://www.npmjs.com/package/blockly) als
+Dependency mit, es wird also automatisch mitinstalliert:
 
 <Tabs syncKey="pkg">
   <TabItem label="npm">
-    <Code code={`npm install ${site.npmPackage} blockly`} lang="sh" />
+    <Code code={`npm install ${site.npmPackage}`} lang="sh" />
   </TabItem>
   <TabItem label="bun">
-    <Code code={`bun add ${site.npmPackage} blockly`} lang="sh" />
+    <Code code={`bun add ${site.npmPackage}`} lang="sh" />
   </TabItem>
   <TabItem label="pnpm">
-    <Code code={`pnpm add ${site.npmPackage} blockly`} lang="sh" />
+    <Code code={`pnpm add ${site.npmPackage}`} lang="sh" />
   </TabItem>
 </Tabs>
 
