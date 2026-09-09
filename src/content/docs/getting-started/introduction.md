@@ -4,7 +4,7 @@ description: What Morphic Blocks is and the idea behind modes.
 ---
 
 Morphic Blocks is a TypeScript library built on top of
-[Google Blockly](https://developers.google.com/blockly). It renders one block
+<a href="https://developers.google.com/blockly" target="_blank" rel="noopener noreferrer">Google Blockly</a>. It renders one block
 model in multiple **modes** — developer-defined visual representations of the
 same program — to support the gradual transition between block-based and
 text-based programming, or between any visual representations you define.

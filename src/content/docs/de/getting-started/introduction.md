@@ -4,7 +4,7 @@ description: Was Morphic Blocks ist und die Idee hinter den Modes.
 ---
 
 Morphic Blocks ist eine TypeScript-Bibliothek, die auf
-[Google Blockly](https://developers.google.com/blockly) aufbaut. Sie stellt ein
+<a href="https://developers.google.com/blockly" target="_blank" rel="noopener noreferrer">Google Blockly</a> aufbaut. Sie stellt ein
 einziges Block-Modell in mehreren **Modes** dar — entwicklerdefinierten
 visuellen Repräsentationen desselben Programms — und unterstützt so den
 schrittweisen Übergang zwischen block- und textbasierter Programmierung, oder
