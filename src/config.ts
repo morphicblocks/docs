@@ -21,3 +21,15 @@ export const site = {
     university: env.PUBLIC_UNIVERSITY_URL ?? "#",
   },
 };
+
+/** Absolute http(s) URLs point off-site. */
+export function isExternal(href?: string): boolean {
+  return !!href && /^https?:\/\//i.test(href);
+}
+
+/** Spread onto an <a> so off-site links open in a new tab. */
+export function externalAttrs(href?: string) {
+  return isExternal(href)
+    ? { target: "_blank", rel: "noopener noreferrer" }
+    : {};
+}

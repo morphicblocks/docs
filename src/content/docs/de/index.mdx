@@ -4,7 +4,7 @@ description: Die Morphic-Blocks-Dokumentation — hier starten.
 ---
 
 import { Card, CardGrid, LinkCard } from '@astrojs/starlight/components';
-import { site } from '../../../config';
+import { site, externalAttrs } from '../../../config';
 
 Willkommen in der **Morphic-Blocks**-Dokumentation. Morphic Blocks ist eine
 quelloffene TypeScript-Bibliothek auf Basis von Google Blockly, die ein
@@ -44,6 +44,6 @@ definierst und ihre Views steuerst.
 
 ## Nützliche Links
 
-- <a href={site.links.playground}>Playground</a> — Morphic Blocks im Browser ausprobieren.
-- <a href={site.links.github}>GitHub</a> — Quelltext, Issues und Releases.
-- <a href={site.links.npm}>npm</a> — das veröffentlichte Paket.
+- <a href={site.links.playground} {...externalAttrs(site.links.playground)}>Playground</a> — Morphic Blocks im Browser ausprobieren.
+- <a href={site.links.github} {...externalAttrs(site.links.github)}>GitHub</a> — Quelltext, Issues und Releases.
+- <a href={site.links.npm} {...externalAttrs(site.links.npm)}>npm</a> — das veröffentlichte Paket.
