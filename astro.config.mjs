@@ -48,7 +48,7 @@ export default defineConfig({
 			title: env.PUBLIC_SITE_NAME || 'Docs',
 			description: env.PUBLIC_SITE_DESCRIPTION || undefined,
 			logo: { src: './src/assets/logo.svg', alt: env.PUBLIC_SITE_NAME || '' },
-			customCss: ['./src/styles/custom.css'],
+			customCss: ['./src/styles/tokens.css', './src/styles/custom.css'],
 			head,
 			// Adds the required legal links beneath Starlight's default footer.
 			components: {

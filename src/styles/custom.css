@@ -1,7 +1,7 @@
 /*
- * Brand overrides for Starlight — aligned with the morphicblocks.com tokens
- * (accent #00509b, secondary #55bdcb). Only Starlight custom properties are
- * overridden here; restyle the docs from this file.
+ * Brand overrides for Starlight. The brand colors come from tokens.css, copied
+ * from morphic-meta/brand (see palette.md there); this file maps them onto
+ * Starlight's own custom properties. Restyle the docs from here.
  */
 
 /* Dark mode (Starlight default theme) */
@@ -14,6 +14,6 @@
 /* Light mode */
 :root[data-theme='light'] {
 	--sl-color-accent-low: #cfe3f5;
-	--sl-color-accent: #00509b;
+	--sl-color-accent: var(--brand-primary);
 	--sl-color-accent-high: #003058;
 }
