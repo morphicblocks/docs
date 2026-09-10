@@ -54,9 +54,10 @@ the Astro config runs before `import.meta.env` exists.
 
 ```text
 public/
-  favicon.svg           # PLACEHOLDER — matches the landing page favicon
+  favicon.svg           # the real mark, shared with the other sites
+  og.png                # social card, rendered from morphic-meta/brand/og
 src/
-  assets/logo.svg       # PLACEHOLDER logo — replace with the real mark
+  assets/logo.svg       # the real mark, shared with the other sites
   config.ts             # single source for env-driven values in pages
   env.d.ts              # typed env vars
   pages/index.astro     # English docs landing (StarlightPage, uses config)

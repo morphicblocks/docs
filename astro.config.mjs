@@ -16,6 +16,30 @@ const social = [
 	env.PUBLIC_NPM_URL && { icon: 'npm', label: 'npm', href: env.PUBLIC_NPM_URL },
 ].filter((entry) => typeof entry === 'object');
 
+/**
+ * Link previews need an absolute image URL, so the card is only advertised
+ * when a site URL is configured. Starlight already emits og:title, og:url,
+ * og:site_name and twitter:card itself; the image is the only missing piece.
+ */
+const ogImage = env.PUBLIC_SITE_URL
+	? new URL('og.png', env.PUBLIC_SITE_URL).href
+	: undefined;
+
+const head = ogImage
+	? [
+			{ tag: 'meta', attrs: { property: 'og:image', content: ogImage } },
+			{ tag: 'meta', attrs: { property: 'og:image:width', content: '1200' } },
+			{ tag: 'meta', attrs: { property: 'og:image:height', content: '630' } },
+			{
+				tag: 'meta',
+				attrs: {
+					property: 'og:image:alt',
+					content: `${env.PUBLIC_SITE_NAME || 'Morphic Blocks'} documentation`,
+				},
+			},
+		]
+	: [];
+
 // https://astro.build/config
 export default defineConfig({
 	site: env.PUBLIC_SITE_URL || undefined,
@@ -23,9 +47,9 @@ export default defineConfig({
 		starlight({
 			title: env.PUBLIC_SITE_NAME || 'Docs',
 			description: env.PUBLIC_SITE_DESCRIPTION || undefined,
-			// PLACEHOLDER logo — swap src/assets/logo.svg for the real mark.
 			logo: { src: './src/assets/logo.svg', alt: env.PUBLIC_SITE_NAME || '' },
 			customCss: ['./src/styles/custom.css'],
+			head,
 			// Adds the required legal links beneath Starlight's default footer.
 			components: {
 				Footer: './src/components/Footer.astro',
