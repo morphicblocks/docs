@@ -79,6 +79,28 @@ const { code, metadata } = engine.generateJavaScriptWithMetadata();
 engine.runJavaScript();
 ```
 
+## Klammern in zusammengesetzten Ausdrücken
+
+Blöcke kodieren Gruppierung durch Verschachtelung: Ein Multiplikations-Block, der
+einen Additions-Block enthält, *ist* `2 * (3 + 4)`. Reiner Text verliert das,
+sofern die Klammern nicht ausgeschrieben werden — deshalb setzt das Framework sie:
+im ausführbaren Code ebenso wie im gerenderten Text.
+
+Ein Operand wird geklammert, wenn zwei Bedingungen zutreffen: Der Operand-Block
+setzt selbst Werte zusammen (er hat Value-Inputs), und das Template des
+Eltern-Blocks setzt mehrere Werte zusammen. Die zweite Bedingung hält Templates
+mit nur einem Slot sauber:
+
+| Template | Value-Slots | Ergebnis |
+| --- | --- | --- |
+| `%1 %OP %2` | 2 | `2 * (3 + 4)` — Gruppierung bleibt erhalten |
+| `print(%1)` | 1 | `print(2 * 3)` |
+| `if %1:` | 1 | `if 10 == 20:` — idiomatisches Python |
+
+Ein **unärer** Operator ist die Ausnahme: `-%1` hat nur einen Slot, `-(3 + 4)`
+braucht aber Klammern. Schreibe sie dort selbst ins Template — `-(%1)` —, wo das
+Framework die Absicht nicht ableiten kann.
+
 ## Behaviors vs. Template-Rendering
 
 Zwei verschiedene Dinge machen aus Blöcken Text — verwechsle sie nicht:

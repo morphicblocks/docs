@@ -139,7 +139,16 @@ A **shadow** default fills the slot in both views: the workspace shows the
 ghosted block and the codespace shows its value, editable in place (so a `print`
 with a `String` shadow renders `print("hello")` — text stays syntactically
 valid). A **placeholder** seats a *real* block that, once deleted, leaves the
-slot truly empty.
+slot truly empty: it is attached on the first render that sees the slot and is
+never re-created, so a deletion survives mode switches and later renders.
+
+**Shadow values are applied once.** A shadow is declared on a connection only
+when that connection has none, so the element rendered *first* supplies the
+value. Giving the same check different `fieldValues` per element — `python` `42`,
+`go` `100` — therefore does not produce per-language defaults: whichever mode
+rendered first wins for all of them. Keep the values identical across elements
+and let per-language display come from a dropdown's `display` map and
+`stringQuote`.
 
 For a truly empty slot — a deleted placeholder, or no default at all — the
 workspace shows an empty socket, and the codespace (which can't render

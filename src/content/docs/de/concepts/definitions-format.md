@@ -143,7 +143,17 @@ Eine **Shadow**-Vorgabe füllt den Slot in beiden Ansichten: der Workspace zeigt
 den ausgegrauten Block und der Codespace seinen Wert, direkt editierbar (ein
 `print` mit einem `String`-Shadow rendert also `print("hello")` — der Text
 bleibt syntaktisch gültig). Ein **Placeholder** setzt einen *echten* Block ein,
-der, einmal gelöscht, den Slot wirklich leer zurücklässt.
+der, einmal gelöscht, den Slot wirklich leer zurücklässt: Er wird beim ersten
+Rendern des Slots angehängt und nie neu erzeugt — eine Löschung übersteht also
+Modus-Wechsel und spätere Renderings.
+
+**Shadow-Werte werden einmalig angewendet.** Ein Shadow wird an einer Verbindung
+nur deklariert, wenn dort noch keiner existiert — das *zuerst* gerenderte Element
+liefert also den Wert. Demselben `check` je Element unterschiedliche `fieldValues`
+zu geben — `python` `42`, `go` `100` — erzeugt deshalb keine sprachspezifischen
+Vorgaben: Der zuerst gerenderte Modus gewinnt für alle. Halte die Werte über alle
+Elemente gleich und überlasse die sprachspezifische Darstellung der `display`-Map
+eines Dropdowns und `stringQuote`.
 
 Für einen wirklich leeren Slot — gelöschter Placeholder oder gar keine Vorgabe —
 zeigt der Workspace einen leeren Socket, und der Codespace (der „nichts“ nicht

@@ -79,6 +79,26 @@ const { code, metadata } = engine.generateJavaScriptWithMetadata();
 engine.runJavaScript();
 ```
 
+## Parentheses in composed expressions
+
+Blocks encode grouping by nesting: a multiply block holding an add block *is*
+`2 * (3 + 4)`. Plain text loses that unless the brackets are written out, so the
+framework adds them — in the executable code and in the rendered text alike.
+
+An operand is bracketed when two conditions hold: the operand block composes
+values of its own (it has value inputs), and the parent template composes several
+values. The second condition keeps single-slot templates clean:
+
+| Template | Value slots | Result |
+| --- | --- | --- |
+| `%1 %OP %2` | 2 | `2 * (3 + 4)` — grouping preserved |
+| `print(%1)` | 1 | `print(2 * 3)` |
+| `if %1:` | 1 | `if 10 == 20:` — idiomatic Python |
+
+A **unary** operator is the exception: `-%1` has a single slot, yet `-(3 + 4)`
+does need brackets. Write them into the template yourself — `-(%1)` — where the
+framework cannot infer the intent.
+
 ## Behaviors vs. template rendering
 
 Two different things turn blocks into text — don't confuse them:
