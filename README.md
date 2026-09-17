@@ -77,7 +77,42 @@ astro.config.mjs        # Starlight config: sidebar, locales, env-driven title/s
   `src/config.ts`; plain prose pages stay `.md`.
 - The sidebar is explicit in `astro.config.mjs`. An API Reference section is
   planned once the public API stabilises.
-- Deploy target: Cloudflare Pages (static output).
+- The output is a plain static site, so any static host works. See
+  [Deploy](#deploy) for the Docker route.
+
+## Deploy
+
+The site ships as a Docker image: a `bun` stage builds it, an `nginx` stage
+serves the result. Two compose files, so the same image can be run with or
+without a reverse proxy in front.
+
+**Locally**, to check a change in the image that actually gets deployed:
+
+```sh
+docker compose up -d --build
+open http://localhost:8081
+```
+
+**On the server**, behind an existing Traefik instance:
+
+```sh
+cp .env.example .env     # then edit, DEPLOY_DOMAIN in particular
+docker compose -f docker-compose.yaml -f docker-compose.prod.yaml up -d --build
+```
+
+The second file adds only the Traefik router labels and the external `traefik`
+network. It expects Traefik to be running already and attached to that
+network. Traefik terminates TLS and forwards plain HTTP to the container, so
+nginx listens on port 80 only and holds no certificate.
+
+`DEPLOY_DOMAIN` is the one value that differs per deployment, along with
+`HTTP_PROXY` and friends if the build host needs a proxy. Everything else
+(image and container names, the loopback port, the entrypoint and network
+names) is the same for every clone and is written directly in the compose
+files.
+
+Because the `PUBLIC_*` values are baked in at build time, changing any of them
+means rebuilding: `docker compose … up -d --build` again.
 
 ## Translations (i18n)
 

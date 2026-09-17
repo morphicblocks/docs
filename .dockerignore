@@ -1,0 +1,29 @@
+# Anything the image builds or installs for itself.
+**/node_modules
+**/dist
+**/.astro
+
+.git
+.gitignore
+.vscode
+.DS_Store
+*.log
+
+# Not part of the site build.
+Dockerfile
+docker-compose*.yaml
+.dockerignore
+README.md
+CLAUDE.md
+AGENTS.md
+
+# `.env` is deliberately NOT ignored: Astro reads the PUBLIC_* values from it
+# at build time and bakes them into the HTML, so the build stage needs it.
+#
+# It is not exposed by doing so. The build is multi-stage and the final image
+# copies only `dist/` across, so `.env` is in neither the served image nor the
+# nginx web root, and it cannot be requested over HTTP. Every value in it is
+# public by definition, since it ends up in the HTML either way.
+#
+# The rule that follows: never put a real secret in this file. Anything secret
+# belongs in a build argument or a Docker secret instead.
