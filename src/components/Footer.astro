@@ -1,11 +1,12 @@
 ---
 /**
- * Starlight `Footer` override: the default footer plus the legal links every
- * university web presence has to carry (imprint, privacy policy, disclaimer).
+ * Starlight `Footer` override: the default footer, plus the copyright line
+ * and the legal links every university web presence has to carry (imprint,
+ * privacy policy, disclaimer).
  *
- * URLs come from `src/config.ts`; the labels live here because they are the
- * only strings this component needs and Starlight already tells us the page
- * language via `Astro.locals.starlightRoute`.
+ * URLs and the organization name come from `src/config.ts`; the labels live
+ * here because they are the only strings this component needs and Starlight
+ * already tells us the page language via `Astro.locals.starlightRoute`.
  */
 import Default from '@astrojs/starlight/components/Footer.astro';
 import { site, externalAttrs } from '../config';
@@ -27,6 +28,12 @@ const labels = {
   },
 }[lang];
 
+const year = new Date().getFullYear();
+// The university holds the copyright (see LICENSE / NOTICE). Falling back to
+// the site name keeps the line sensible if the variable is unset.
+const owner = site.university[lang] || site.name;
+const ownerUrl = site.university[lang] ? site.links.university : undefined;
+
 // A link whose PUBLIC_* variable is unset is dropped rather than rendered dead.
 const legalLinks = [
   { label: labels.imprint, href: site.legal.imprint[lang] },
@@ -37,33 +44,56 @@ const legalLinks = [
 
 <Default><slot /></Default>
 
-{
-  legalLinks.length > 0 && (
-    <nav class="legal" aria-label={labels.aria}>
-      {legalLinks.map((l) => (
-        <a href={l.href} {...externalAttrs(l.href)}>
-          {l.label}
-        </a>
-      ))}
-    </nav>
-  )
-}
+<div class="site-legal">
+  {
+    owner && (
+      <span class="copyright">
+        &copy; {year}{' '}
+        {ownerUrl ? (
+          <a href={ownerUrl} {...externalAttrs(ownerUrl)}>
+            {owner}
+          </a>
+        ) : (
+          owner
+        )}
+      </span>
+    )
+  }
+  {
+    legalLinks.length > 0 && (
+      <nav class="legal" aria-label={labels.aria}>
+        {legalLinks.map((l) => (
+          <a href={l.href} {...externalAttrs(l.href)}>
+            {l.label}
+          </a>
+        ))}
+      </nav>
+    )
+  }
+</div>
 
 <style>
-  .legal {
+  .site-legal {
     display: flex;
     flex-wrap: wrap;
+    justify-content: space-between;
     gap: 0.4rem 1.2rem;
     margin-top: 1.5rem;
     padding-top: 1rem;
     border-top: 1px solid var(--sl-color-gray-5);
     font-size: var(--sl-text-xs);
+    color: var(--sl-color-gray-3);
   }
-  .legal a {
+  .legal {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 1.2rem;
+  }
+  .site-legal a {
     color: var(--sl-color-gray-3);
     text-decoration: none;
   }
-  .legal a:hover {
+  .site-legal a:hover {
     color: var(--sl-color-white);
     text-decoration: underline;
   }

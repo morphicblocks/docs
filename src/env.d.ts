@@ -8,6 +8,7 @@ interface ImportMetaEnv {
   readonly PUBLIC_LANDING_URL?: string;
   readonly PUBLIC_PLAYGROUND_URL?: string;
   readonly PUBLIC_UNIVERSITY?: string;
+  readonly PUBLIC_UNIVERSITY_DE?: string;
   readonly PUBLIC_UNIVERSITY_URL?: string;
   readonly PUBLIC_IMPRINT_URL?: string;
   readonly PUBLIC_PRIVACY_URL?: string;

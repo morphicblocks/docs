@@ -35,7 +35,8 @@ cp .env.example .env   # then edit .env
 | `PUBLIC_GITHUB_URL` | Repository link in the header |
 | `PUBLIC_LANDING_URL` | Link to the landing page (morphicblocks.com) |
 | `PUBLIC_PLAYGROUND_URL` | Playground link in the header |
-| `PUBLIC_UNIVERSITY` | University attribution (currently unused on pages) |
+| `PUBLIC_UNIVERSITY` | Copyright holder in the footer |
+| `PUBLIC_UNIVERSITY_DE` | German name of the holder, used on `/de/` pages |
 | `PUBLIC_UNIVERSITY_URL` | Link target for the attribution |
 | `PUBLIC_IMPRINT_URL` | Imprint link in the footer |
 | `PUBLIC_PRIVACY_URL` | Privacy policy link in the footer |
