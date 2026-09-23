@@ -92,6 +92,11 @@ ein Codespace-Preset ohne `codespaceContainer`, doppelte Namen und ungültige
 Seitenlayout; es teilt dir mit, welche Views das Preset nutzt, und du ordnest
 die Panes an.
 
+Nach dem Ein- oder Ausblenden von Panes musst du den Workspace nicht neu
+skalieren. Das Framework beobachtet den Workspace-Container und zeichnet Blockly
+neu, sobald sich seine Größe ändert, sei es durch einen Preset-Wechsel, eine
+Fenstergröße oder einen gezogenen Trenner.
+
 ## Die tieferliegende API: setModes()
 
 Presets bündeln Mode-Wechsel; `setModes()` ist das Primitiv darunter:

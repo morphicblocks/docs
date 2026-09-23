@@ -88,6 +88,10 @@ codespace preset without a `codespaceContainer`, duplicate names, and invalid
 your page layout; it tells you which views the preset uses and you arrange the
 panes.
 
+You don't need to resize the workspace after showing or hiding panes. The
+framework watches the workspace container and redraws Blockly whenever its size
+changes, whether from a preset switch, a window resize, or a dragged divider.
+
 ## The lower-level API: setModes()
 
 Presets bundle mode switches; `setModes()` is the primitive underneath:
