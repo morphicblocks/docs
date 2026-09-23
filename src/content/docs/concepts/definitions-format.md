@@ -198,13 +198,44 @@ A flat array of block definitions:
 | -------------------- | --------------------------------------------------- |
 | `identifier`         | Free-form block id (see [namespacing](/concepts/blocks-and-elements/#block-identifiers)) |
 | `category`           | Optional category name                              |
-| `elements`           | The `name: content` map of visual parts             |
+| `elements`           | The `name: content` map of visual parts; optional `default` template (below) |
 | `inputSlots`         | Configuration of `%N` slots (below)                 |
 | `fields`             | Inline field widgets — dropdown/text/number/checkbox (below) |
 | `output`             | Value-block output type (e.g. `"Number"`)           |
 | `previousStatement` / `nextStatement` | Statement connections            |
 | `color`              | Block color (can also come from CSS)                |
 | `tooltip`, `helpUrl`, `inputsInline` | Passed through to Blockly       |
+
+### Default template
+
+Many templates are the same in every language. Instead of repeating them, write
+them once under the reserved key `default`:
+
+```json
+"elements": {
+  "title": "Math",
+  "default": "%1 %OP %2"
+}
+```
+
+`default` is used for every `code` element the block does not list itself. A
+listed element always wins, so you can override single languages:
+
+```json
+"elements": {
+  "concept": "Variable %VAR",
+  "default": "%VAR"
+}
+```
+
+Here `concept` shows `Variable x`, while `python`, `javascript` and every other
+code element show `x`.
+
+- It is optional. Writing every language out works exactly as before.
+- It only fills `code` elements. Text and image elements such as `title` or
+  `icon` are never filled from it.
+- `default` is reserved, so it cannot be the name of an element in
+  `elementTypes`.
 
 ### Input slots
 

@@ -203,13 +203,45 @@ Ein flaches Array von Block-Definitionen:
 | --- | --- |
 | `identifier` | Frei wählbare Block-ID (siehe [Namespacing](/de/concepts/blocks-and-elements/#block-identifier)) |
 | `category` | Optionaler Kategorie-Name |
-| `elements` | Die `name: content`-Map der visuellen Bestandteile |
+| `elements` | Die `name: content`-Map der visuellen Bestandteile; optionales `default`-Template (unten) |
 | `inputSlots` | Konfiguration der `%N`-Slots (unten) |
 | `fields` | Inline-Feld-Widgets — Dropdown/Text/Number/Checkbox (unten) |
 | `output` | Output-Typ eines Value-Blocks (z. B. `"Number"`) |
 | `previousStatement` / `nextStatement` | Statement-Verbindungen |
 | `color` | Block-Farbe (kann auch aus CSS kommen) |
 | `tooltip`, `helpUrl`, `inputsInline` | An Blockly durchgereicht |
+
+### Default-Template
+
+Viele Templates sind in jeder Sprache gleich. Statt sie zu wiederholen, schreibst
+du sie einmal unter den reservierten Schlüssel `default`:
+
+```json
+"elements": {
+  "title": "Math",
+  "default": "%1 %OP %2"
+}
+```
+
+`default` gilt für jedes `code`-Element, das der Block nicht selbst auflistet.
+Ein aufgelistetes Element hat immer Vorrang, du kannst also einzelne Sprachen
+überschreiben:
+
+```json
+"elements": {
+  "concept": "Variable %VAR",
+  "default": "%VAR"
+}
+```
+
+Hier zeigt `concept` den Text `Variable x`, während `python`, `javascript` und
+jedes andere Code-Element `x` zeigen.
+
+- Es ist optional. Jede Sprache auszuschreiben funktioniert genau wie bisher.
+- Es füllt nur `code`-Elemente. Text- und Bild-Elemente wie `title` oder `icon`
+  werden nie daraus befüllt.
+- `default` ist reserviert und kann daher nicht der Name eines Elements in
+  `elementTypes` sein.
 
 ### Input-Slots
 
