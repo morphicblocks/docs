@@ -202,6 +202,7 @@ A flat array of block definitions:
 | `inputSlots`         | Configuration of `%N` slots (below)                 |
 | `fields`             | Inline field widgets — dropdown/text/number/checkbox (below) |
 | `output`             | Value-block output type (e.g. `"Number"`)           |
+| `shape`              | How a statement block connects, in one word (below) |
 | `previousStatement` / `nextStatement` | Statement connections            |
 | `color`              | Block color (can also come from CSS)                |
 | `tooltip`, `helpUrl`, `inputsInline` | Passed through to Blockly       |
@@ -236,6 +237,34 @@ code element show `x`.
   `icon` are never filled from it.
 - `default` is reserved, so it cannot be the name of an element in
   `elementTypes`.
+
+### Block shape
+
+`shape` says in one word how a statement block connects above and below:
+
+| `shape` | Above | Below | Example |
+| --- | --- | --- | --- |
+| `"statement"` | yes | yes | `print`, `if` |
+| `"start"` | no | yes | "when program starts" |
+| `"end"` | yes | no | `return`, `stop` |
+| `"standalone"` | no | no | a block that stays on its own |
+
+```json
+{ "identifier": "text_print", "shape": "statement", "...": "..." }
+```
+
+`shape` is about connecting, not about looks. How a block looks comes from
+modes and CSS.
+
+- It is optional. Without it, `previousStatement` and `nextStatement` decide,
+  exactly as before, and a block with neither is standalone.
+- It only fills the flags the block does not set itself, so a flag you write
+  wins. That is how you add a connection type:
+  `"shape": "statement", "previousStatement": "Action"`.
+- Value blocks don't take a shape. They use `output`: `true` for any value, or
+  a type such as `"Number"`.
+- A flag that contradicts the shape, like `"shape": "end"` with
+  `"nextStatement": true`, gives a validation warning.
 
 ### Input slots
 

@@ -207,6 +207,7 @@ Ein flaches Array von Block-Definitionen:
 | `inputSlots` | Konfiguration der `%N`-Slots (unten) |
 | `fields` | Inline-Feld-Widgets — Dropdown/Text/Number/Checkbox (unten) |
 | `output` | Output-Typ eines Value-Blocks (z. B. `"Number"`) |
+| `shape` | Wie ein Statement-Block verbunden wird, in einem Wort (unten) |
 | `previousStatement` / `nextStatement` | Statement-Verbindungen |
 | `color` | Block-Farbe (kann auch aus CSS kommen) |
 | `tooltip`, `helpUrl`, `inputsInline` | An Blockly durchgereicht |
@@ -242,6 +243,35 @@ jedes andere Code-Element `x` zeigen.
   werden nie daraus befüllt.
 - `default` ist reserviert und kann daher nicht der Name eines Elements in
   `elementTypes` sein.
+
+### Block-Shape
+
+`shape` sagt in einem Wort, wie ein Statement-Block oben und unten verbunden
+wird:
+
+| `shape` | Oben | Unten | Beispiel |
+| --- | --- | --- | --- |
+| `"statement"` | ja | ja | `print`, `if` |
+| `"start"` | nein | ja | „wenn das Programm startet“ |
+| `"end"` | ja | nein | `return`, `stop` |
+| `"standalone"` | nein | nein | ein Block, der für sich allein steht |
+
+```json
+{ "identifier": "text_print", "shape": "statement", "...": "..." }
+```
+
+`shape` beschreibt das Verbinden, nicht das Aussehen. Wie ein Block aussieht,
+bestimmen Modes und CSS.
+
+- Es ist optional. Ohne `shape` entscheiden `previousStatement` und
+  `nextStatement` genau wie bisher, und ein Block ohne beide steht für sich allein.
+- Es füllt nur die Flags, die der Block nicht selbst setzt. Ein Flag, das du
+  schreibst, hat also Vorrang. So fügst du einen Verbindungstyp hinzu:
+  `"shape": "statement", "previousStatement": "Action"`.
+- Value-Blöcke haben keinen Shape. Sie nutzen `output`: `true` für jeden Wert
+  oder einen Typ wie `"Number"`.
+- Ein Flag, das dem Shape widerspricht, etwa `"shape": "end"` mit
+  `"nextStatement": true`, erzeugt eine Validierungswarnung.
 
 ### Input-Slots
 
