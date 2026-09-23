@@ -32,11 +32,27 @@ Your generate function receives a proxy of the live block:
 | `blockType` | The clean block identifier (e.g. `text_print`)             |
 | `mode`      | The active workspace mode                                  |
 | `inputs`    | Generated code of attached blocks, keyed by input name     |
-| `fields`    | Field values, keyed by field name                          |
+| `fields`    | Plain field values, keyed by field name                    |
+| `quoted`    | The same values as quoted string literals                  |
 | `context`   | Render context                                             |
 
 `proxy.inputs.TEXT` is the *already generated* code of whatever block sits in
 the `TEXT` slot — generation recurses through the program for you.
+
+`fields` holds each value exactly as the field has it. `quoted` holds the same
+value as a quoted, escaped string literal, always quoted, even when it looks like
+a number. Pick the one your output needs:
+
+```ts
+var_declare(proxy) {
+  // a variable name must stay bare: let x = …
+  return `let ${proxy.fields.VAR} = ${proxy.inputs.VAL};\n`;
+},
+text_value(proxy) {
+  // a text value must be a string: "hello", and "42" stays a string
+  return proxy.quoted.TEXT;
+},
+```
 
 ## The full behavior object
 

@@ -32,11 +32,28 @@ Deine Generate-Funktion erhält einen Proxy des lebenden Blocks:
 | `blockType` | Der saubere Block-Identifier (z. B. `text_print`)          |
 | `mode`      | Der aktive Workspace-Mode                                  |
 | `inputs`    | Erzeugter Code angehängter Blöcke, geschlüsselt nach Input-Namen |
-| `fields`    | Feldwerte, geschlüsselt nach Feldnamen                     |
+| `fields`    | Unveränderte Feldwerte, geschlüsselt nach Feldnamen        |
+| `quoted`    | Dieselben Werte als String-Literale in Anführungszeichen   |
 | `context`   | Render-Kontext                                             |
 
 `proxy.inputs.TEXT` ist der *bereits erzeugte* Code des Blocks, der im
 `TEXT`-Slot steckt — die Erzeugung rekursiert für dich durch das Programm.
+
+`fields` enthält jeden Wert genau so, wie das Feld ihn hat. `quoted` enthält
+denselben Wert als String-Literal in Anführungszeichen, korrekt maskiert und
+immer in Anführungszeichen, auch wenn er wie eine Zahl aussieht. Nimm die Form,
+die deine Ausgabe braucht:
+
+```ts
+var_declare(proxy) {
+  // ein Variablenname bleibt ohne Anführungszeichen: let x = …
+  return `let ${proxy.fields.VAR} = ${proxy.inputs.VAL};\n`;
+},
+text_value(proxy) {
+  // ein Textwert muss ein String sein: "hello", und "42" bleibt ein String
+  return proxy.quoted.TEXT;
+},
+```
 
 ## Das vollständige Behavior-Objekt
 
