@@ -116,10 +116,14 @@ for (const line of output) {
 if (error) outputEl.append(`Error: ${error.message}`);
 ```
 
-Ausgegebene Zeilen landen weiterhin auch in der Browser-Konsole. Um sie
-stattdessen woandershin zu schicken, übergib eine eigene `console`:
-`engine.runJavaScript({ console: myConsole })`. Die `output`-Liste wird in
-beiden Fällen gefüllt.
+Standardmäßig werden die Zeilen nur in `output` gesammelt; in die
+Browser-Konsole wird nichts ausgegeben. Zwei Optionen ändern das, und `output`
+wird in jedem Fall gefüllt:
+
+```ts
+engine.runJavaScript({ logToConsole: true });   // zusätzlich in die Browser-Konsole
+engine.runJavaScript({ console: myConsole });   // an deine eigene Konsole schicken
+```
 
 ## Klammern in zusammengesetzten Ausdrücken
 

@@ -114,9 +114,13 @@ for (const line of output) {
 if (error) outputEl.append(`Error: ${error.message}`);
 ```
 
-Printed lines still reach the browser console too. To send them somewhere else
-instead, pass your own `console`: `engine.runJavaScript({ console: myConsole })`.
-The `output` list is filled either way.
+By default the lines are only collected in `output`; nothing is printed to the
+browser console. Two options change that, and `output` is filled either way:
+
+```ts
+engine.runJavaScript({ logToConsole: true });   // also print to the browser console
+engine.runJavaScript({ console: myConsole });   // send them to your own console
+```
 
 ## Parentheses in composed expressions
 
