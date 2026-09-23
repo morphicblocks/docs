@@ -82,6 +82,9 @@ engine.mount({
 });
 
 engine.applyPreset("hybrid");  // per Name oder Index
+
+engine.getPresets();           // alle Presets, z. B. für deine Buttons
+engine.getActivePreset();      // das zuletzt angewendete, z. B. um seinen Button zu markieren
 ```
 
 Presets werden beim Mount validiert: unbekannte Modes, fehlende Code-Elements,

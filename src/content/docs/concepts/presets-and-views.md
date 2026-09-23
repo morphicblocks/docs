@@ -78,6 +78,9 @@ engine.mount({
 });
 
 engine.applyPreset("hybrid");  // by name or index
+
+engine.getPresets();           // all presets, e.g. to build your buttons
+engine.getActivePreset();      // the one applied last, e.g. to mark its button
 ```
 
 Presets are validated at mount: unknown modes, missing code elements, a
