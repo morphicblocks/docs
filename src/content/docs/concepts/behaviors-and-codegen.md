@@ -92,8 +92,31 @@ const js = engine.generateJavaScript();
 const { code, metadata } = engine.generateJavaScriptWithMetadata();
 
 // execute in the page:
-engine.runJavaScript();
+const { output, error } = engine.runJavaScript();
 ```
+
+`runJavaScript()` collects every line the program prints, with its level, so
+you can show the output on your page without writing a console of your own:
+
+```ts
+const { output, error } = engine.runJavaScript();
+// output = [
+//   { level: "log",  text: "Hello" },
+//   { level: "warn", text: "Value is empty" },
+// ]
+
+for (const line of output) {
+  const div = document.createElement("div");
+  div.textContent = line.text;
+  div.className = line.level;          // style .warn / .error in your CSS
+  outputEl.appendChild(div);
+}
+if (error) outputEl.append(`Error: ${error.message}`);
+```
+
+Printed lines still reach the browser console too. To send them somewhere else
+instead, pass your own `console`: `engine.runJavaScript({ console: myConsole })`.
+The `output` list is filled either way.
 
 ## Parentheses in composed expressions
 

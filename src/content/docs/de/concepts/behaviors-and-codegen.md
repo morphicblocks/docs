@@ -93,8 +93,33 @@ const js = engine.generateJavaScript();
 const { code, metadata } = engine.generateJavaScriptWithMetadata();
 
 // in der Seite ausführen:
-engine.runJavaScript();
+const { output, error } = engine.runJavaScript();
 ```
+
+`runJavaScript()` sammelt jede Zeile, die das Programm ausgibt, samt ihrer
+Stufe. So kannst du die Ausgabe auf deiner Seite zeigen, ohne eine eigene
+Konsole zu schreiben:
+
+```ts
+const { output, error } = engine.runJavaScript();
+// output = [
+//   { level: "log",  text: "Hello" },
+//   { level: "warn", text: "Value is empty" },
+// ]
+
+for (const line of output) {
+  const div = document.createElement("div");
+  div.textContent = line.text;
+  div.className = line.level;          // .warn / .error in deinem CSS stylen
+  outputEl.appendChild(div);
+}
+if (error) outputEl.append(`Error: ${error.message}`);
+```
+
+Ausgegebene Zeilen landen weiterhin auch in der Browser-Konsole. Um sie
+stattdessen woandershin zu schicken, übergib eine eigene `console`:
+`engine.runJavaScript({ console: myConsole })`. Die `output`-Liste wird in
+beiden Fällen gefüllt.
 
 ## Klammern in zusammengesetzten Ausdrücken
 
