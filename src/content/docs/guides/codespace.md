@@ -27,8 +27,9 @@ await engine.mountCodespace();
 
 `mountCodespace()` is async because CodeMirror is lazy-loaded (see
 [Installation](/getting-started/installation/#optional-code-editor-packages)).
-Which mode the codespace shows is driven by `codespaceMode` /
-[presets](/concepts/presets-and-views/).
+Which mode the codespace shows is set by the active
+[preset](/concepts/presets-and-views/), or at runtime with
+`setModes({ codespaceMode })`.
 
 **Headless mode:** `mount()` accepts `workspaceContainer`,
 `codespaceContainer`, or both. With only a `codespaceContainer`, Blockly runs

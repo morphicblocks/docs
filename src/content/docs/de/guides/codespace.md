@@ -27,8 +27,9 @@ await engine.mountCodespace();
 
 `mountCodespace()` ist asynchron, weil CodeMirror verzögert geladen wird (siehe
 [Installation](/de/getting-started/installation/#optional-pakete-für-den-code-editor)).
-Welchen Mode der Codespace zeigt, steuert `codespaceMode` /
-[Presets](/de/concepts/presets-and-views/).
+Welchen Mode der Codespace zeigt, legt das aktive
+[Preset](/de/concepts/presets-and-views/) fest, oder zur Laufzeit
+`setModes({ codespaceMode })`.
 
 **Headless-Modus:** `mount()` akzeptiert `workspaceContainer`,
 `codespaceContainer` oder beides. Nur mit einem `codespaceContainer` läuft
