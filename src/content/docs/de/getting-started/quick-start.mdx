@@ -82,16 +82,16 @@ import definitions from "./definitions.json";
 import { behaviors } from "./behaviors";
 
 // Der Konstruktor nimmt die ganze Definitionsdatei plus deine Behaviors.
-// mount() und mountToolbox() erben deren modes / presets / highlighting /
-// categories, sodass ein Aufruf nur Laufzeit-Belange trägt.
+// mount() erbt deren modes / presets / highlighting / categories, sodass der
+// Aufruf nur Laufzeit-Belange trägt.
 const engine = new MorphicBlocks(definitions, behaviors);
 
+// Ein Aufruf richtet jede View ein, für die er einen Container bekommt.
 engine.mount({
   workspaceContainer: document.getElementById("workspace")!,
+  toolboxContainer: document.getElementById("toolbox")!,
   // Hier gibt es keine Presets, also wird der erste Mode („conceptual“) genutzt.
-});
-
-engine.mountToolbox(document.getElementById("toolbox")!);`}
+});`}
    />
 
    Ziehe die *Print*-Kachel aus der Toolbox in den Workspace — dabei entsteht

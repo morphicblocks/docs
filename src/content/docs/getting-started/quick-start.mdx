@@ -81,16 +81,16 @@ import definitions from "./definitions.json";
 import { behaviors } from "./behaviors";
 
 // The constructor takes the whole definitions file plus your behaviors.
-// mount() and mountToolbox() inherit its modes / presets / highlighting /
-// categories, so a call only carries runtime concerns.
+// mount() inherits its modes / presets / highlighting / categories, so the
+// call only carries runtime concerns.
 const engine = new MorphicBlocks(definitions, behaviors);
 
+// One call sets up every view it gets a container for.
 engine.mount({
   workspaceContainer: document.getElementById("workspace")!,
+  toolboxContainer: document.getElementById("toolbox")!,
   // No presets here, so the first mode ("conceptual") is used.
-});
-
-engine.mountToolbox(document.getElementById("toolbox")!);`}
+});`}
    />
 
    Drag the *Print* tile from the toolbox into the workspace — it creates a
