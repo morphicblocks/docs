@@ -12,21 +12,21 @@ the program can never become syntactically broken.
 
 ## Mounting
 
-Declare the container at `mount()` time, then mount the codespace:
+Give `mount()` a container, and it sets the codespace up there:
 
 ```ts
-engine.mount({
-  workspaceContainer,            // optional — see headless mode below
+await engine.mount({
+  workspaceContainer,            // optional, see headless mode below
   codespaceContainer: document.getElementById("codespace")!,
-  modes: definitions.modes,
+  editorTheme,                   // optional
   // …
 });
-
-await engine.mountCodespace();
 ```
 
-`mountCodespace()` is async because CodeMirror is lazy-loaded (see
-[Installation](/getting-started/installation/#optional-code-editor-packages)).
+Awaiting `mount()` waits for the codespace, because CodeMirror is lazy-loaded
+(see [Installation](/getting-started/installation/#optional-code-editor-packages)).
+To set it up again later with other [options](#options), call
+`engine.mountCodespace(options)`.
 Which mode the codespace shows is set by the active
 [preset](/concepts/presets-and-views/), or at runtime with
 `setModes({ codespaceMode })`.

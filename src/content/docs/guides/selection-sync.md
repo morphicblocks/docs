@@ -8,9 +8,12 @@ lines in every text view — and clicking a line in a text view selects the
 block. It works across all mounted views: workspace, code editor, codespace,
 and preview.
 
+Selection sync is **on by default** whenever `mount()` sets up more than one
+view. Turn it off with `mount({ selectionSync: false })`, or enable it later
+yourself:
+
 ```ts
-// after mount() and at least one of:
-// mountCodeEditor / mountCodespace / mountPreview
+// after at least one of mountCodeEditor / mountCodespace / mountPreview
 engine.enableSelectionSync();
 ```
 
@@ -30,11 +33,16 @@ Clicking an empty area in a text view clears the highlight everywhere.
 
 ## Options
 
+Pass the options to `mount()`, or to `enableSelectionSync()`:
+
 ```ts
-engine.enableSelectionSync({
-  highlightColor: "rgba(85, 189, 203, 0.25)",
-  blockToCode: true,
-  codeToBlock: true,
+engine.mount({
+  // …containers
+  selectionSync: {
+    highlightColor: "rgba(85, 189, 203, 0.25)",
+    blockToCode: true,
+    codeToBlock: true,
+  },
 });
 ```
 

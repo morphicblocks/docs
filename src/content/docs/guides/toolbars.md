@@ -7,6 +7,21 @@ Each pane (workspace, codespace, preview) can mount its own toolbar. Like
 everything else in the framework, toolbars are **headless** — structural
 classes only, styling is yours.
 
+Give `mount()` a container per pane, and each gets the default toolbar:
+
+```ts
+engine.mount({
+  // …containers
+  toolbarContainers: {
+    workspace: document.getElementById("workspace-toolbar")!,
+    codespace: document.getElementById("codespace-toolbar")!,
+  },
+});
+```
+
+For [custom items](#custom-items), or to add a toolbar later, use
+`engine.mountToolbar()`:
+
 ```ts
 engine.mountToolbar(document.getElementById("workspace-toolbar")!, {
   pane: "workspace",

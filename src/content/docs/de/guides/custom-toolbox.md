@@ -3,9 +3,19 @@ title: Eigene Toolbox
 description: Ersetze Blocklys Flyout durch HTML-Kacheln der Morphic Blocks.
 ---
 
-`engine.mountToolbox()` ersetzt Blocklys eingebautes Flyout durch eine
-HTML-Toolbox aus **Kacheln der Morphic Blocks** — keine Off-Screen-Blockly-
-Workspaces, nur DOM, das du gestalten kannst:
+Die eigene Toolbox ersetzt Blocklys eingebautes Flyout durch eine HTML-Toolbox
+aus **Kacheln der Morphic Blocks**: keine Off-Screen-Blockly-Workspaces, nur DOM,
+das du gestalten kannst. Gib `mount()` einen Container dafür:
+
+```ts
+engine.mount({
+  workspaceContainer: document.getElementById("workspace")!,
+  toolboxContainer: document.getElementById("toolbox")!,
+});
+```
+
+Die Kategorien kommen aus den Definitionen. Um die Toolbox später oder mit
+[Optionen](#optionen) einzurichten, nutze stattdessen `engine.mountToolbox()`:
 
 ```ts
 engine.mountToolbox(document.getElementById("toolbox")!, {

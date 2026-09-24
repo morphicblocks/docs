@@ -12,21 +12,22 @@ ist eine Modell-Operation, sodass das Programm nie syntaktisch kaputtgehen kann.
 
 ## Einbinden
 
-Deklariere den Container beim `mount()`, dann binde den Codespace ein:
+Gib `mount()` einen Container, und es richtet den Codespace dort ein:
 
 ```ts
-engine.mount({
-  workspaceContainer,            // optional — siehe Headless-Modus unten
+await engine.mount({
+  workspaceContainer,            // optional, siehe Headless-Modus unten
   codespaceContainer: document.getElementById("codespace")!,
-  modes: definitions.modes,
+  editorTheme,                   // optional
   // …
 });
-
-await engine.mountCodespace();
 ```
 
-`mountCodespace()` ist asynchron, weil CodeMirror verzögert geladen wird (siehe
+Das Warten auf `mount()` wartet auf den Codespace, weil CodeMirror verzögert
+geladen wird (siehe
 [Installation](/de/getting-started/installation/#optional-pakete-für-den-code-editor)).
+Um ihn später mit anderen [Optionen](#optionen) neu einzurichten, rufe
+`engine.mountCodespace(options)` auf.
 Welchen Mode der Codespace zeigt, legt das aktive
 [Preset](/de/concepts/presets-and-views/) fest, oder zur Laufzeit
 `setModes({ codespaceMode })`.

@@ -21,8 +21,15 @@ Die Preview rendert, was das
 Syntaxen desselben Programms gleichzeitig sehen:
 
 ```ts
-await engine.mountPreview(document.getElementById("preview")!);
+await engine.mount({
+  workspaceContainer,
+  previewContainer: document.getElementById("preview")!,
+  previewTheme,                  // optional, Standard ist editorTheme
+});
 ```
+
+Um die Preview später oder mit anderen Optionen einzurichten, nutze
+`engine.mountPreview(container, options)`.
 
 Der Preview-Mode kommt aus dem `preview`-Schlüssel des aktiven Preset oder aus
 `setModes({ previewMode })`. Die Highlighting-Regeln werden automatisch aus der
@@ -39,9 +46,13 @@ ausführbaren Code, den deine [Behaviors](/de/concepts/behaviors-and-codegen/)
 erzeugen — und aktualisiert sich, während sich das Modell ändert:
 
 ```ts
-await engine.mountCodeEditor(document.getElementById("editor")!, { theme });
+await engine.mount({
+  workspaceContainer,
+  codeEditorContainer: document.getElementById("editor")!,
+  editorTheme,                   // optional
+});
 
-engine.showCodeEditor();
+engine.showCodeEditor();         // er startet ausgeblendet
 engine.hideCodeEditor();
 engine.isCodeEditorVisible();
 engine.setCodeEditorTheme(theme);

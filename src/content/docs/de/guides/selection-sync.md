@@ -8,9 +8,12 @@ entsprechenden Zeilen in jeder Text-View hervor — und ein Klick auf eine Zeile
 in einer Text-View wählt den Block aus. Das funktioniert über alle
 eingebundenen Views: Workspace, Code-Editor, Codespace und Preview.
 
+Selection-Sync ist **standardmäßig an**, sobald `mount()` mehr als eine View
+einrichtet. Schalte sie mit `mount({ selectionSync: false })` aus, oder aktiviere
+sie später selbst:
+
 ```ts
-// nach mount() und mindestens einem von:
-// mountCodeEditor / mountCodespace / mountPreview
+// nach mindestens einem von mountCodeEditor / mountCodespace / mountPreview
 engine.enableSelectionSync();
 ```
 
@@ -32,11 +35,16 @@ Ein Klick auf eine leere Fläche in einer Text-View löscht die Hervorhebung
 
 ## Optionen
 
+Übergib die Optionen an `mount()` oder an `enableSelectionSync()`:
+
 ```ts
-engine.enableSelectionSync({
-  highlightColor: "rgba(85, 189, 203, 0.25)",
-  blockToCode: true,
-  codeToBlock: true,
+engine.mount({
+  // …Container
+  selectionSync: {
+    highlightColor: "rgba(85, 189, 203, 0.25)",
+    blockToCode: true,
+    codeToBlock: true,
+  },
 });
 ```
 

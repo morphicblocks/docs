@@ -21,8 +21,15 @@ JavaScript alongside a Python codespace, so learners see two syntaxes of the
 same program simultaneously:
 
 ```ts
-await engine.mountPreview(document.getElementById("preview")!);
+await engine.mount({
+  workspaceContainer,
+  previewContainer: document.getElementById("preview")!,
+  previewTheme,                  // optional, defaults to editorTheme
+});
 ```
+
+To set the preview up later, or with other options, use
+`engine.mountPreview(container, options)`.
 
 The preview mode comes from the active preset's `preview` key or
 `setModes({ previewMode })`. Highlighting rules resolve automatically from the
@@ -39,9 +46,13 @@ executable code your [behaviors](/concepts/behaviors-and-codegen/) produce —
 and updates as the model changes:
 
 ```ts
-await engine.mountCodeEditor(document.getElementById("editor")!, { theme });
+await engine.mount({
+  workspaceContainer,
+  codeEditorContainer: document.getElementById("editor")!,
+  editorTheme,                   // optional
+});
 
-engine.showCodeEditor();
+engine.showCodeEditor();         // it starts hidden
 engine.hideCodeEditor();
 engine.isCodeEditorVisible();
 engine.setCodeEditorTheme(theme);

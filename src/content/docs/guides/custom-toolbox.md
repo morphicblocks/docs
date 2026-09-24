@@ -3,9 +3,19 @@ title: Custom Toolbox
 description: Replace Blockly's flyout with HTML Morphic Block tiles.
 ---
 
-`engine.mountToolbox()` replaces Blockly's built-in flyout with an HTML
-toolbox of **Morphic Block tiles** — no off-screen Blockly workspaces, just
-DOM you can style:
+The custom toolbox replaces Blockly's built-in flyout with an HTML toolbox of
+**Morphic Block tiles**: no off-screen Blockly workspaces, just DOM you can
+style. Give `mount()` a container for it:
+
+```ts
+engine.mount({
+  workspaceContainer: document.getElementById("workspace")!,
+  toolboxContainer: document.getElementById("toolbox")!,
+});
+```
+
+Categories come from the definitions. To set the toolbox up later, or with
+[options](#options), use `engine.mountToolbox()` instead:
 
 ```ts
 engine.mountToolbox(document.getElementById("toolbox")!, {
