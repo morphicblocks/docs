@@ -38,6 +38,12 @@ The Blockly workspace root gets the mode class too:
 }
 ```
 
+Blocks are sized for the font your CSS gives their text. The font family, size
+and weight set on `.blocklyText` are picked up on every mode switch, and again
+once a stylesheet or web font finishes loading, so text never spills out of its
+block. The same applies to blocks shown on toolbox tiles, which take the font of
+their element. Other properties, like colors, change nothing about the size.
+
 Block colors can be driven from CSS via the custom property:
 
 ```css

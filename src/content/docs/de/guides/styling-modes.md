@@ -38,6 +38,13 @@ Die Blockly-Workspace-Wurzel erhält die Mode-Klasse ebenfalls:
 }
 ```
 
+Blöcke werden passend zur Schrift bemessen, die dein CSS ihrem Text gibt.
+Schriftart, Größe und Stärke von `.blocklyText` werden bei jedem Mode-Wechsel
+übernommen, und erneut, sobald ein Stylesheet oder eine Webfont fertig geladen
+ist. So ragt Text nie aus seinem Block heraus. Das gilt auch für Blöcke auf
+Toolbox-Kacheln, die die Schrift ihres Elements übernehmen. Andere
+Eigenschaften, etwa Farben, ändern nichts an der Größe.
+
 Block-Farben lassen sich über die Custom Property aus CSS steuern:
 
 ```css
