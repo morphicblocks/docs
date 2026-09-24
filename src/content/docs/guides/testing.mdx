@@ -74,11 +74,9 @@ definitions before your users do:
 ```ts
 // test/definitions.test.ts
 import { expect, test } from "vitest";
-import { MorphicBlocks, type MorphicBlocksFormat } from "morphic-blocks";
-import definitionsJson from "../src/definitions.json";
+import { MorphicBlocks } from "morphic-blocks";
+import definitions from "../src/definitions.json";
 import { behaviors } from "../src/behaviors";
-
-const definitions = definitionsJson as unknown as MorphicBlocksFormat;
 
 test("definitions load", () => {
   const engine = new MorphicBlocks(definitions, behaviors);
@@ -110,12 +108,10 @@ generates and prints:
 ```ts
 // test/programs.test.ts
 import { expect, test } from "vitest";
-import { MorphicBlocks, type MorphicBlocksFormat } from "morphic-blocks";
-import definitionsJson from "../src/definitions.json";
+import { MorphicBlocks } from "morphic-blocks";
+import definitions from "../src/definitions.json";
 import { behaviors } from "../src/behaviors";
 import hello from "./programs/hello.json";
-
-const definitions = definitionsJson as unknown as MorphicBlocksFormat;
 
 test("hello prints a greeting", () => {
   const engine = new MorphicBlocks(definitions, behaviors);
