@@ -1,0 +1,146 @@
+---
+title: Testing Your Blocks
+description: Check that your definitions load and your programs generate the right code.
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+
+Your definitions and behaviors are code, so they deserve tests like any other
+code. Two checks cover most of it: *do my definitions load*, and *does a program
+built from my blocks generate the code I expect*. This guide sets both up with
+[Vitest](https://vitest.dev).
+
+## Setup
+
+Morphic Blocks runs on Blockly, which needs a browser. In tests,
+[jsdom](https://github.com/jsdom/jsdom) stands in for one.
+
+<Tabs syncKey="pkg">
+  <TabItem label="npm">
+    ```sh
+    npm install --save-dev vitest jsdom
+    ```
+  </TabItem>
+  <TabItem label="bun">
+    ```sh
+    bun add -d vitest jsdom
+    ```
+  </TabItem>
+  <TabItem label="pnpm">
+    ```sh
+    pnpm add -D vitest jsdom
+    ```
+  </TabItem>
+</Tabs>
+
+Tell Vitest to use jsdom and to load a small setup file:
+
+```ts
+// vitest.config.ts
+import { defineConfig } from "vitest/config";
+
+export default defineConfig({
+  test: {
+    environment: "jsdom",
+    setupFiles: ["./test/setup.ts"],
+  },
+});
+```
+
+jsdom does not lay anything out, so it cannot measure text. Blockly measures
+text while drawing blocks, so the setup file answers those calls with fixed
+sizes. Your tests check generated code, not how blocks look, so the sizes do
+not matter:
+
+```ts
+// test/setup.ts
+HTMLCanvasElement.prototype.getContext = (() => ({
+  font: "",
+  measureText: (text: string) => ({ width: text.length * 8 }),
+})) as unknown as HTMLCanvasElement["getContext"];
+
+Object.assign(SVGElement.prototype, {
+  getBBox: () => ({ x: 0, y: 0, width: 0, height: 0 }),
+  getComputedTextLength: () => 0,
+});
+```
+
+## Check that your definitions load
+
+`mount()` validates your definitions and throws one error that lists every
+problem it finds. A test that mounts an editor therefore catches broken
+definitions before your users do:
+
+```ts
+// test/definitions.test.ts
+import { expect, test } from "vitest";
+import { MorphicBlocks, type MorphicBlocksFormat } from "morphic-blocks";
+import definitionsJson from "../src/definitions.json";
+import { behaviors } from "../src/behaviors";
+
+const definitions = definitionsJson as unknown as MorphicBlocksFormat;
+
+test("definitions load", () => {
+  const engine = new MorphicBlocks(definitions, behaviors);
+  expect(() =>
+    engine.mount({
+      workspaceContainer: document.createElement("div"),
+      codespaceContainer: document.createElement("div"),
+    }),
+  ).not.toThrow();
+});
+```
+
+Pass a `codespaceContainer` whenever one of your presets shows a codespace, just
+as in your app.
+
+## Check what a program generates
+
+The easiest way to get a program into a test is to build it in your app and
+save it:
+
+```ts
+// in your app, e.g. from the browser console
+JSON.stringify(engine.serializeWorkspace());
+```
+
+Store the result as a file, say `test/programs/hello.json`, and check what it
+generates and prints:
+
+```ts
+// test/programs.test.ts
+import { expect, test } from "vitest";
+import { MorphicBlocks, type MorphicBlocksFormat } from "morphic-blocks";
+import definitionsJson from "../src/definitions.json";
+import { behaviors } from "../src/behaviors";
+import hello from "./programs/hello.json";
+
+const definitions = definitionsJson as unknown as MorphicBlocksFormat;
+
+test("hello prints a greeting", () => {
+  const engine = new MorphicBlocks(definitions, behaviors);
+  engine.mount({
+    workspaceContainer: document.createElement("div"),
+    codespaceContainer: document.createElement("div"),
+  });
+  engine.loadWorkspace(hello);
+
+  expect(engine.generateJavaScript()).toContain("console.log");
+  expect(engine.runJavaScript().output).toEqual([{ level: "log", text: "Hello, world!" }]);
+});
+```
+
+`runJavaScript()` collects every printed line with its level (see
+[Behaviors & Code Generation](/concepts/behaviors-and-codegen/)), so asserting
+on `output` checks what the program actually does, not only the code it
+produces.
+
+## Tips
+
+- Keep one saved program per behavior you care about. When a behavior changes,
+  the test tells you which programs now produce different code.
+- A saved program carries only the blocks, not the modes, and the generated code
+  does not depend on the mode either. One file is enough, whichever mode it was
+  saved in. See [Saving & Loading](/guides/saving-and-loading/).
+- Nothing is rendered on screen during tests, so they run in well under a
+  second.

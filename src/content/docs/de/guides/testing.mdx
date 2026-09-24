@@ -1,0 +1,146 @@
+---
+title: Blöcke testen
+description: Prüfen, ob deine Definitionen laden und deine Programme den richtigen Code erzeugen.
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+
+Deine Definitionen und Behaviors sind Code, also verdienen sie Tests wie jeder
+andere Code. Zwei Prüfungen decken das meiste ab: *Laden meine Definitionen*,
+und *erzeugt ein Programm aus meinen Blöcken den erwarteten Code*. Diese
+Anleitung richtet beides mit [Vitest](https://vitest.dev) ein.
+
+## Einrichtung
+
+Morphic Blocks läuft auf Blockly, und Blockly braucht einen Browser. In Tests
+springt [jsdom](https://github.com/jsdom/jsdom) dafür ein.
+
+<Tabs syncKey="pkg">
+  <TabItem label="npm">
+    ```sh
+    npm install --save-dev vitest jsdom
+    ```
+  </TabItem>
+  <TabItem label="bun">
+    ```sh
+    bun add -d vitest jsdom
+    ```
+  </TabItem>
+  <TabItem label="pnpm">
+    ```sh
+    pnpm add -D vitest jsdom
+    ```
+  </TabItem>
+</Tabs>
+
+Sag Vitest, dass es jsdom nutzen und eine kleine Setup-Datei laden soll:
+
+```ts
+// vitest.config.ts
+import { defineConfig } from "vitest/config";
+
+export default defineConfig({
+  test: {
+    environment: "jsdom",
+    setupFiles: ["./test/setup.ts"],
+  },
+});
+```
+
+jsdom berechnet kein Layout und kann daher keinen Text messen. Blockly misst
+Text beim Zeichnen von Blöcken, deshalb beantwortet die Setup-Datei diese
+Aufrufe mit festen Größen. Deine Tests prüfen den erzeugten Code, nicht das
+Aussehen der Blöcke, also spielen die Größen keine Rolle:
+
+```ts
+// test/setup.ts
+HTMLCanvasElement.prototype.getContext = (() => ({
+  font: "",
+  measureText: (text: string) => ({ width: text.length * 8 }),
+})) as unknown as HTMLCanvasElement["getContext"];
+
+Object.assign(SVGElement.prototype, {
+  getBBox: () => ({ x: 0, y: 0, width: 0, height: 0 }),
+  getComputedTextLength: () => 0,
+});
+```
+
+## Prüfen, ob deine Definitionen laden
+
+`mount()` validiert deine Definitionen und wirft einen Fehler, der jedes
+gefundene Problem auflistet. Ein Test, der einen Editor mountet, findet kaputte
+Definitionen also, bevor es deine Nutzer tun:
+
+```ts
+// test/definitions.test.ts
+import { expect, test } from "vitest";
+import { MorphicBlocks, type MorphicBlocksFormat } from "morphic-blocks";
+import definitionsJson from "../src/definitions.json";
+import { behaviors } from "../src/behaviors";
+
+const definitions = definitionsJson as unknown as MorphicBlocksFormat;
+
+test("definitions load", () => {
+  const engine = new MorphicBlocks(definitions, behaviors);
+  expect(() =>
+    engine.mount({
+      workspaceContainer: document.createElement("div"),
+      codespaceContainer: document.createElement("div"),
+    }),
+  ).not.toThrow();
+});
+```
+
+Übergib einen `codespaceContainer`, sobald eines deiner Presets einen Codespace
+zeigt, genau wie in deiner App.
+
+## Prüfen, was ein Programm erzeugt
+
+Am einfachsten kommt ein Programm in einen Test, wenn du es in deiner App baust
+und speicherst:
+
+```ts
+// in deiner App, z. B. über die Browser-Konsole
+JSON.stringify(engine.serializeWorkspace());
+```
+
+Speichere das Ergebnis als Datei, etwa `test/programs/hello.json`, und prüfe,
+was es erzeugt und ausgibt:
+
+```ts
+// test/programs.test.ts
+import { expect, test } from "vitest";
+import { MorphicBlocks, type MorphicBlocksFormat } from "morphic-blocks";
+import definitionsJson from "../src/definitions.json";
+import { behaviors } from "../src/behaviors";
+import hello from "./programs/hello.json";
+
+const definitions = definitionsJson as unknown as MorphicBlocksFormat;
+
+test("hello prints a greeting", () => {
+  const engine = new MorphicBlocks(definitions, behaviors);
+  engine.mount({
+    workspaceContainer: document.createElement("div"),
+    codespaceContainer: document.createElement("div"),
+  });
+  engine.loadWorkspace(hello);
+
+  expect(engine.generateJavaScript()).toContain("console.log");
+  expect(engine.runJavaScript().output).toEqual([{ level: "log", text: "Hello, world!" }]);
+});
+```
+
+`runJavaScript()` sammelt jede ausgegebene Zeile samt Stufe (siehe
+[Behaviors & Code-Erzeugung](/de/concepts/behaviors-and-codegen/)). Eine Prüfung
+auf `output` testet also, was das Programm tatsächlich tut, nicht nur, welchen
+Code es erzeugt.
+
+## Tipps
+
+- Halte ein gespeichertes Programm pro Behavior, das dir wichtig ist. Ändert
+  sich ein Behavior, zeigt der Test, welche Programme jetzt anderen Code erzeugen.
+- Ein gespeichertes Programm enthält nur die Blöcke, nicht die Modes, und auch
+  der erzeugte Code hängt nicht vom Mode ab. Eine Datei genügt, egal in welchem
+  Mode sie gespeichert wurde. Siehe [Speichern & Laden](/de/guides/saving-and-loading/).
+- Während der Tests wird nichts auf dem Bildschirm gezeichnet, deshalb laufen
+  sie in deutlich unter einer Sekunde.
