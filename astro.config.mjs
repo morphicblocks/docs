@@ -104,6 +104,13 @@ export default defineConfig({
 				},
 				// An API Reference section will slot in here once the public
 				// API stabilises.
+				{
+					label: 'Contributing',
+					translations: { de: 'Mitwirken' },
+					items: [
+						{ slug: 'contributing/running-tests' },
+					],
+				},
 			],
 		}),
 	],
