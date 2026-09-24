@@ -52,21 +52,26 @@ Three ways, in the mount config:
 
 ```ts
 engine.mount({
-  // 1. Auto-discovery by filename (Vite): modes/iconic.css → mode "iconic"
+  // 1. A whole folder, by filename (Vite): modes/iconic.css → mode "iconic".
+  //    Links (?url) or CSS text (?raw) both work.
   modesFolder: import.meta.glob("./modes/*.css", { eager: true, query: "?url" }),
 
-  // 2. Explicit per-mode entries (any bundler / no bundler)
-  modeStyles: [
-    { mode: "iconic", href: "/styles/iconic.css" },
-    { mode: "python", cssText: ".morphic-mode-python { … }" },
-  ],
+  // 2. Mode by mode, from any bundler or none: CSS text or a link per mode
+  modeStyles: {
+    iconic: "/styles/iconic.css",
+    python: ".morphic-mode-python { … }",
+  },
 
   // 3. A base stylesheet applied regardless of mode
   baseStyle: { href: "/styles/morphic-base.css" },
 });
 ```
 
-`modesFolder` takes precedence over `modeStyles` for the same mode names.
+Each value in `modesFolder` and `modeStyles` is either a link or the CSS itself.
+The framework tells them apart on its own: CSS always contains a `{`, a link
+never does. So use whatever your bundler gives you, whether a text import, a
+URL import, or a file in `public/`. `modesFolder` takes precedence over
+`modeStyles` for the same mode names.
 
 ## Mode coverage validation
 
