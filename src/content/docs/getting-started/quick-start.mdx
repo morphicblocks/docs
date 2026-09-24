@@ -87,8 +87,7 @@ const engine = new MorphicBlocks(definitions, behaviors);
 
 engine.mount({
   workspaceContainer: document.getElementById("workspace")!,
-  workspaceMode: "conceptual",
-  toolboxMode: "conceptual",
+  // No presets here, so the first mode ("conceptual") is used.
 });
 
 engine.mountToolbox(document.getElementById("toolbox")!);`}
