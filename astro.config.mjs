@@ -99,6 +99,7 @@ export default defineConfig({
 						{ slug: 'guides/toolbars' },
 						{ slug: 'guides/styling-modes' },
 						{ slug: 'guides/saving-and-loading' },
+						{ slug: 'guides/privacy' },
 						{ slug: 'guides/testing' },
 					],
 				},
