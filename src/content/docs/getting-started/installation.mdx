@@ -59,6 +59,10 @@ you use those views:
 They are loaded lazily: a project that never mounts a code editor never pays
 for them.
 
+`@codemirror/lang-javascript` is needed only for the code editor, which shows
+the JavaScript generated from the blocks, useful for testing and debugging.
+Codespace and preview show your own languages and work without it.
+
 ## Requirements
 
 - A bundler-based setup (Vite, or anything that resolves modern ESM). The
