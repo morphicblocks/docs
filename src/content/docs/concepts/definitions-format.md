@@ -142,6 +142,12 @@ valid). A **placeholder** seats a *real* block that, once deleted, leaves the
 slot truly empty: it is attached on the first render that sees the slot and is
 never re-created, so a deletion survives mode switches and later renders.
 
+When the shadow is one of your own blocks, the codespace writes it through that
+block's template, so it reads exactly like the block placed there: a text block
+with the template `"%TEXT"` shows `"hello"`, and a block without fields (a `*`
+for every column, say) still shows its text. A Blockly stock shadow such as
+`text` has no template, so its value is written as is, quoted by `stringQuote`.
+
 **Shadow values are applied once.** A shadow is declared on a connection only
 when that connection has none, so the element rendered *first* supplies the
 value. Giving the same check different `fieldValues` per element — `python` `42`,

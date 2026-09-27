@@ -147,6 +147,13 @@ der, einmal gelöscht, den Slot wirklich leer zurücklässt: Er wird beim ersten
 Rendern des Slots angehängt und nie neu erzeugt — eine Löschung übersteht also
 Modus-Wechsel und spätere Renderings.
 
+Ist der Shadow einer deiner eigenen Blöcke, schreibt der Codespace ihn über das
+Template dieses Blocks, sodass er genau wie der eingesetzte Block aussieht: Ein
+Textblock mit dem Template `"%TEXT"` zeigt `"hello"`, und ein Block ohne Felder
+(etwa ein `*` für alle Spalten) zeigt trotzdem seinen Text. Ein Blockly-Stock-Shadow
+wie `text` hat kein Template, sein Wert wird also direkt geschrieben und von
+`stringQuote` in Anführungszeichen gesetzt.
+
 **Shadow-Werte werden einmalig angewendet.** Ein Shadow wird an einer Verbindung
 nur deklariert, wenn dort noch keiner existiert — das *zuerst* gerenderte Element
 liefert also den Wert. Demselben `check` je Element unterschiedliche `fieldValues`
