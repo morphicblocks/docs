@@ -44,6 +44,10 @@ once a stylesheet or web font finishes loading, so text never spills out of its
 block. The same applies to blocks shown on toolbox tiles, which take the font of
 their element. Other properties, like colors, change nothing about the size.
 
+When your app changes the block font itself, for example with a font size
+switch, call `engine.refresh()` afterwards so blocks and tiles are measured
+again.
+
 Block colors can be driven from CSS via the custom property:
 
 ```css

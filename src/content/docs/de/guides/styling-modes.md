@@ -45,6 +45,10 @@ ist. So ragt Text nie aus seinem Block heraus. Das gilt auch für Blöcke auf
 Toolbox-Kacheln, die die Schrift ihres Elements übernehmen. Andere
 Eigenschaften, etwa Farben, ändern nichts an der Größe.
 
+Ändert deine App die Blockschrift selbst, etwa mit einem Schalter für die
+Schriftgröße, rufe danach `engine.refresh()` auf, damit Blöcke und Kacheln neu
+bemessen werden.
+
 Block-Farben lassen sich über die Custom Property aus CSS steuern:
 
 ```css
