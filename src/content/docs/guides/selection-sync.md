@@ -48,14 +48,14 @@ engine.mount({
 
 | Option           | Default | Purpose                                  |
 | --- | --- | --- |
-| `highlightColor` | `rgba(255, 255, 255, 0.07)` | CSS background for highlighted lines |
+| `highlightColor` | the view's selection color | CSS background for highlighted lines |
 | `blockToCode`    | `true`  | Enable the block → code direction        |
 | `codeToBlock`    | `true`  | Enable the code → block direction        |
 
-The default highlight is a faint white that suits the dark default theme of
-the text views. On light text views it is nearly invisible, so set a
-`highlightColor` that stands out on your own background, e.g. a light tint of
-your accent color.
+By default each text view highlights in a lighter tint of its own
+`selectionBackground` (from `editorTheme` or `previewTheme`), so the highlight
+shows on light and dark themes alike. Set `highlightColor` to use one color of
+your own in every view.
 
 Turn it off with `engine.disableSelectionSync()`.
 
