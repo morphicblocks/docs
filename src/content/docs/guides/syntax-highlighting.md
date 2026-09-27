@@ -30,8 +30,8 @@ mode's [source element](/concepts/modes/#the-source-element) already names the
 
 | Field      | Purpose                                                              |
 | --- | --- |
-| `keywords` | Words highlighted as keywords — exact match against identifier tokens |
-| `strings`  | String delimiters; a span runs until the matching close on the same line |
+| `keywords` | Words highlighted as keywords, matched as whole words in any script (`if`, `اطبع`) |
+| `strings`  | String delimiters: a mark that opens and closes (`"\""`), or an `[open, close]` pair for quotes that differ (`["„", "“"]`); a span runs until its close on the same line |
 | `comment`  | Line-comment marker; highlights from the marker to end of line       |
 | `numbers`  | Highlight integer/decimal literals — defaults to `true`              |
 | `colors`   | Optional overrides per token class: `keyword`, `string`, `number`, `comment` (framework provides defaults) |

@@ -30,8 +30,8 @@ bereits benennt, ist die Map nach Element-Namen geschlüsselt:
 
 | Feld | Zweck |
 | --- | --- |
-| `keywords` | Als Keywords hervorgehobene Wörter — exakte Übereinstimmung mit Identifier-Tokens |
-| `strings`  | String-Begrenzer; ein Bereich läuft bis zum passenden Schließen auf derselben Zeile |
+| `keywords` | Als Keywords hervorgehobene Wörter, als ganze Wörter in jeder Schrift erkannt (`if`, `اطبع`) |
+| `strings`  | String-Begrenzer: ein Zeichen, das öffnet und schließt (`"\""`), oder ein `[open, close]`-Paar für unterschiedliche Anführungszeichen (`["„", "“"]`); ein Bereich läuft bis zu seinem Schließen auf derselben Zeile |
 | `comment`  | Zeilenkommentar-Marker; hebt vom Marker bis Zeilenende hervor |
 | `numbers`  | Ganzzahl-/Dezimalliterale hervorheben — Standard `true` |
 | `colors`   | Optionale Überschreibungen pro Token-Klasse: `keyword`, `string`, `number`, `comment` (Framework liefert Standardwerte) |
