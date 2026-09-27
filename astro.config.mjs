@@ -12,7 +12,13 @@ const env = loadEnv(process.env.NODE_ENV ?? 'production', process.cwd(), 'PUBLIC
 const social = [
 	env.PUBLIC_LANDING_URL && { icon: 'external', label: 'Website', href: env.PUBLIC_LANDING_URL },
 	env.PUBLIC_PLAYGROUND_URL && { icon: 'rocket', label: 'Playground', href: env.PUBLIC_PLAYGROUND_URL },
-	env.PUBLIC_GITHUB_URL && { icon: 'github', label: 'GitHub', href: env.PUBLIC_GITHUB_URL },
+	// The header links to the source of these docs; the framework repo is
+	// listed on the start page. Without a docs repo, fall back to the framework.
+	(env.PUBLIC_DOCS_GITHUB_URL || env.PUBLIC_GITHUB_URL) && {
+		icon: 'github',
+		label: env.PUBLIC_DOCS_GITHUB_URL ? 'GitHub (documentation source)' : 'GitHub',
+		href: env.PUBLIC_DOCS_GITHUB_URL || env.PUBLIC_GITHUB_URL,
+	},
 	env.PUBLIC_NPM_URL && { icon: 'npm', label: 'npm', href: env.PUBLIC_NPM_URL },
 ].filter((entry) => typeof entry === 'object');
 

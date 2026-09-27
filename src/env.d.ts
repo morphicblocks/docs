@@ -5,6 +5,7 @@ interface ImportMetaEnv {
   readonly PUBLIC_NPM_PACKAGE?: string;
   readonly PUBLIC_NPM_URL?: string;
   readonly PUBLIC_GITHUB_URL?: string;
+  readonly PUBLIC_DOCS_GITHUB_URL?: string;
   readonly PUBLIC_LANDING_URL?: string;
   readonly PUBLIC_PLAYGROUND_URL?: string;
   readonly PUBLIC_UNIVERSITY?: string;

@@ -38,6 +38,7 @@ export const site = {
     landing: link(env.PUBLIC_LANDING_URL),
     playground: link(env.PUBLIC_PLAYGROUND_URL),
     github: link(env.PUBLIC_GITHUB_URL),
+    docsGithub: link(env.PUBLIC_DOCS_GITHUB_URL),
     npm: link(env.PUBLIC_NPM_URL),
     university: link(env.PUBLIC_UNIVERSITY_URL),
   },

@@ -32,7 +32,8 @@ cp .env.example .env   # then edit .env
 | `PUBLIC_SITE_DESCRIPTION` | Default meta description and splash tagline |
 | `PUBLIC_NPM_PACKAGE` | Package name in install commands and code samples |
 | `PUBLIC_NPM_URL` | npm link in the header |
-| `PUBLIC_GITHUB_URL` | Repository link in the header |
+| `PUBLIC_GITHUB_URL` | Framework repository, listed on the start page |
+| `PUBLIC_DOCS_GITHUB_URL` | Docs repository, linked from the header (falls back to `PUBLIC_GITHUB_URL`) |
 | `PUBLIC_LANDING_URL` | Link to the landing page (morphicblocks.com) |
 | `PUBLIC_PLAYGROUND_URL` | Playground link in the header |
 | `PUBLIC_UNIVERSITY` | Copyright holder in the footer |
