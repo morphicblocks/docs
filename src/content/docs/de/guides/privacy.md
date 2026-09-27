@@ -1,73 +1,70 @@
 ---
 title: Datenschutz & externe Anfragen
-description: Alle Anfragen auf der eigenen Seite halten, indem du Blocklys Medien selbst auslieferst.
+description: Alle Anfragen bleiben auf deiner eigenen Seite, auch Blocklys Medien.
 ---
 
-Blockly, die Engine unter Morphic Blocks, lädt seine Bilder und Sounds
-standardmäßig von Googles Server (`blockly-demo.appspot.com`): den Papierkorb,
-die Zoom-Steuerung, die Cursor beim Ziehen und die Klick- und Lösch-Sounds.
-Jeder Browser, der deine Seite aufruft, kontaktiert dann diesen Server. Überall, wo eine Datenschutzerklärung gilt, etwa an einer Hochschule
-oder Schule, sollen diese Dateien von deiner eigenen Seite kommen.
+Blockly, die Engine unter Morphic Blocks, braucht einige Bilder und Sounds: den
+Papierkorb, die Zoom-Steuerung, die Cursor beim Ziehen und die Klick- und
+Lösch-Sounds. Für sich allein lädt Blockly sie von Googles Server
+(`blockly-demo.appspot.com`), sodass jeder Browser, der die Seite aufruft, ihn
+kontaktiert.
 
-## Blocklys Medien selbst ausliefern
+Morphic Blocks lädt sie stattdessen von deiner eigenen Seite: aus
+`blockly-media/` neben der Seite. Überall, wo eine Datenschutzerklärung gilt,
+etwa an einer Hochschule oder Schule, kontaktiert so kein Browser deiner
+Besucher einen anderen Server.
 
-**1. Den Medien-Ordner in deine statischen Dateien kopieren.** Blockly wird
-zusammen mit Morphic Blocks installiert, deshalb sucht das Skript es von dort
-aus. So funktioniert es mit jedem Paketmanager, auch mit pnpm:
+## Die Medien kopieren
 
-```js
-// scripts/copy-blockly-media.mjs
-import { cpSync } from "node:fs";
-import { createRequire } from "node:module";
-import { dirname, join } from "node:path";
-
-// Blockly kommt mit morphic-blocks, also von dort aus suchen.
-const require = createRequire(import.meta.url);
-const blockly = dirname(require.resolve("blockly", { paths: [dirname(require.resolve("morphic-blocks"))] }));
-cpSync(join(blockly, "media"), "public/blockly-media", { recursive: true });
-```
-
-**2. Vor `dev` und `build` ausführen**, damit die Kopie immer zum installierten
-Blockly passt:
+Blocklys Medien kommen mit dem Paket. Der Befehl `morphic-blocks` kopiert sie in
+den Ordner, den deine App ausliefert; führe ihn vor `dev` und `build` aus:
 
 ```json
 {
   "scripts": {
-    "dev": "node scripts/copy-blockly-media.mjs && vite",
-    "build": "node scripts/copy-blockly-media.mjs && vite build"
+    "dev": "morphic-blocks copy-media public/blockly-media && vite",
+    "build": "morphic-blocks copy-media public/blockly-media && vite build"
   }
 }
 ```
 
-Die Kopie wird erzeugt, also trage `public/blockly-media/` in deine
-`.gitignore` ein.
+Er kopiert nur, wenn der Ordner neu ist oder Blockly aktualisiert wurde; ihn
+jedes Mal auszuführen kostet also nichts. Die Kopie wird erzeugt, deshalb gehört
+`public/blockly-media/` in deine `.gitignore`.
 
-**3. Blockly auf die Kopie zeigen lassen:**
+`public/` ist der Ordner, den Vite unverändert ausliefert; Next.js nutzt
+ebenfalls `public/`. Mit einem anderen Bundler kopierst du in den Ordner, den
+er unverändert ausliefert. Der relative Pfad `blockly-media/` funktioniert auch,
+wenn deine App unter einem Unterpfad läuft.
+
+Ohne die Kopie fehlen die Icons und die Sounds bleiben stumm; sonst geht nichts
+kaputt. Die Toolbox-Kacheln nutzen dieselben Medien und laden nie Sounds.
+
+## Medien von woanders
+
+`blockly.media` verweist Blockly auf einen anderen Ordner oder Server:
 
 ```ts
 await engine.mount({
   workspaceContainer: document.getElementById("workspace")!,
-  blockly: { media: "blockly-media/" },
+  blockly: { media: "assets/blockly/" },
 });
 ```
 
-`public/` ist der Ordner, den Vite unverändert ausliefert; Next.js nutzt
-ebenfalls `public/`. Bei einem anderen Bundler kopierst du in den Ordner, den
-er unverändert ausliefert. Der relative Pfad `blockly-media/` funktioniert auch,
-wenn deine App unter einem Unterpfad läuft.
-
-Die Toolbox-Kacheln folgen dieser Einstellung automatisch und laden nie Sounds.
+Um Googles Kopie zu nutzen, wie Blockly es allein tut, setze
+`media: "https://blockly-demo.appspot.com/static/media/"`. Die Browser deiner
+Besucher kontaktieren dann Googles Server.
 
 ## Ohne Sounds
 
 Um die Sounds ganz wegzulassen, schalte sie aus:
 
 ```ts
-blockly: { media: "blockly-media/", sounds: false }
+blockly: { sounds: false }
 ```
 
 ## Prüfen
 
-Öffne deine App, dann die Entwicklertools des Browsers, und wechsle zum Tab
-**Netzwerk**. Filtere nach `appspot`, ziehe dann einen Block hinein, lösche ihn
+Öffne deine App, dann die Entwicklerwerkzeuge deines Browsers, und wechsle zum
+Tab **Netzwerk**. Filtere nach `appspot`, ziehe, lege ab und lösche einen Block
 und nutze die Zoom-Steuerung. Die Liste bleibt leer.

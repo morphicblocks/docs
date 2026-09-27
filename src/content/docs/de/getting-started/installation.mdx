@@ -40,6 +40,22 @@ Dependency, es wird also automatisch mitinstalliert:
   ```
 </Aside>
 
+## Blocklys Medien
+
+Blocklys Bilder und Sounds werden aus `blockly-media/` neben deiner Seite
+geladen. Kopiere sie vor `dev` und `build` mit dem Befehl, der mit dem Paket
+kommt, dorthin:
+
+```json
+"scripts": {
+  "dev": "morphic-blocks copy-media public/blockly-media && vite",
+  "build": "morphic-blocks copy-media public/blockly-media && vite build"
+}
+```
+
+Andere Ordner und Server beschreibt
+[Datenschutz & externe Anfragen](/de/guides/privacy/).
+
 ## Optional: Pakete für den Code-Editor
 
 Der Code-Editor, der Codespace und die Preview basieren auf CodeMirror 6. Die

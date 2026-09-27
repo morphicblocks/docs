@@ -1,68 +1,63 @@
 ---
 title: Privacy & External Requests
-description: Keep every request on your own site by serving Blockly's media yourself.
+description: Every request stays on your own site, Blockly's media included.
 ---
 
-Blockly, the engine underneath Morphic Blocks, loads its images and sounds
-from Google's server (`blockly-demo.appspot.com`) by default: the trash can,
-the zoom controls, the drag cursors and the click and delete sounds. Every
-browser that opens your site then contacts that server. Wherever a privacy policy
-applies, at a university or a school for example, you will want those files
-to come from your own site.
+Blockly, the engine underneath Morphic Blocks, needs a few images and sounds:
+the trash can, the zoom controls, the drag cursors and the click and delete
+sounds. On its own, Blockly loads them from Google's server
+(`blockly-demo.appspot.com`), so every browser that opens the site contacts it.
 
-## Serve Blockly's media yourself
+Morphic Blocks loads them from your own site instead: `blockly-media/` next to
+the page. Wherever a privacy policy applies, at a university or a school for
+example, no visitor's browser contacts another server.
 
-**1. Copy the media folder into your static files.** Blockly is installed
-together with Morphic Blocks, so the script looks it up from there. That way it
-works with every package manager, pnpm included:
+## Copy the media
 
-```js
-// scripts/copy-blockly-media.mjs
-import { cpSync } from "node:fs";
-import { createRequire } from "node:module";
-import { dirname, join } from "node:path";
-
-// Blockly comes with morphic-blocks, so look it up from there.
-const require = createRequire(import.meta.url);
-const blockly = dirname(require.resolve("blockly", { paths: [dirname(require.resolve("morphic-blocks"))] }));
-cpSync(join(blockly, "media"), "public/blockly-media", { recursive: true });
-```
-
-**2. Run it before `dev` and `build`**, so the copy always matches the
-installed Blockly:
+Blockly's media comes with the package. The `morphic-blocks` command copies it
+into the folder your app serves; run it before `dev` and `build`:
 
 ```json
 {
   "scripts": {
-    "dev": "node scripts/copy-blockly-media.mjs && vite",
-    "build": "node scripts/copy-blockly-media.mjs && vite build"
+    "dev": "morphic-blocks copy-media public/blockly-media && vite",
+    "build": "morphic-blocks copy-media public/blockly-media && vite build"
   }
 }
 ```
 
-The copy is generated, so add `public/blockly-media/` to your `.gitignore`.
-
-**3. Point Blockly at the copy:**
-
-```ts
-await engine.mount({
-  workspaceContainer: document.getElementById("workspace")!,
-  blockly: { media: "blockly-media/" },
-});
-```
+It copies only when the folder is new or Blockly was updated, so running it
+every time costs nothing. The copy is generated, so add `public/blockly-media/`
+to your `.gitignore`.
 
 `public/` is the folder Vite serves as is; Next.js uses `public/` too. With
 another bundler, copy to whichever folder it serves unchanged. The relative
 path `blockly-media/` also works when your app lives under a subpath.
 
-The toolbox tiles follow the same setting automatically, and never load sounds.
+Without the copy, icons are missing and sounds stay silent; nothing else
+breaks. The toolbox tiles use the same media, and never load sounds.
+
+## Media from elsewhere
+
+`blockly.media` points Blockly to another folder or server:
+
+```ts
+await engine.mount({
+  workspaceContainer: document.getElementById("workspace")!,
+  blockly: { media: "assets/blockly/" },
+});
+```
+
+To use Google's copy, as Blockly does on its own, set
+`media: "https://blockly-demo.appspot.com/static/media/"`. Visitors' browsers
+then contact Google's server.
 
 ## Without sounds
 
 To leave out the sounds altogether, turn them off:
 
 ```ts
-blockly: { media: "blockly-media/", sounds: false }
+blockly: { sounds: false }
 ```
 
 ## Check it

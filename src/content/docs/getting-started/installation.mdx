@@ -38,6 +38,22 @@ dependency, so it is installed for you:
   ```
 </Aside>
 
+## Blockly's media
+
+Blockly's images and sounds load from `blockly-media/` next to your page. Copy
+them there before `dev` and `build` with the command that comes with the
+package:
+
+```json
+"scripts": {
+  "dev": "morphic-blocks copy-media public/blockly-media && vite",
+  "build": "morphic-blocks copy-media public/blockly-media && vite build"
+}
+```
+
+See [Privacy & External Requests](/guides/privacy/) for other folders and
+servers.
+
 ## Optional: code editor packages
 
 The code editor, codespace, and preview views are built on CodeMirror 6. The
