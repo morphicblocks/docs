@@ -48,6 +48,14 @@ When your app changes the block font itself, for example with a font size
 switch, call `engine.refresh()` afterwards so blocks and tiles are measured
 again.
 
+The codespace and preview containers carry the mode they show as well, as
+`morphic-codespace-root` and `morphic-preview-root`, so a mode can style its
+text views:
+
+```css
+.morphic-codespace-root.morphic-mode-python { font-size: 15px; }
+```
+
 Block colors can be driven from CSS via the custom property:
 
 ```css

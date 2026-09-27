@@ -49,6 +49,14 @@ Eigenschaften, etwa Farben, ändern nichts an der Größe.
 Schriftgröße, rufe danach `engine.refresh()` auf, damit Blöcke und Kacheln neu
 bemessen werden.
 
+Auch die Container von Codespace und Preview tragen den Mode, den sie zeigen,
+als `morphic-codespace-root` und `morphic-preview-root`. So kann ein Mode seine
+Text-Views gestalten:
+
+```css
+.morphic-codespace-root.morphic-mode-python { font-size: 15px; }
+```
+
 Block-Farben lassen sich über die Custom Property aus CSS steuern:
 
 ```css
