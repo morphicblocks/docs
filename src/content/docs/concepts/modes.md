@@ -75,3 +75,18 @@ place; the program is untouched.
 
 Each mode is backed by a CSS file that controls how its elements look — see
 [Styling Modes](/guides/styling-modes/).
+
+## Changing a mode's elements
+
+A mode's element list can also change while the app runs, for example to let
+the user pick what toolbox tiles show:
+
+```ts
+engine.setModeElements("iconic", ["icon", "title"]);
+```
+
+Every view using the mode is redrawn, and if the list names another code
+element, workspace blocks switch to that template. Your definitions file stays
+as it is, and a new `mount()` starts from it again. Unknown element names are
+refused, and so is a list without a code element for a mode that a codespace or
+preview renders.

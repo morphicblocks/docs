@@ -77,3 +77,18 @@ Blöcke werden an Ort und Stelle neu gerendert; das Programm bleibt unberührt.
 
 Jeder Mode wird von einer CSS-Datei gestützt, die steuert, wie seine Elements
 aussehen — siehe [Modes mit CSS gestalten](/de/guides/styling-modes/).
+
+## Elements eines Modes ändern
+
+Die Element-Liste eines Modes lässt sich auch zur Laufzeit ändern, etwa damit
+Nutzer wählen, was die Toolbox-Kacheln zeigen:
+
+```ts
+engine.setModeElements("iconic", ["icon", "title"]);
+```
+
+Jede View mit diesem Mode wird neu gezeichnet, und nennt die Liste ein anderes
+Code-Element, wechseln die Workspace-Blöcke zu dessen Template. Deine
+Definitionsdatei bleibt unverändert, und ein neues `mount()` beginnt wieder mit
+ihr. Unbekannte Element-Namen werden abgelehnt, ebenso eine Liste ohne
+Code-Element für einen Mode, den ein Codespace oder eine Preview darstellt.
