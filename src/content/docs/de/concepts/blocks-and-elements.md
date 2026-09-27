@@ -92,3 +92,15 @@ Toolbox-Block-Listen. Eine Referenz wird zu *deinem* Block aufgelöst, wenn sie
 zu einer deiner Definitionen passt, andernfalls zum Blockly-Stock-Typ —
 `"shadow": "math_number"` behält Blocklys Zahlenblock, während
 `"shadow": "my_number"` deinen verwendet, sofern du ihn definiert hast.
+
+Ein Blockly-Block im Workspace trägt in `block.type` weiterhin den Typ mit
+Präfix. Um seine Definition nachzuschlagen, wandelst du ihn mit `toCleanId`
+zurück in den sauberen Identifier:
+
+```ts
+import { toCleanId } from "morphic-blocks";
+
+const id = toCleanId(block.type); // "morphic:text_print" → "text_print"
+```
+
+Typen ohne Präfix, etwa Blocklys `math_number`, kommen unverändert zurück.

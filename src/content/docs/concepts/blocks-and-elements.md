@@ -89,3 +89,14 @@ and placeholder references, and toolbox block lists. A reference resolves to
 *your* block when it matches one of your definitions, and to the Blockly stock
 type otherwise — `"shadow": "math_number"` keeps Blockly's number block, while
 `"shadow": "my_number"` uses yours if you defined it.
+
+A live Blockly block still carries the namespaced type in `block.type`. To look
+up its definition, turn it back into the clean identifier with `toCleanId`:
+
+```ts
+import { toCleanId } from "morphic-blocks";
+
+const id = toCleanId(block.type); // "morphic:text_print" → "text_print"
+```
+
+Types without the prefix, such as Blockly's `math_number`, come back unchanged.
