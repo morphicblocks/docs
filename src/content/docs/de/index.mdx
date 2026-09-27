@@ -1,6 +1,15 @@
 ---
 title: Willkommen
 description: Die Morphic-Blocks-Dokumentation — hier starten.
+head:
+  # Die Überschrift bleibt „Willkommen“; Browser-Tab und Linkvorschau
+  # bekommen einen Titel, der die Seite benennt.
+  - tag: title
+    content: Morphic Blocks Dokumentation
+  - tag: meta
+    attrs:
+      property: og:title
+      content: Morphic Blocks Dokumentation
 ---
 
 import { Card, CardGrid, LinkCard } from '@astrojs/starlight/components';

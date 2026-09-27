@@ -2,6 +2,14 @@
 title: Welcome
 description: The Morphic Blocks documentation — start here.
 head:
+  # The heading stays "Welcome"; the browser tab and link previews get a
+  # title that says which site this is.
+  - tag: title
+    content: Morphic Blocks Documentation
+  - tag: meta
+    attrs:
+      property: og:title
+      content: Morphic Blocks Documentation
   - tag: script
     content: |
       /* First-visit language routing: send a German-preferring browser to
