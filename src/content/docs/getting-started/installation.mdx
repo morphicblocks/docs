@@ -26,6 +26,18 @@ dependency, so it is installed for you:
   </TabItem>
 </Tabs>
 
+<Aside type="tip" title="pnpm and brand new versions">
+  Recent pnpm versions refuse a package version during its first day on npm
+  (the minimum release age). Right after a Morphic Blocks release,
+  `pnpm add` can therefore fail with `ERR_PNPM_MINIMUM_RELEASE_AGE_VIOLATION`.
+  Wait a day, or allow that one version in `pnpm-workspace.yaml`:
+
+  ```yaml
+  minimumReleaseAgeExclude:
+    - morphic-blocks@0.2.1
+  ```
+</Aside>
+
 ## Optional: code editor packages
 
 The code editor, codespace, and preview views are built on CodeMirror 6. The
