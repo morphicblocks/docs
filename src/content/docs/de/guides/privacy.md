@@ -38,7 +38,7 @@ er unverändert ausliefert. Der relative Pfad `blockly-media/` funktioniert auch
 wenn deine App unter einem Unterpfad läuft.
 
 Ohne die Kopie fehlen die Icons und die Sounds bleiben stumm; sonst geht nichts
-kaputt. Die Toolbox-Kacheln nutzen dieselben Medien und laden nie Sounds.
+kaputt, und die Browser-Konsole zeigt eine Warnung, die sagt, was zu tun ist. Die Toolbox-Kacheln nutzen dieselben Medien und laden nie Sounds.
 
 ## Medien von woanders
 

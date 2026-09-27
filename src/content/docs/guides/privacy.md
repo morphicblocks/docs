@@ -35,7 +35,7 @@ another bundler, copy to whichever folder it serves unchanged. The relative
 path `blockly-media/` also works when your app lives under a subpath.
 
 Without the copy, icons are missing and sounds stay silent; nothing else
-breaks. The toolbox tiles use the same media, and never load sounds.
+breaks, and the browser console shows a warning that says what to run. The toolbox tiles use the same media, and never load sounds.
 
 ## Media from elsewhere
 
