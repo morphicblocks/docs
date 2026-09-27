@@ -31,9 +31,23 @@ Modell.
 
 | Option       | Standard | Zweck                                                      |
 | --- | --- | --- |
-| `modeLabel`  | `true`  | Eine `Mode: <name>`-Kopfzeile oben in der Toolbox rendern   |
+| `modeLabel`  | `true`  | Kopfzeile oben in der Toolbox: `true` zeigt `Mode: <name>`, `false` keine, ein String diesen Text, eine Funktion `(mode) => text` ihr Ergebnis |
 | `blocks`     | alle    | Nur eine Teilmenge der Blöcke zeigen (Liste von Identifiern) |
-| `categories` | —       | Kategorie-Gruppierung; fällt auf `toolbox.categories` der Mount-Konfiguration zurück; ohne beides rendern Blöcke als flache Liste |
+| `categories` | —       | Kategorie-Gruppierung; ohne diese und ohne `toolbox.categories` der Mount-Konfiguration rendern Blöcke als flache Liste |
+
+Alle drei lassen sich auch in `mount()` unter `toolbox` setzen, sodass auch eine
+über `toolboxContainer` eingerichtete Toolbox sie bekommt:
+
+```ts
+engine.mount({
+  workspaceContainer,
+  toolboxContainer,
+  toolbox: { modeLabel: false, blocks: ["text_print", "loop_for"] },
+});
+```
+
+Optionen, die an `mountToolbox()` übergeben werden, haben Vorrang vor denen in
+`mount()`.
 
 Kategorie-Einträge sind `{ name, color?, blocks? }` — lässt eine Kategorie ihre
 `blocks`-Liste weg, leitet das Framework sie aus den Block-Definitionen ab,

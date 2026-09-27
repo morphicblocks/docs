@@ -31,9 +31,22 @@ model.
 
 | Option       | Default | Purpose                                                    |
 | --- | --- | --- |
-| `modeLabel`  | `true`  | Render a `Mode: <name>` header at the top of the toolbox   |
+| `modeLabel`  | `true`  | Header at the top of the toolbox: `true` shows `Mode: <name>`, `false` none, a string that text, a function `(mode) => text` its result |
 | `blocks`     | all     | Show only a subset of blocks (list of identifiers)         |
-| `categories` | —       | Category grouping; falls back to the mount config's `toolbox.categories`; with neither, blocks render as a flat list |
+| `categories` | —       | Category grouping; with neither this nor the mount config's `toolbox.categories`, blocks render as a flat list |
+
+All three can also be set in `mount()` under `toolbox`, so a toolbox set up by
+`toolboxContainer` gets them too:
+
+```ts
+engine.mount({
+  workspaceContainer,
+  toolboxContainer,
+  toolbox: { modeLabel: false, blocks: ["text_print", "loop_for"] },
+});
+```
+
+Options passed to `mountToolbox()` win over the ones in `mount()`.
 
 Category entries are `{ name, color?, blocks? }` — when a category omits its
 `blocks` list, the framework derives it from block definitions whose
