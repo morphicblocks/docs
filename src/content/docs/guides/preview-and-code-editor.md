@@ -83,3 +83,43 @@ available whenever exposing the raw generated JavaScript is what you want.
 The `extensions` escape hatch means anything CodeMirror can do — line
 wrapping, custom keymaps, additional gutters — composes with the framework's
 own behavior.
+
+## Themes
+
+The text views are **dark by default**. A theme is a plain object; every field
+is optional and falls back to the default:
+
+| Field                 | Default     | Purpose                              |
+| --- | --- | --- |
+| `background`          | `#1e1e1e`   | Editor background                    |
+| `foreground`          | `#d4d4d4`   | Default text color                   |
+| `gutterBackground`    | `#1e1e1e`   | Background of the line number column |
+| `gutterForeground`    | `#858585`   | Line number color                    |
+| `selectionBackground` | `#264f78`   | Background of selected text          |
+| `fontFamily`          | `monospace` | Font of the code                     |
+| `fontSize`            | `14px`      | Size of the code                     |
+| `lineHeight`          | `1.5`       | Line spacing, as a multiplier        |
+
+`mount()` takes two themes: `editorTheme` for the codespace and the code
+editor, and `previewTheme` for the preview (it falls back to `editorTheme`).
+A light page needs its own colors:
+
+```ts
+await engine.mount({
+  // …containers
+  editorTheme: {
+    background: "#ffffff",
+    foreground: "#1f2933",
+    gutterBackground: "#f7f8f9",
+    gutterForeground: "#9aa3ab",
+    selectionBackground: "#d3ebe7",
+  },
+});
+```
+
+Change a theme at runtime with `setCodespaceTheme()`, `setPreviewTheme()` and
+`setCodeEditorTheme()`, e.g. when the page switches between light and dark.
+Token colors (keywords, strings, numbers) come from the definitions'
+[`highlighting` map](/guides/syntax-highlighting/), not from the theme. On a
+light theme, also set a visible
+[selection highlight](/guides/selection-sync/#options).

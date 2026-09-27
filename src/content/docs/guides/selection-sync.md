@@ -48,9 +48,14 @@ engine.mount({
 
 | Option           | Default | Purpose                                  |
 | --- | --- | --- |
-| `highlightColor` | semi-transparent blue | CSS background for highlighted lines |
+| `highlightColor` | `rgba(255, 255, 255, 0.07)` | CSS background for highlighted lines |
 | `blockToCode`    | `true`  | Enable the block → code direction        |
 | `codeToBlock`    | `true`  | Enable the code → block direction        |
+
+The default highlight is a faint white that suits the dark default theme of
+the text views. On light text views it is nearly invisible, so set a
+`highlightColor` that stands out on your own background, e.g. a light tint of
+your accent color.
 
 Turn it off with `engine.disableSelectionSync()`.
 

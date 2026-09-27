@@ -82,3 +82,43 @@ Code zeigen willst.
 Die `extensions`-Hintertür bedeutet: Alles, was CodeMirror kann — Zeilenumbruch,
 eigene Keymaps, zusätzliche Leisten — lässt sich mit dem eigenen Verhalten des
 Frameworks kombinieren.
+
+## Themes
+
+Die Textansichten sind **standardmäßig dunkel**. Ein Theme ist ein einfaches
+Objekt; jedes Feld ist optional und fällt auf den Standard zurück:
+
+| Feld                  | Standard    | Zweck                                  |
+| --- | --- | --- |
+| `background`          | `#1e1e1e`   | Hintergrund des Editors                |
+| `foreground`          | `#d4d4d4`   | Standardfarbe des Texts                |
+| `gutterBackground`    | `#1e1e1e`   | Hintergrund der Zeilennummernspalte    |
+| `gutterForeground`    | `#858585`   | Farbe der Zeilennummern                |
+| `selectionBackground` | `#264f78`   | Hintergrund von markiertem Text        |
+| `fontFamily`          | `monospace` | Schrift des Codes                      |
+| `fontSize`            | `14px`      | Größe des Codes                        |
+| `lineHeight`          | `1.5`       | Zeilenabstand, als Faktor              |
+
+`mount()` nimmt zwei Themes: `editorTheme` für den Codespace und den
+Code-Editor und `previewTheme` für die Preview (fällt auf `editorTheme`
+zurück). Eine helle Seite braucht eigene Farben:
+
+```ts
+await engine.mount({
+  // …Container
+  editorTheme: {
+    background: "#ffffff",
+    foreground: "#1f2933",
+    gutterBackground: "#f7f8f9",
+    gutterForeground: "#9aa3ab",
+    selectionBackground: "#d3ebe7",
+  },
+});
+```
+
+Zur Laufzeit wechselst du ein Theme mit `setCodespaceTheme()`,
+`setPreviewTheme()` und `setCodeEditorTheme()`, z. B. wenn die Seite zwischen
+hell und dunkel umschaltet. Token-Farben (Schlüsselwörter, Strings, Zahlen)
+kommen aus der [`highlighting`-Map](/de/guides/syntax-highlighting/) der
+Definitionen, nicht aus dem Theme. Setze bei einem hellen Theme auch eine
+sichtbare [Auswahlhervorhebung](/de/guides/selection-sync/#optionen).

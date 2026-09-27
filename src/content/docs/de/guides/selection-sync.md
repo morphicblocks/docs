@@ -50,9 +50,14 @@ engine.mount({
 
 | Option           | Standard | Zweck                                    |
 | --- | --- | --- |
-| `highlightColor` | halbtransparentes Blau | CSS-Hintergrund für hervorgehobene Zeilen |
+| `highlightColor` | `rgba(255, 255, 255, 0.07)` | CSS-Hintergrund für hervorgehobene Zeilen |
 | `blockToCode`    | `true`  | Richtung Block → Code aktivieren          |
 | `codeToBlock`    | `true`  | Richtung Code → Block aktivieren          |
+
+Die Standardhervorhebung ist ein schwaches Weiß, passend zum dunklen
+Standardthema der Textansichten. Auf hellen Textansichten ist sie kaum zu
+sehen; setze dann eine `highlightColor`, die sich von deinem Hintergrund
+abhebt, z. B. einen hellen Ton deiner Akzentfarbe.
 
 Ausschalten mit `engine.disableSelectionSync()`.
 
