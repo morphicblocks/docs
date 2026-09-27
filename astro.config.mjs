@@ -25,7 +25,20 @@ const ogImage = env.PUBLIC_SITE_URL
 	? new URL('og.png', env.PUBLIC_SITE_URL).href
 	: undefined;
 
-const head = ogImage
+/**
+ * Starlight links /favicon.svg itself. The sized PNGs are the fallback, and
+ * Google wants a search favicon larger than 48px, so the 192px icon is
+ * declared as well. /favicon.ico is served at the root for tools that
+ * request it directly.
+ */
+const icons = [
+	{ tag: 'link', attrs: { rel: 'icon', type: 'image/png', sizes: '32x32', href: '/favicon-32.png' } },
+	{ tag: 'link', attrs: { rel: 'icon', type: 'image/png', sizes: '16x16', href: '/favicon-16.png' } },
+	{ tag: 'link', attrs: { rel: 'icon', type: 'image/png', sizes: '192x192', href: '/icon-192.png' } },
+	{ tag: 'link', attrs: { rel: 'apple-touch-icon', sizes: '180x180', href: '/apple-touch-icon.png' } },
+];
+
+const head = icons.concat(ogImage
 	? [
 			{ tag: 'meta', attrs: { property: 'og:image', content: ogImage } },
 			{ tag: 'meta', attrs: { property: 'og:image:width', content: '1200' } },
@@ -38,7 +51,7 @@ const head = ogImage
 				},
 			},
 		]
-	: [];
+	: []);
 
 // https://astro.build/config
 export default defineConfig({
