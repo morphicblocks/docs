@@ -59,6 +59,10 @@ Python-Template als Quelltext auf der Kachel statt als Block. Weil diese
 Entscheidung im Preset liegt, kann derselbe Mode in verschiedenen Presets
 unterschiedlich rendern.
 
+Der Text lautet genau so, wie der Codespace den Block schreiben würde:
+Feldwerte und Slot-Vorgaben sind eingesetzt (`for i in range(3):`), ein leerer
+Slot erscheint als seine Typ-Markierung (`[NUMBER]`).
+
 Jedes `code`-Element, das **nicht** in `render` genannt ist, rendert als
 **Block** — `render` überschreibt nur die aufgeführten. Und `render` gilt
 **nur für die Toolbox-Kachel**: Codespace, Preview und Workspace rendern immer

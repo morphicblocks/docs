@@ -56,6 +56,10 @@ A preset's `toolbox` is either:
 template as source text on the tile instead of a block. Because this choice
 lives in the preset, the same mode can render differently across presets.
 
+The text reads exactly as the codespace would write the block: field values and
+slot defaults filled in (`for i in range(3):`), an empty slot as its type
+marker (`[NUMBER]`).
+
 Any `code` element **not** named in `render` renders as a **block** — `render`
 only overrides the ones you list. And `render` applies to the **toolbox tile
 only**: the codespace, preview, and workspace always render the assigned mode's
