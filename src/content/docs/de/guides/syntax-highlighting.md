@@ -3,24 +3,29 @@ title: Syntax-Highlighting
 description: Definitionsgesteuertes Highlighting für Codespace und Preview.
 ---
 
-Codespace und Preview färben ihren Text aus der obersten `highlighting`-Map
+Codespace und Preview färben ihren Text aus dem `highlighting` jedes
+Code-Elements im [`code`-Abschnitt](/de/concepts/definitions-format/#code)
 deiner Definitionen — **keine Grammatik-Dateien, keine Sprach-Plugins**. Da das
 [Quell-Element](/de/concepts/modes/#das-quell-element) eines Mode die „Sprache"
-bereits benennt, ist die Map nach Element-Namen geschlüsselt:
+bereits benennt, stehen die Regeln bei diesem Element:
 
 ```json
 {
-  "highlighting": {
+  "code": {
     "python": {
-      "keywords": ["print", "if", "else", "for", "in", "def", "return"],
-      "strings": ["\"", "'"],
-      "comment": "#"
+      "highlighting": {
+        "keywords": ["print", "if", "else", "for", "in", "def", "return"],
+        "strings": ["\"", "'"],
+        "comment": "#"
+      }
     },
     "javascript": {
-      "keywords": ["console", "if", "else", "for", "let", "const", "function"],
-      "strings": ["\"", "'"],
-      "comment": "//",
-      "colors": { "keyword": "#c678dd" }
+      "highlighting": {
+        "keywords": ["console", "if", "else", "for", "let", "const", "function"],
+        "strings": ["\"", "'"],
+        "comment": "//",
+        "colors": { "keyword": "#c678dd" }
+      }
     }
   }
 }
@@ -42,8 +47,8 @@ fünf Zeilen JSON kostet.
 
 ## Wie es angewendet wird
 
-- Übergib `highlighting` in der Mount-Konfiguration (meist direkt aus deiner
-  Definitions-JSON).
+- Die Regeln kommen aus den Definitionen, die der Engine übergeben werden; ein
+  `code`-Abschnitt in der Mount-Konfiguration ersetzt sie.
 - Jeder Codespace/jede Preview wählt den Eintrag, der zum Quell-Element seines
   Mode passt.
 - Ein Mode-Wechsel zur Laufzeit (`setModes()`, Presets) tauscht die Regeln live.

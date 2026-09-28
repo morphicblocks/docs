@@ -33,7 +33,7 @@ To set the preview up later, or with other options, use
 
 The preview mode comes from the active preset's `preview` key or
 `setModes({ previewMode })`. Highlighting rules resolve automatically from the
-definitions' [`highlighting` map](/guides/syntax-highlighting/); placeholder
+[`highlighting`](/guides/syntax-highlighting/) in the definitions' `code` section; placeholder
 markers are suppressed (they're an editing affordance, and the preview is
 read-only by design).
 
@@ -119,7 +119,7 @@ await engine.mount({
 
 Change a theme at runtime with `setCodespaceTheme()`, `setPreviewTheme()` and
 `setCodeEditorTheme()`, e.g. when the page switches between light and dark.
-Token colors (keywords, strings, numbers) come from the definitions'
-[`highlighting` map](/guides/syntax-highlighting/), not from the theme. On a
+Token colors (keywords, strings, numbers) come from each code element's
+[`highlighting`](/guides/syntax-highlighting/), not from the theme. On a
 light theme, also set a visible
 [selection highlight](/guides/selection-sync/#options).

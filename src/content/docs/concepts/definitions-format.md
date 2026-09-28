@@ -12,21 +12,25 @@ Everything a block *is* lives in one JSON document. A complete, small example:
     "title":      "text",
     "description":"text",
     "concept":    "code",
+    "python":     "code",
+    "javascript": "code"
+  },
+  "code": {
     "python": {
-      "type": "code",
       "stringQuote": "\"",
       "empty": {
         "Number": { "shadow": "math_number", "fieldValues": { "NUM": "42" } },
         "String": { "shadow": "text", "fieldValues": { "TEXT": "world" } }
-      }
+      },
+      "highlighting": { "keywords": ["print", "if", "for", "in"], "strings": ["\"", "'"], "comment": "#" }
     },
     "javascript": {
-      "type": "code",
       "stringQuote": "\"",
       "empty": {
         "Number": { "shadow": "math_number", "fieldValues": { "NUM": "42" } },
         "String": { "shadow": "text", "fieldValues": { "TEXT": "world" } }
-      }
+      },
+      "highlighting": { "keywords": ["console", "if", "for", "let"], "strings": ["\"", "'"], "comment": "//" }
     }
   },
   "modes": [
@@ -43,10 +47,6 @@ Everything a block *is* lives in one JSON document. A complete, small example:
   "categories": [
     { "name": "Output", "color": "#5C81A6" }
   ],
-  "highlighting": {
-    "python":     { "keywords": ["print", "if", "for", "in"], "strings": ["\"", "'"], "comment": "#" },
-    "javascript": { "keywords": ["console", "if", "for", "let"], "strings": ["\"", "'"], "comment": "//" }
-  },
   "blocks": [
     {
       "identifier": "text_print",
@@ -87,29 +87,43 @@ and ignored by the framework at runtime.
 ## `elementTypes`
 
 Global registry mapping element names to their type. A value is either a bare
-type string — `"text" | "code" | "image"` — or a config object:
+type string — `"text" | "code" | "image"` — or, for an image element that needs
+a size, a config object:
 
 | Field | Applies to | Purpose |
 | --- | --- | --- |
 | `type` | all | `"text"`, `"code"`, or `"image"` |
-| `empty` | `code` | Defaults for empty value slots (see [below](#shadows-placeholders-and-empty-slots)) |
-| `stringQuote` | `code` | Delimiter wrapped around framework-supplied literals in `String`-checked slots, so the codespace renders `print("hello")` rather than `print(hello)`. Omit to disable quoting. |
 | `size` | `image` | Display size when the value is a file path auto-wrapped as `<img>`: a number (`32` → 32×32), `"32"`, or `"32x32"`. Defaults to 16×16. |
 
 See [Blocks & Elements](/concepts/blocks-and-elements/#element-types) for what
 each type means.
+
+## `code`
+
+How each code element's language is written, **keyed by element name** (a
+mode's source element already names the "language"). Every field is optional:
+
+| Field | Purpose |
+| --- | --- |
+| `stringQuote` | Delimiter wrapped around framework-supplied literals in `String`-checked slots, so the codespace renders `print("hello")` rather than `print(hello)`. Omit to disable quoting. |
+| `empty` | Defaults for empty value slots (see [below](#shadows-placeholders-and-empty-slots)) |
+| `highlighting` | Token colors for the codespace and preview (see [below](#highlighting)) |
+
+Up to 0.2, `stringQuote` and `empty` sat on the element in `elementTypes` and
+`highlighting` was its own top level map. `mount()` reports those places with
+the new one.
 
 ## Shadows, placeholders, and empty slots
 
 What should a value slot show when nothing is attached? An **empty-default
 config** answers that, and appears in two places with the same shape:
 
-- `elementTypes.<name>.empty` — per element (per "language"), keyed by the
+- `code.<name>.empty` — per element (per "language"), keyed by the
   slot's `check` (`"Number"`, `"String"`, `"Boolean"`, …). A `default` key acts
   as a catch-all, used when the slot's check isn't listed or the slot has no
   `check` at all.
 - `inputSlots.<n>.default` — per block slot; **highest priority**, beats the
-  elementType-level lookup
+  element's lookup
 
 The resolution order is `inputSlots.<n>.default` → `empty[<check>]` →
 `empty.default`.
@@ -182,13 +196,13 @@ Optional toolbox groupings. Blocks reference them by name:
 
 ## `highlighting`
 
-Optional syntax highlighting for the codespace and preview, **keyed by element
-name** (a mode's source element already names the "language"):
+Syntax highlighting for the codespace and preview, set per code element as
+`code.<name>.highlighting`:
 
 | Field      | Meaning                                                              |
 | ---------- | -------------------------------------------------------------------- |
-| `keywords` | Words highlighted as keywords (exact token match)                    |
-| `strings`  | String delimiters, e.g. `["\"", "'"]`                                |
+| `keywords` | Words highlighted as keywords, as whole words in any script          |
+| `strings`  | String delimiters, e.g. `["\"", "'"]`, or `[open, close]` pairs like `["„", "“"]` |
 | `comment`  | Line-comment marker, e.g. `"#"` or `"//"`                            |
 | `numbers`  | Highlight numeric literals (default `true`)                          |
 | `colors`   | Optional per-token-class color overrides (`keyword`, `string`, `number`, `comment`) |
@@ -334,7 +348,7 @@ stores the value.
 
 `display` makes an option's *shown* text follow the active mode while the value
 stays single — the same mode-awareness the element system gives content, now for
-fields. It maps an **element name** (keyed like [`highlighting`](#highlighting))
+fields. It maps an **element name** (keyed like the [`code`](#code) section)
 to the text shown when that element renders, so Python source reads `True` while
 JavaScript reads `true`, both storing and executing `true`:
 
@@ -400,15 +414,16 @@ Throws (every problem is collected and reported at once):
   to supply the field
 - a `shadow` / `placeholder` that names neither one of your blocks nor a real
   Blockly type
+- a setting in its place from before 0.3.0 (`stringQuote` or `empty` in
+  `elementTypes`, a top level `highlighting` map), naming where it moved
 
 Warns:
 
 - a `%N` with no `inputSlots` entry, or an `inputSlots` entry with no matching `%N`
 - an element name not declared in `elementTypes`, or a mode listing an element
   no block defines
-- a `highlighting` key that isn't a `code` element
-- an `elementTypes` config field on the wrong type — `stringQuote` or `empty` on
-  a non-`code` element, or `size` on a non-`image` element — which is ignored
+- a `code` key that isn't a `code` element
+- `size` on a non-`image` element, which is ignored
 - a block `category` not listed in `categories`
 - a name reused across element / mode / preset (see [Modes](/concepts/modes/))
 

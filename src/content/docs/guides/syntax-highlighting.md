@@ -3,24 +3,29 @@ title: Syntax Highlighting
 description: Definition-driven highlighting for codespace and preview.
 ---
 
-The codespace and preview color their text from the top-level `highlighting`
-map in your definitions — **no grammar files, no language plugins**. Since a
-mode's [source element](/concepts/modes/#the-source-element) already names the
-"language" (`python`, `javascript`, …), the map is keyed by element name:
+The codespace and preview color their text from each code element's
+`highlighting` in the [`code` section](/concepts/definitions-format/#code) of
+your definitions — **no grammar files, no language plugins**. Since a mode's
+[source element](/concepts/modes/#the-source-element) already names the
+"language" (`python`, `javascript`, …), the rules sit with that element:
 
 ```json
 {
-  "highlighting": {
+  "code": {
     "python": {
-      "keywords": ["print", "if", "else", "for", "in", "def", "return"],
-      "strings": ["\"", "'"],
-      "comment": "#"
+      "highlighting": {
+        "keywords": ["print", "if", "else", "for", "in", "def", "return"],
+        "strings": ["\"", "'"],
+        "comment": "#"
+      }
     },
     "javascript": {
-      "keywords": ["console", "if", "else", "for", "let", "const", "function"],
-      "strings": ["\"", "'"],
-      "comment": "//",
-      "colors": { "keyword": "#c678dd" }
+      "highlighting": {
+        "keywords": ["console", "if", "else", "for", "let", "const", "function"],
+        "strings": ["\"", "'"],
+        "comment": "//",
+        "colors": { "keyword": "#c678dd" }
+      }
     }
   }
 }
@@ -42,8 +47,8 @@ definitions costs five lines of JSON.
 
 ## How it applies
 
-- Pass `highlighting` in the mount config (usually straight from your
-  definitions JSON).
+- The rules come from the definitions handed to the engine; a `code` section
+  in the mount config replaces them.
 - Each codespace/preview picks the entry matching its mode's source element.
 - Switching modes at runtime (`setModes()`, presets) swaps the rules live.
 

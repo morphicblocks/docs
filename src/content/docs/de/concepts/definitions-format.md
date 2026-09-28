@@ -13,21 +13,25 @@ kleines Beispiel:
     "title":      "text",
     "description":"text",
     "concept":    "code",
+    "python":     "code",
+    "javascript": "code"
+  },
+  "code": {
     "python": {
-      "type": "code",
       "stringQuote": "\"",
       "empty": {
         "Number": { "shadow": "math_number", "fieldValues": { "NUM": "42" } },
         "String": { "shadow": "text", "fieldValues": { "TEXT": "world" } }
-      }
+      },
+      "highlighting": { "keywords": ["print", "if", "for", "in"], "strings": ["\"", "'"], "comment": "#" }
     },
     "javascript": {
-      "type": "code",
       "stringQuote": "\"",
       "empty": {
         "Number": { "shadow": "math_number", "fieldValues": { "NUM": "42" } },
         "String": { "shadow": "text", "fieldValues": { "TEXT": "world" } }
-      }
+      },
+      "highlighting": { "keywords": ["console", "if", "for", "let"], "strings": ["\"", "'"], "comment": "//" }
     }
   },
   "modes": [
@@ -44,10 +48,6 @@ kleines Beispiel:
   "categories": [
     { "name": "Output", "color": "#5C81A6" }
   ],
-  "highlighting": {
-    "python":     { "keywords": ["print", "if", "for", "in"], "strings": ["\"", "'"], "comment": "#" },
-    "javascript": { "keywords": ["console", "if", "for", "let"], "strings": ["\"", "'"], "comment": "//" }
-  },
   "blocks": [
     {
       "identifier": "text_print",
@@ -89,18 +89,32 @@ sind optional und werden vom Framework zur Laufzeit ignoriert.
 ## `elementTypes`
 
 Globale Registry, die Element-Namen ihrem Typ zuordnet. Ein Wert ist entweder
-ein einfacher Typ-String — `"text" | "code" | "image"` — oder ein
-Konfigurationsobjekt:
+ein einfacher Typ-String — `"text" | "code" | "image"` — oder, für ein
+Bild-Element mit Größe, ein Konfigurationsobjekt:
 
 | Feld | Gilt für | Zweck |
 | --- | --- | --- |
 | `type` | alle | `"text"`, `"code"` oder `"image"` |
-| `empty` | `code` | Vorgaben für leere Value-Slots (siehe [unten](#shadows-placeholder-und-leere-slots)) |
-| `stringQuote` | `code` | Begrenzer um framework-gelieferte Literale in `String`-geprüften Slots, sodass der Codespace `print("hello")` statt `print(hello)` rendert. Weglassen deaktiviert das Quoting. |
 | `size` | `image` | Anzeigegröße, wenn der Wert ein Dateipfad ist, der automatisch als `<img>` verpackt wird: eine Zahl (`32` → 32×32), `"32"` oder `"32x32"`. Standard 16×16. |
 
 Siehe [Blocks & Elements](/de/concepts/blocks-and-elements/#element-typen) für
 die Bedeutung der einzelnen Typen.
+
+## `code`
+
+Wie die Sprache jedes Code-Elements geschrieben wird, **geschlüsselt nach
+Element-Namen** (das Quell-Element eines Mode benennt die „Sprache" bereits).
+Jedes Feld ist optional:
+
+| Feld | Zweck |
+| --- | --- |
+| `stringQuote` | Begrenzer um framework-gelieferte Literale in `String`-geprüften Slots, sodass der Codespace `print("hello")` statt `print(hello)` rendert. Weglassen deaktiviert das Quoting. |
+| `empty` | Vorgaben für leere Value-Slots (siehe [unten](#shadows-placeholder-und-leere-slots)) |
+| `highlighting` | Token-Farben für Codespace und Preview (siehe [unten](#highlighting)) |
+
+Bis 0.2 standen `stringQuote` und `empty` am Element in `elementTypes`, und
+`highlighting` war eine eigene Map auf oberster Ebene. `mount()` meldet diese
+Stellen mit der neuen.
 
 ## Shadows, Placeholder und leere Slots
 
@@ -108,12 +122,12 @@ Was soll ein Value-Slot zeigen, wenn nichts angehängt ist? Eine
 **Empty-Default-Konfiguration** beantwortet das und tritt an zwei Stellen mit
 derselben Form auf:
 
-- `elementTypes.<name>.empty` — pro Element (pro „Sprache"), geschlüsselt nach
+- `code.<name>.empty` — pro Element (pro „Sprache"), geschlüsselt nach
   dem `check` des Slots (`"Number"`, `"String"`, `"Boolean"`, …). Ein
   `default`-Schlüssel dient als Auffangwert — verwendet, wenn der `check` des
   Slots nicht gelistet ist oder der Slot gar keinen `check` hat.
 - `inputSlots.<n>.default` — pro Block-Slot; **höchste Priorität**, schlägt die
-  Suche auf elementType-Ebene
+  Suche am Element
 
 Die Auflösungsreihenfolge ist `inputSlots.<n>.default` → `empty[<check>]` →
 `empty.default`.
@@ -188,13 +202,13 @@ Optionale Toolbox-Gruppierungen. Blöcke referenzieren sie per Name:
 
 ## `highlighting`
 
-Optionales Syntax-Highlighting für Codespace und Preview, **geschlüsselt nach
-Element-Namen** (das Quell-Element eines Mode benennt die „Sprache" bereits):
+Syntax-Highlighting für Codespace und Preview, pro Code-Element gesetzt als
+`code.<name>.highlighting`:
 
 | Feld | Bedeutung |
 | --- | --- |
-| `keywords` | Als Keywords hervorgehobene Wörter (exakte Token-Übereinstimmung) |
-| `strings` | String-Begrenzer, z. B. `["\"", "'"]` |
+| `keywords` | Als Keywords hervorgehobene Wörter, als ganze Wörter in jeder Schrift |
+| `strings` | String-Begrenzer, z. B. `["\"", "'"]`, oder `[open, close]`-Paare wie `["„", "“"]` |
 | `comment` | Zeilenkommentar-Marker, z. B. `"#"` oder `"//"` |
 | `numbers` | Zahlenliterale hervorheben (Standard `true`) |
 | `colors` | Optionale Überschreibungen pro Token-Klasse (`keyword`, `string`, `number`, `comment`) |
@@ -344,7 +358,7 @@ separaten Serialisierungs-Schlüssel — Blockly speichert den Wert.
 `display` lässt den *angezeigten* Text einer Option dem aktiven Modus folgen,
 während der Wert einzeln bleibt — dieselbe Modus-Bewusstheit, die das
 Element-System dem Inhalt gibt, jetzt für Felder. Es bildet einen
-**Element-Namen** (geschlüsselt wie [`highlighting`](#highlighting)) auf den
+**Element-Namen** (geschlüsselt wie der [`code`](#code)-Abschnitt) auf den
 Text ab, der beim Rendern dieses Elements gezeigt wird — Python-Quelltext zeigt
 also `True`, JavaScript `true`, wobei beide `true` speichern und ausführen:
 
@@ -410,6 +424,8 @@ Wirft (alle Probleme werden gesammelt und auf einmal gemeldet):
 - ein `%FIELDNAME`-Token ohne [`fields`](#felder)-Eintrag und ohne `onViewApplied`
 - ein `shadow` / `placeholder`, der weder einen deiner Blöcke noch einen echten
   Blockly-Typ benennt
+- eine Einstellung an ihrem Platz von vor 0.3.0 (`stringQuote` oder `empty` in
+  `elementTypes`, eine `highlighting`-Map auf oberster Ebene), mit dem neuen Ort
 
 Warnt:
 
@@ -417,10 +433,8 @@ Warnt:
   passendes `%N`
 - ein Element-Name, der nicht in `elementTypes` deklariert ist, oder ein Mode,
   der ein Element auflistet, das kein Block definiert
-- ein `highlighting`-Schlüssel, der kein `code`-Element ist
-- ein `elementTypes`-Konfigurationsfeld am falschen Typ — `stringQuote` oder
-  `empty` an einem Nicht-`code`-Element, oder `size` an einem
-  Nicht-`image`-Element — das ignoriert wird
+- ein `code`-Schlüssel, der kein `code`-Element ist
+- `size` an einem Nicht-`image`-Element, das ignoriert wird
 - eine Block-`category`, die nicht in `categories` steht
 - ein Name, der über Element / Mode / Preset hinweg mehrfach verwendet wird
   (siehe [Modes](/de/concepts/modes/))

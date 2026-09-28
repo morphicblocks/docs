@@ -33,8 +33,8 @@ Um die Preview später oder mit anderen Optionen einzurichten, nutze
 
 Der Preview-Mode kommt aus dem `preview`-Schlüssel des aktiven Preset oder aus
 `setModes({ previewMode })`. Die Highlighting-Regeln werden automatisch aus der
-[`highlighting`-Map](/de/guides/syntax-highlighting/) der Definitionen
-aufgelöst; Platzhalter-Markierungen werden unterdrückt (sie sind eine
+[`highlighting`](/de/guides/syntax-highlighting/) im `code`-Abschnitt der
+Definitionen aufgelöst; Platzhalter-Markierungen werden unterdrückt (sie sind eine
 Editier-Hilfe, und die Preview ist von Natur aus schreibgeschützt).
 
 Theme zur Laufzeit: `engine.setPreviewTheme(theme)`.
@@ -119,6 +119,6 @@ await engine.mount({
 Zur Laufzeit wechselst du ein Theme mit `setCodespaceTheme()`,
 `setPreviewTheme()` und `setCodeEditorTheme()`, z. B. wenn die Seite zwischen
 hell und dunkel umschaltet. Token-Farben (Schlüsselwörter, Strings, Zahlen)
-kommen aus der [`highlighting`-Map](/de/guides/syntax-highlighting/) der
-Definitionen, nicht aus dem Theme. Setze bei einem hellen Theme auch eine
+kommen aus dem [`highlighting`](/de/guides/syntax-highlighting/) jedes
+Code-Elements, nicht aus dem Theme. Setze bei einem hellen Theme auch eine
 sichtbare [Auswahlhervorhebung](/de/guides/selection-sync/#optionen).
