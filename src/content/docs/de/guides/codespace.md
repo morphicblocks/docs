@@ -56,6 +56,10 @@ Nutzer nur Text sehen.
 - **Löschen** — Entf/Rücktaste auf der Zeile eines Blocks oder das `✕` in der
   Leiste.
 
+Drops folgen denselben Verbindungsprüfungen wie der Workspace: Ein Block landet
+nur dort, wo seine Verbindungen passen (ein Wert nur in einem Slot, dessen
+`check` seinen Typ annimmt), und ein abgelehnter Drop ändert nichts.
+
 Leere Value-Slots rendern ihre konfigurierten
 [Empty-Defaults](/de/concepts/definitions-format/#shadows-placeholder-und-leere-slots)
 oder eine editierbare `___`-Markierung, wenn keine gesetzt ist.

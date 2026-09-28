@@ -53,6 +53,10 @@ ever see text.
   materialise to real blocks on first edit.
 - **Delete** — Delete/Backspace on a block's line, or the gutter `✕`.
 
+Drops follow the same connection checks as the workspace: a block goes only
+where its connections fit (a value only into a slot whose `check` accepts its
+type), and a refused drop changes nothing.
+
 Empty value slots render their configured
 [empty defaults](/concepts/definitions-format/#shadows-placeholders-and-empty-slots),
 or an editable `___` marker when none is set.
