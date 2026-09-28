@@ -125,6 +125,31 @@ engine.runJavaScript({ logToConsole: true });   // zusätzlich in die Browser-Ko
 engine.runJavaScript({ console: myConsole });   // an deine eigene Konsole schicken
 ```
 
+### Ausgegebene Werte in der gezeigten Sprache
+
+Das Programm läuft immer als JavaScript, deshalb lesen sich ausgegebene Werte
+wie JavaScript: `true`, `false`, `null`, `1,2,3`. Ein `values`-Format an einem
+Code-Element im [`code`-Abschnitt](/de/concepts/definitions-format/#code) lässt
+sie sich wie diese Sprache lesen, solange der Codespace sie zeigt:
+
+```json
+"code": {
+  "python": {
+    "values": {
+      "true": "True", "false": "False", "null": "None",
+      "NaN": "nan", "Infinity": "inf", "-Infinity": "-inf",
+      "list": { "open": "[", "close": "]", "separator": ", ", "quote": "'" }
+    }
+  }
+}
+```
+
+`print(True)` zeigt dann `True`, und eine Liste `['a', 'b']`. Jeder Eintrag ist
+optional; ein weggelassener Wert bleibt, wie JavaScript ihn schreibt. Nur der
+ausgegebene Text in `output` ändert sich; eine übergebene `console` bekommt
+weiterhin die Werte selbst. Wie das Programm *läuft*, bleibt JavaScript:
+`7 / 2` ist `3.5`, auch wo die gezeigte Sprache `3` ergäbe.
+
 ## Klammern in zusammengesetzten Ausdrücken
 
 Blöcke kodieren Gruppierung durch Verschachtelung: Ein Multiplikations-Block, der

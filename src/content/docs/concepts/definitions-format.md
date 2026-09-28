@@ -109,6 +109,7 @@ mode's source element already names the "language"). Every field is optional:
 | `empty` | Defaults for empty value slots (see [below](#shadows-placeholders-and-empty-slots)) |
 | `emptyStatement` | Written into an empty statement slot where the language needs one, e.g. `"pass"` for Python, so an empty loop body stays valid code. Omit to leave empty bodies empty. |
 | `highlighting` | Token colors for the codespace and preview (see [below](#highlighting)) |
+| `values` | How printed values read while this element is shown (`True`, `None`, `['a']`); see [Behaviors & Code Generation](/concepts/behaviors-and-codegen/#printed-values-in-the-shown-language) |
 
 Up to 0.2, `stringQuote` and `empty` sat on the element in `elementTypes` and
 `highlighting` was its own top level map. `mount()` reports those places with

@@ -122,6 +122,31 @@ engine.runJavaScript({ logToConsole: true });   // also print to the browser con
 engine.runJavaScript({ console: myConsole });   // send them to your own console
 ```
 
+### Printed values in the shown language
+
+The program always runs as JavaScript, so printed values read like JavaScript:
+`true`, `false`, `null`, `1,2,3`. A `values` format on a code element in the
+[`code` section](/concepts/definitions-format/#code) makes them read like that
+language while the codespace shows it:
+
+```json
+"code": {
+  "python": {
+    "values": {
+      "true": "True", "false": "False", "null": "None",
+      "NaN": "nan", "Infinity": "inf", "-Infinity": "-inf",
+      "list": { "open": "[", "close": "]", "separator": ", ", "quote": "'" }
+    }
+  }
+}
+```
+
+`print(True)` then shows `True`, and a list `['a', 'b']`. Every entry is
+optional; a value left out stays as JavaScript writes it. Only the printed
+text in `output` changes; a `console` you pass still gets the values
+themselves. How the program *runs* stays JavaScript: `7 / 2` is `3.5`, even
+where the shown language would give `3`.
+
 ## Parentheses in composed expressions
 
 Blocks encode grouping by nesting: a multiply block holding an add block *is*
