@@ -110,6 +110,7 @@ Jedes Feld ist optional:
 | --- | --- |
 | `stringQuote` | Begrenzer um framework-gelieferte Literale in `String`-geprüften Slots, sodass der Codespace `print("hello")` statt `print(hello)` rendert. Weglassen deaktiviert das Quoting. |
 | `empty` | Vorgaben für leere Value-Slots (siehe [unten](#shadows-placeholder-und-leere-slots)) |
+| `emptyStatement` | Wird in einen leeren Statement-Slot geschrieben, wo die Sprache eine Anweisung braucht, z. B. `"pass"` für Python, damit ein leerer Schleifenrumpf gültiger Code bleibt. Weglassen lässt leere Rümpfe leer. |
 | `highlighting` | Token-Farben für Codespace und Preview (siehe [unten](#highlighting)) |
 
 Bis 0.2 standen `stringQuote` und `empty` am Element in `elementTypes`, und

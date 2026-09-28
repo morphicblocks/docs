@@ -107,6 +107,7 @@ mode's source element already names the "language"). Every field is optional:
 | --- | --- |
 | `stringQuote` | Delimiter wrapped around framework-supplied literals in `String`-checked slots, so the codespace renders `print("hello")` rather than `print(hello)`. Omit to disable quoting. |
 | `empty` | Defaults for empty value slots (see [below](#shadows-placeholders-and-empty-slots)) |
+| `emptyStatement` | Written into an empty statement slot where the language needs one, e.g. `"pass"` for Python, so an empty loop body stays valid code. Omit to leave empty bodies empty. |
 | `highlighting` | Token colors for the codespace and preview (see [below](#highlighting)) |
 
 Up to 0.2, `stringQuote` and `empty` sat on the element in `elementTypes` and
