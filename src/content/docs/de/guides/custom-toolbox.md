@@ -75,3 +75,23 @@ Die Toolbox ist über strukturelle Klassen hinaus bewusst unstilisiert. Zielklas
 
 Siehe [Modes mit CSS gestalten](/de/guides/styling-modes/) für den vollständigen
 CSS-Vertrag.
+
+### Kacheln, die nur der Block sind
+
+Eine Kachel hat keinen eigenen Hintergrund; jeder Rahmen um den Block kommt aus
+deinem CSS. Um nur den Blockly-Block zu zeigen, gib der Toolbox einen Mode, der
+nur das Code-Element auflistet, und lass sein CSS die Kachel genau so groß wie
+den Block machen:
+
+```json
+"modes": [{ "name": "blocks", "elements": ["block"] }]
+```
+
+```css
+.morphic-block.morphic-mode-blocks {
+  background: none;
+  border: 0;
+  padding: 0;
+  width: fit-content;
+}
+```

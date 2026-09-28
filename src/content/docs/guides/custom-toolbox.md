@@ -73,3 +73,23 @@ The toolbox is intentionally unstyled beyond structural classes. Target:
 ```
 
 See [Styling Modes](/guides/styling-modes/) for the full CSS contract.
+
+### Tiles that are just the block
+
+A tile has no background of its own; any box around the block comes from your
+CSS. To show nothing but the Blockly block, give the toolbox a mode that lists
+only the code element, and let its CSS make the tile exactly as big as the
+block:
+
+```json
+"modes": [{ "name": "blocks", "elements": ["block"] }]
+```
+
+```css
+.morphic-block.morphic-mode-blocks {
+  background: none;
+  border: 0;
+  padding: 0;
+  width: fit-content;
+}
+```
