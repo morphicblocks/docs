@@ -34,8 +34,9 @@ Modell.
 | `modeLabel`  | `true`  | Kopfzeile oben in der Toolbox: `true` zeigt `Mode: <name>`, `false` keine, ein String diesen Text, eine Funktion `(mode) => text` ihr Ergebnis |
 | `blocks`     | alle    | Nur eine Teilmenge der Blöcke zeigen (Liste von Identifiern) |
 | `categories` | —       | Kategorie-Gruppierung; ohne diese und ohne `toolbox.categories` der Mount-Konfiguration rendern Blöcke als flache Liste |
+| `highlight`  | `true`  | Code, der auf Kacheln als Text steht (`render: "text"`), mit dem [Highlighting](/de/guides/syntax-highlighting/) seines Elements färben, wie der Codespace; `false` lässt ihn schlicht |
 
-Alle drei lassen sich auch in `mount()` unter `toolbox` setzen, sodass auch eine
+Alle lassen sich auch in `mount()` unter `toolbox` setzen, sodass auch eine
 über `toolboxContainer` eingerichtete Toolbox sie bekommt:
 
 ```ts

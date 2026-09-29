@@ -34,8 +34,9 @@ model.
 | `modeLabel`  | `true`  | Header at the top of the toolbox: `true` shows `Mode: <name>`, `false` none, a string that text, a function `(mode) => text` its result |
 | `blocks`     | all     | Show only a subset of blocks (list of identifiers)         |
 | `categories` | —       | Category grouping; with neither this nor the mount config's `toolbox.categories`, blocks render as a flat list |
+| `highlight`  | `true`  | Colour code shown as text on tiles (`render: "text"`) with its element's [highlighting](/guides/syntax-highlighting/), like the codespace; `false` leaves it plain |
 
-All three can also be set in `mount()` under `toolbox`, so a toolbox set up by
+All of them can also be set in `mount()` under `toolbox`, so a toolbox set up by
 `toolboxContainer` gets them too:
 
 ```ts

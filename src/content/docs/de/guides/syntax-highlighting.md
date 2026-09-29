@@ -52,6 +52,9 @@ fünf Zeilen JSON kostet.
 - Jeder Codespace/jede Preview wählt den Eintrag, der zum Quell-Element seines
   Mode passt.
 - Ein Mode-Wechsel zur Laufzeit (`setModes()`, Presets) tauscht die Regeln live.
+- Code, der auf Toolbox-Kacheln als Text steht (`render: "text"`), nimmt
+  dieselben Regeln und Farben; die Toolbox-Option `highlight: false` schaltet
+  das ab.
 
 ## Pro Editor überschreiben
 

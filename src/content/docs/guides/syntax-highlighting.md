@@ -51,6 +51,8 @@ definitions costs five lines of JSON.
   in the mount config replaces them.
 - Each codespace/preview picks the entry matching its mode's source element.
 - Switching modes at runtime (`setModes()`, presets) swaps the rules live.
+- Code shown as text on toolbox tiles (`render: "text"`) takes the same
+  rules and colours; the toolbox option `highlight: false` turns that off.
 
 ## Overriding per editor
 
