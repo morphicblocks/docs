@@ -35,6 +35,8 @@ Modell.
 | `blocks`     | alle    | Nur eine Teilmenge der Blöcke zeigen (Liste von Identifiern) |
 | `categories` | —       | Kategorie-Gruppierung; ohne diese und ohne `toolbox.categories` der Mount-Konfiguration rendern Blöcke als flache Liste |
 | `highlight`  | `true`  | Code, der auf Kacheln als Text steht (`render: "text"`), mit dem [Highlighting](/de/guides/syntax-highlighting/) seines Elements färben, wie der Codespace; `false` lässt ihn schlicht |
+| `touch`      | `true`  | Kacheln lassen sich mit Finger oder Stift ziehen; siehe [Touch und Tastatur](#touch-und-tastatur) |
+| `keyboard`   | `true`  | Kacheln sind mit Tab erreichbar und werden mit Enter oder Leertaste hinzugefügt; siehe [Touch und Tastatur](#touch-und-tastatur) |
 
 Alle lassen sich auch in `mount()` unter `toolbox` setzen, sodass auch eine
 über `toolboxContainer` eingerichtete Toolbox sie bekommt:
@@ -63,6 +65,33 @@ für das Markup). Die Toolbox rendert neu, wenn sich der Toolbox-Mode ändert �
 über `setModes({ toolboxMode })` oder einen Preset-Wechsel — und respektiert die
 [Render-Überschreibung](/de/concepts/presets-and-views/#die-toolbox-render-überschreibung)
 des Preset, um Code-Elements als Blöcke oder als Quelltext zu zeigen.
+
+## Touch und Tastatur
+
+Die Toolbox funktioniert ohne Maus. Beides ist standardmäßig an und lässt sich
+in den Toolbox-Optionen abschalten (`touch: false`, `keyboard: false`).
+
+**Touch und Stift.** Eine Kachel bewegt sich, wenn sie seitwärts gezogen oder
+lange gedrückt wird; eine Wischbewegung nach oben oder unten scrollt weiter
+die Toolbox. Sie lässt sich auf dem Workspace und auf jedem Codespace ablegen.
+Eine seitwärts angeordnete Toolbox gibt ihren Kacheln `touch-action: pan-x`,
+sodass Wischen entlang der Toolbox scrollt und Wischen nach oben oder unten
+zieht.
+
+**Tastatur.** Jede Kachel ist ein Button in der Tab-Reihenfolge, für
+Screenreader benannt nach dem, was sie zeigt: Code so, wie der Codespace ihn
+schreiben würde, Text wie er ist und Bilder nach ihrem Alt-Text. Enter oder
+Leertaste fügt den Block hinter dem ausgewählten ein, wenn er dort passt,
+sonst als neuen Stapel, und wählt ihn aus, sodass erneutes Drücken eine Kette
+baut. Der Fokus bleibt auf der Kachel. Gib dem Fokus einen sichtbaren Stil:
+
+```css
+.morphic-block:focus-visible { outline: 2px solid; }
+```
+
+Der Workspace selbst gehört Blockly. Um Blöcke dort mit der Tastatur zu
+bewegen und zu bearbeiten, füge deiner App Blocklys Plugin für die
+Tastaturnavigation hinzu; das Framework überlässt dir diese Wahl.
 
 ## Styling
 

@@ -35,6 +35,8 @@ model.
 | `blocks`     | all     | Show only a subset of blocks (list of identifiers)         |
 | `categories` | —       | Category grouping; with neither this nor the mount config's `toolbox.categories`, blocks render as a flat list |
 | `highlight`  | `true`  | Colour code shown as text on tiles (`render: "text"`) with its element's [highlighting](/guides/syntax-highlighting/), like the codespace; `false` leaves it plain |
+| `touch`      | `true`  | Tiles can be dragged with a finger or pen; see [Touch and keyboard](#touch-and-keyboard) |
+| `keyboard`   | `true`  | Tiles can be reached with Tab and added with Enter or Space; see [Touch and keyboard](#touch-and-keyboard) |
 
 All of them can also be set in `mount()` under `toolbox`, so a toolbox set up by
 `toolboxContainer` gets them too:
@@ -62,6 +64,32 @@ markup). The toolbox re-renders when the toolbox mode changes — via
 `setModes({ toolboxMode })` or a preset switch — and honours the preset's
 [render override](/concepts/presets-and-views/#the-toolbox-render-override)
 for showing code elements as blocks or as source text.
+
+## Touch and keyboard
+
+The toolbox works without a mouse. Both ways are on by default, and each can
+be turned off in the toolbox options (`touch: false`, `keyboard: false`).
+
+**Touch and pen.** A tile starts moving when it is dragged sideways or after a
+long press; an up or down swipe still scrolls the toolbox. It can be dropped on
+the workspace and on every codespace. A toolbox laid out sideways gives its
+tiles `touch-action: pan-x`, so a swipe along it scrolls and a swipe up or
+down drags.
+
+**Keyboard.** Every tile is a button in the Tab order, named for screen
+readers after what it shows: code as the codespace would write it, text as it
+is, and images by their alt text. Enter or Space adds the block
+after the selected one when it fits there, else as a new stack, and selects
+it, so pressing again builds a chain. Focus stays on the tile. Give the focus
+a visible style:
+
+```css
+.morphic-block:focus-visible { outline: 2px solid; }
+```
+
+The workspace itself belongs to Blockly. To move and edit blocks there with
+the keyboard, add Blockly's keyboard navigation plugin to your app; the
+framework leaves that choice to you.
 
 ## Styling
 
