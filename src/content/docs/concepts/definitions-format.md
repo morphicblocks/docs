@@ -432,3 +432,16 @@ Warns:
 To check a file *before* mounting — in a test or build step — call the exported
 `validateDefinitions(...)`, which returns `{ errors, warnings }` instead of
 throwing.
+
+Warnings go to the browser console. Pass `onWarning` to `mount()` to receive
+them yourself, together with the framework's other warnings (modes without
+CSS, missing Blockly media), for example to show them only while developing:
+
+```ts
+engine.mount({
+  workspaceContainer,
+  onWarning(message) {
+    if (import.meta.env.DEV) showDevBanner(message);
+  },
+});
+```
