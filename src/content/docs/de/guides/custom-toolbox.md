@@ -76,6 +76,28 @@ Die Toolbox ist über strukturelle Klassen hinaus bewusst unstilisiert. Zielklas
 Siehe [Modes mit CSS gestalten](/de/guides/styling-modes/) für den vollständigen
 CSS-Vertrag.
 
+### Breite
+
+Die Toolbox nimmt die Breite, die dein Layout ihr gibt; ein breiterer Block
+wird abgeschnitten. Das Framework veröffentlicht den breitesten Block einer
+Kachel als `--morphic-toolbox-block-width` am Toolbox-Container, aktualisiert
+bei jedem neuen Zeichnen der Kacheln (Mode- oder Schriftwechsel). Die
+Variable steht am Container, nutze sie also dort, plus deinem eigenen
+Kachel-Innenabstand, und lass die Spalte darum auf seine Mindestbreite
+wachsen:
+
+```css
+#toolbox {
+  min-width: calc(var(--morphic-toolbox-block-width) + 40px);
+}
+.layout {
+  grid-template-columns: minmax(250px, min-content) 1fr;
+}
+```
+
+Nur Blöcke zählen, lange Beschreibungen, die umbrechen, verbreitern ihn also
+nicht. Ohne eine solche Regel ändert sich nichts.
+
 ### Kacheln, die nur der Block sind
 
 Eine Kachel hat keinen eigenen Hintergrund; jeder Rahmen um den Block kommt aus

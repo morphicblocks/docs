@@ -74,6 +74,27 @@ The toolbox is intentionally unstyled beyond structural classes. Target:
 
 See [Styling Modes](/guides/styling-modes/) for the full CSS contract.
 
+### Width
+
+The toolbox takes the width your layout gives it; a block wider than that is
+cut off. The framework publishes the widest block drawn on a tile as
+`--morphic-toolbox-block-width` on the toolbox container, updated whenever the
+tiles are drawn again (a mode or font change). The variable is set on the
+container, so use it there, adding your own tile padding, and let the column
+around it grow to its minimum width:
+
+```css
+#toolbox {
+  min-width: calc(var(--morphic-toolbox-block-width) + 40px);
+}
+.layout {
+  grid-template-columns: minmax(250px, min-content) 1fr;
+}
+```
+
+Only blocks count, so long descriptions, which wrap, do not widen it. Without
+such a rule nothing changes.
+
 ### Tiles that are just the block
 
 A tile has no background of its own; any box around the block comes from your
