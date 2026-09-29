@@ -76,6 +76,8 @@ zusätzlichen View):
   System-Zwischenablage.
 - `engine.pasteActiveBlock(view)` — fügt die interne Zwischenablage als echten
   Block ein (versetzt zum Original).
+- `engine.hasClipboardContents()`: ob ein Block zum Einfügen bereitliegt, etwa
+  um einen eigenen Einfügen-Button zu deaktivieren.
 - `engine.zoomPane(view, "in" | "out" | "fit")` — Blockly-Zoom in einem
   Workspace; Schriftgrößen-Skalierung in einer Text-View.
 

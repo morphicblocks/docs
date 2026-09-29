@@ -73,6 +73,8 @@ view name (`workspace`, `codespace`, `preview`, or an added view's):
   line/selection; also mirrors the block's *code text* to the system clipboard.
 - `engine.pasteActiveBlock(view)` — pastes the internal clipboard as a real
   block (offset from the original).
+- `engine.hasClipboardContents()`: whether there is a block to paste, e.g. to
+  disable a paste button of your own.
 - `engine.zoomPane(view, "in" | "out" | "fit")` — Blockly zoom on a
   workspace; font-size scaling on a text view.
 

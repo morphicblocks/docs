@@ -116,3 +116,21 @@ engine.setModes({
 
 All keys are optional — set what you want to change. Passing `null` clears the
 codespace/preview mode and the toolbox render override.
+
+
+## Reading the current modes
+
+The engine reports what each view shows, so the host needs no bookkeeping of
+its own, for example to mark the active mode in its UI:
+
+| Method | Returns |
+| --- | --- |
+| `getAvailableModes()` | every mode name from the definitions |
+| `getWorkspaceMode()` | the workspace's mode |
+| `getCodespaceMode()` | the codespace's mode, else the workspace's |
+| `getPreviewMode()` | the preview's mode, or `undefined` without one |
+| `getViewMode(name)` | the mode of any view by name, added views included |
+| `getActivePrimarySourceElement()` | the code element the codespace renders |
+| `getActivePreviewElement()` | the code element the preview renders |
+
+All return `undefined` (or an empty list) before `mount()`.
