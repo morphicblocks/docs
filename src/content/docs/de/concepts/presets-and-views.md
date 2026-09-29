@@ -38,6 +38,7 @@ Modes zu Views:
 | `workspace` | nein*        | Mode für den Block-Workspace                             |
 | `codespace` | nein*        | Mode, dessen Quell-Element der Codespace rendert          |
 | `preview`   | nein         | Mode, dessen Quell-Element die schreibgeschützte Preview rendert |
+| `views`     | nein         | Modes [zusätzlicher Views](/de/guides/added-views/), nach View-Namen |
 
 \* Mindestens ein Editier-Bereich (`workspace` oder `codespace`) muss gesetzt
 sein. **Das Vorhandensein eines View-Schlüssels bedeutet, dass dieser View

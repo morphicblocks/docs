@@ -28,6 +28,15 @@ engine.mountToolbar(document.getElementById("workspace-toolbar")!, {
 });
 ```
 
+Eine Toolbar kann über ihren Namen auf jede View wirken, `view` statt `pane`:
+die eingebauten `workspace`, `codespace` und `preview` oder eine
+[zusätzliche View](/de/guides/added-views/) (die ihre Toolbar auch über
+`addView({ toolbar })` mitbringen kann):
+
+```ts
+engine.mountToolbar(document.getElementById("right-toolbar")!, { view: "right" });
+```
+
 ## Standard-Elemente
 
 Lässt du `items` weg, erhältst du die Standardwerte des Pane:
@@ -35,7 +44,7 @@ Lässt du `items` weg, erhältst du die Standardwerte des Pane:
 | Pane                    | Elemente                                                         |
 | --- | --- |
 | `workspace`, `codespace` | Mode-Label · Spacer · Undo · Redo · Kopieren · Einfügen · Zoom rein/raus/passend · Leeren |
-| `preview`               | Mode-Label · Spacer · Kopieren · Zoom rein/raus/passend · Read-only-Badge |
+| `preview`, zusätzlicher Workspace | Mode-Label · Spacer · Kopieren · Zoom rein/raus/passend · Read-only-Badge |
 
 Übergib `items: []`, um keine zu rendern, oder stelle eigene aus den
 exportierten Factories zusammen:
@@ -58,16 +67,17 @@ engine.mountToolbar(el, {
 
 ## Block-bewusste Zwischenablage und Zoom
 
-Toolbar-Aktionen laufen über pane-bewusste Engine-APIs, die du auch direkt
-aufrufen kannst:
+Toolbar-Aktionen laufen über Engine-APIs, die du auch direkt aufrufen kannst.
+Jede nimmt einen View-Namen (`workspace`, `codespace`, `preview` oder den einer
+zusätzlichen View):
 
-- `engine.copyActiveBlock(pane)` — kopiert den Block, dem die aktive
+- `engine.copyActiveBlock(view)` — kopiert den Block, dem die aktive
   Zeile/Auswahl gehört; spiegelt zudem den *Code-Text* des Blocks in die
   System-Zwischenablage.
-- `engine.pasteActiveBlock(pane)` — fügt die interne Zwischenablage als echten
+- `engine.pasteActiveBlock(view)` — fügt die interne Zwischenablage als echten
   Block ein (versetzt zum Original).
-- `engine.zoomPane(pane, "in" | "out" | "fit")` — Blockly-Zoom im Workspace;
-  Schriftgrößen-Skalierung in Codespace/Preview.
+- `engine.zoomPane(view, "in" | "out" | "fit")` — Blockly-Zoom in einem
+  Workspace; Schriftgrößen-Skalierung in einer Text-View.
 
 ## Eigene Elemente
 
@@ -87,15 +97,16 @@ Ein Element ist ein einfaches Objekt:
 }
 ```
 
-Jeder Callback erhält den Toolbar-Kontext (`ctx.engine`, `ctx.pane`,
-`ctx.refresh()`), sodass Elemente den Pane-Zustand lesen und ein Neurendern
-anfordern können — genau so verfolgen die eingebauten Undo/Redo-Elemente ihren
-Aktiviert-Zustand.
+Jeder Callback erhält den Toolbar-Kontext (`ctx.engine`, `ctx.pane` für die Art
+der View, `ctx.view` für ihren Namen, `ctx.refresh()`); gib `ctx.view` an die
+Engine-APIs oben weiter. So können Elemente den Zustand der View lesen und ein
+Neurendern anfordern; genau so verfolgen die eingebauten Undo/Redo-Elemente
+ihren Aktiviert-Zustand.
 
 ## Styling
 
 ```css
-.morphic-toolbar { /* Container; hat auch data-morphic-pane="workspace" */ }
+.morphic-toolbar { /* Container; hat auch data-morphic-pane="workspace" und data-morphic-view="…" */ }
 .morphic-toolbar-left, .morphic-toolbar-right { /* Element-Gruppen */ }
 [data-toolbar-id="copy"] { /* einzelnes Element */ }
 ```

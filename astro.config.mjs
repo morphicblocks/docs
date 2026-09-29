@@ -113,6 +113,7 @@ export default defineConfig({
 						{ slug: 'guides/custom-toolbox' },
 						{ slug: 'guides/codespace' },
 						{ slug: 'guides/preview-and-code-editor' },
+						{ slug: 'guides/added-views' },
 						{ slug: 'guides/syntax-highlighting' },
 						{ slug: 'guides/selection-sync' },
 						{ slug: 'guides/toolbars' },

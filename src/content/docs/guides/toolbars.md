@@ -28,6 +28,14 @@ engine.mountToolbar(document.getElementById("workspace-toolbar")!, {
 });
 ```
 
+A toolbar can act on any view by name, `view` in place of `pane`: the built-in
+`workspace`, `codespace` and `preview`, or an [added view](/guides/added-views/)
+(which can also bring its own toolbar through `addView({ toolbar })`):
+
+```ts
+engine.mountToolbar(document.getElementById("right-toolbar")!, { view: "right" });
+```
+
 ## Default items
 
 Omitting `items` gives the pane's defaults:
@@ -35,7 +43,7 @@ Omitting `items` gives the pane's defaults:
 | Pane                    | Items                                                             |
 | --- | --- |
 | `workspace`, `codespace` | mode label · spacer · undo · redo · copy · paste · zoom in/out/fit · clear |
-| `preview`               | mode label · spacer · copy · zoom in/out/fit · read-only badge     |
+| `preview`, added workspace | mode label · spacer · copy · zoom in/out/fit · read-only badge     |
 
 Pass `items: []` to render none, or compose your own from the exported
 factories:
@@ -58,14 +66,15 @@ engine.mountToolbar(el, {
 
 ## Block-aware clipboard and zoom
 
-Toolbar actions go through pane-aware engine APIs you can also call directly:
+Toolbar actions go through engine APIs you can also call directly. Each takes a
+view name (`workspace`, `codespace`, `preview`, or an added view's):
 
-- `engine.copyActiveBlock(pane)` — copies the block that owns the active
+- `engine.copyActiveBlock(view)` — copies the block that owns the active
   line/selection; also mirrors the block's *code text* to the system clipboard.
-- `engine.pasteActiveBlock(pane)` — pastes the internal clipboard as a real
+- `engine.pasteActiveBlock(view)` — pastes the internal clipboard as a real
   block (offset from the original).
-- `engine.zoomPane(pane, "in" | "out" | "fit")` — Blockly zoom on the
-  workspace; font-size scaling on codespace/preview.
+- `engine.zoomPane(view, "in" | "out" | "fit")` — Blockly zoom on a
+  workspace; font-size scaling on a text view.
 
 ## Custom items
 
@@ -85,14 +94,15 @@ An item is a plain object:
 }
 ```
 
-Every callback receives the toolbar context (`ctx.engine`, `ctx.pane`,
-`ctx.refresh()`), so items can read pane state and request a re-render —
+Every callback receives the toolbar context (`ctx.engine`, `ctx.pane` for the
+view's kind, `ctx.view` for its name, `ctx.refresh()`); pass `ctx.view` to the
+engine APIs above. Items can read pane state and request a re-render —
 that's how the built-in undo/redo items track their enabled state.
 
 ## Styling
 
 ```css
-.morphic-toolbar { /* container; also has data-morphic-pane="workspace" */ }
+.morphic-toolbar { /* container; also has data-morphic-pane="workspace" and data-morphic-view="…" */ }
 .morphic-toolbar-left, .morphic-toolbar-right { /* item groups */ }
 [data-toolbar-id="copy"] { /* single item */ }
 ```

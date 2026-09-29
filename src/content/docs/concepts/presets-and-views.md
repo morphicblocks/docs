@@ -37,6 +37,7 @@ Every view renders **the same block model**, each in its own
 | `workspace` | no*      | Mode for the block workspace                             |
 | `codespace` | no*      | Mode whose source element the codespace renders          |
 | `preview`   | no       | Mode whose source element the read-only preview renders  |
+| `views`     | no       | Modes of [added views](/guides/added-views/), by view name |
 
 \* At least one editing space (`workspace` or `codespace`) must be set.
 **Presence of a view key means that view is shown** — workspace and codespace
