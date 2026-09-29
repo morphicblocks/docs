@@ -65,6 +65,17 @@ Block-Farben lassen sich über die Custom Property aus CSS steuern:
 }
 ```
 
+Blockly zeichnet eine dünne graue Linie um den Workspace. Das Framework lässt
+sie weg; zwei Custom Properties holen sie zurück oder gestalten sie, am
+Workspace oder pro Mode:
+
+```css
+.morphic-workspace-root {
+  --morphic-workspace-border-color: #c6c6c6;
+  --morphic-workspace-border-width: 1px;
+}
+```
+
 ## Mode-Stylesheets laden
 
 Drei Wege, in der Mount-Konfiguration:

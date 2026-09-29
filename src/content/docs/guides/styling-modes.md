@@ -64,6 +64,17 @@ Block colors can be driven from CSS via the custom property:
 }
 ```
 
+Blockly draws a thin grey line around the workspace. The framework leaves it
+out; two custom properties bring it back or style it, on the workspace or
+per mode:
+
+```css
+.morphic-workspace-root {
+  --morphic-workspace-border-color: #c6c6c6;
+  --morphic-workspace-border-width: 1px;
+}
+```
+
 ## Loading mode stylesheets
 
 Three ways, in the mount config:
