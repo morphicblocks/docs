@@ -106,6 +106,15 @@ Wie die Sprache jedes Code-Elements geschrieben wird, **geschlüsselt nach
 Element-Namen** (das Quell-Element eines Mode benennt die „Sprache" bereits).
 Jedes Feld ist optional:
 
+:::note[Die Sprachen sind deine eigenen]
+Morphic Blocks kennt keine Programmiersprache. Ein „Python"- oder
+„Java"-Element besteht nur aus Templates, die du schreibst, und den
+Einstellungen unten; das Framework füllt die Slots und prüft das Ergebnis nie.
+Ausgeführt wird, was deine [Behaviors](/de/concepts/behaviors-and-codegen/)
+zurückgeben, meist JavaScript. Eine Sprache kann also echt, vereinfacht,
+erfunden oder Alltagssprache sein.
+:::
+
 | Feld | Zweck |
 | --- | --- |
 | `stringQuote` | Begrenzer um framework-gelieferte Literale in `String`-geprüften Slots, sodass der Codespace `print("hello")` statt `print(hello)` rendert. Weglassen deaktiviert das Quoting. |
@@ -314,7 +323,33 @@ Nummer:
 | `check` | Typprüfung (`"Number"`, `"String"`, …), schlüsselt auch die Empty-Defaults |
 | `label` | Optionaler Label-Text |
 | `align` | Ausrichtung des Inputs |
-| `default` | Shadow-/Placeholder-Konfiguration pro Slot — höchste Priorität, schlägt die `empty`-Suche auf `elementTypes`-Ebene (siehe [Shadows, Placeholder und leere Slots](#shadows-placeholder-und-leere-slots)) |
+| `default` | Shadow-/Placeholder-Konfiguration pro Slot — höchste Priorität, schlägt die Suche in `code.<element>.empty` (siehe [Shadows, Placeholder und leere Slots](#shadows-placeholder-und-leere-slots)) |
+
+#### Wann ein Slot `check` braucht
+
+`check` entscheidet, welche Blöcke in einen Wert-Slot passen, im Workspace und
+beim Ablegen im Codespace: Ein Block passt, wenn sein `output`-Typ
+übereinstimmt. Außerdem wählt es den Empty-Default des Slots und seinen
+`[TYP]`-Marker.
+
+- **Setze es**, wenn das Programm eine bestimmte Art von Wert braucht: die
+  Zahlen eines Rechenblocks, die Anzahl einer Wiederholung, die Bedingung
+  eines `while`, das nur Vergleiche annehmen soll.
+- **Lass es weg**, wenn jeder Wert geht: der Wert einer Ausgabe oder ein `if`
+  in einer Sprache, in der jeder Wert als wahr oder falsch gilt (Python,
+  JavaScript). Ein Slot ohne `check` nimmt jeden Block mit Output an.
+
+```json
+"inputSlots": {
+  "1": { "kind": "value", "name": "CONDITION" },
+  "2": { "kind": "statement", "name": "THEN" }
+}
+```
+
+Dieses `if` nimmt einen Vergleich, eine Zahl oder eine Variable. Mit
+`"check": "Boolean"` an Slot 1 passte keine Zahl mehr, nur noch
+Boolean-Blöcke (true, false, Vergleiche). Ein Block mit `"output": true` hat
+keinen Typ und passt in jeden Slot, mit oder ohne `check`.
 
 ### Felder
 

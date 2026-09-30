@@ -103,6 +103,14 @@ each type means.
 How each code element's language is written, **keyed by element name** (a
 mode's source element already names the "language"). Every field is optional:
 
+:::note[The languages are your own]
+Morphic Blocks knows no programming language. A "Python" or "Java" element is
+just templates you write, plus the settings below; the framework fills in the
+slots and never checks the result. What runs is what your
+[behaviors](/concepts/behaviors-and-codegen/) return, usually JavaScript. So a
+language can be real, simplified, invented, or plain words.
+:::
+
 | Field | Purpose |
 | --- | --- |
 | `stringQuote` | Delimiter wrapped around framework-supplied literals in `String`-checked slots, so the codespace renders `print("hello")` rather than `print(hello)`. Omit to disable quoting. |
@@ -305,7 +313,32 @@ modes and CSS.
 | `check`   | Type check (`"Number"`, `"String"`, …), also keys empty defaults   |
 | `label`   | Optional label text                                                |
 | `align`   | Input alignment                                                    |
-| `default` | Per-slot shadow/placeholder config — highest priority, beats the `elementTypes` `empty` lookup (see [Shadows, placeholders, and empty slots](#shadows-placeholders-and-empty-slots)) |
+| `default` | Per-slot shadow/placeholder config — highest priority, beats the element's `code.<element>.empty` lookup (see [Shadows, placeholders, and empty slots](#shadows-placeholders-and-empty-slots)) |
+
+#### When a slot needs `check`
+
+`check` decides which blocks fit a value slot, in the workspace and when
+dropping into the codespace: a block fits when its `output` type matches. It
+also picks the slot's empty default and its `[TYPE]` marker.
+
+- **Set it** when the program needs a certain kind of value: the numbers of a
+  math block, the count of a repeat, the condition of a `while` that should
+  only take comparisons.
+- **Leave it out** when any value works: the value of a print, or an `if` in a
+  language where every value counts as true or false (Python, JavaScript). A
+  slot without `check` accepts every block with an output.
+
+```json
+"inputSlots": {
+  "1": { "kind": "value", "name": "CONDITION" },
+  "2": { "kind": "statement", "name": "THEN" }
+}
+```
+
+This `if` takes a comparison, a number or a variable. With
+`"check": "Boolean"` on slot 1, a number would no longer fit, only Boolean
+blocks (true, false, comparisons). A block with `"output": true` has no type
+and fits any slot, with or without `check`.
 
 ### Fields
 
