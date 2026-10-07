@@ -6,8 +6,8 @@ description: Weitere Previews, Codespaces und Workspaces neben denen, die mount(
 `mount()` richtet einen Workspace, einen Codespace und eine Preview ein.
 `engine.addView()` fügt beliebig viele weitere hinzu, jede in ihrem eigenen
 Mode: Python- und JavaScript-Previews nebeneinander, zwei Codespaces in
-verschiedenen Sprachen oder schreibgeschützte Workspaces, die das Programm als
-Blöcke in anderen Modes spiegeln.
+verschiedenen Sprachen oder weitere Workspaces, die das Programm als Blöcke in
+anderen Modes zeigen, schreibgeschützt oder bearbeitbar.
 
 ```ts
 const right = engine.addView({
@@ -26,7 +26,7 @@ await right.ready;                  // Text-Views laden ihren Editor im Hintergr
 | --- | --- |
 | `preview` | Zeigt das Programm als Text in ihrem Mode, schreibgeschützt. |
 | `codespace` | Bearbeitet das Programm als Text in ihrem Mode: Ablegen, Werte direkt ändern, Löschen, der Griff, wie der eingebaute Codespace. |
-| `workspace` | Zeigt das Programm als Blöcke in ihrem Mode und folgt jeder Änderung des Haupt-Workspace. Schreibgeschützt: `editable: false` ist vorerst der einzige Wert und der Standard. Ein Klick auf einen Block wählt ihn überall aus. |
+| `workspace` | Zeigt das Programm als Blöcke in ihrem Mode und folgt jeder Änderung des Haupt-Workspace. Standardmäßig schreibgeschützt; mit `editable: true` lassen sich dort Blöcke verschieben, verbinden, bearbeiten und löschen und Kacheln ablegen, und jede Änderung geht an den Haupt-Workspace, der das Programm bleibt. Rückgängig folgt der Historie des Programms. Ein Klick auf einen Block wählt ihn überall aus. |
 
 Jede zusätzliche View nimmt an der [Auswahl-Synchronisierung](/de/guides/selection-sync/)
 teil und hebt den ausgewählten Block hervor wie die eingebauten Views.

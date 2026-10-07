@@ -5,8 +5,8 @@ description: More previews, codespaces and workspaces beside the ones mount() se
 
 `mount()` sets up one workspace, codespace and preview. `engine.addView()` adds
 as many more as you need, each in its own mode: Python and JavaScript previews
-side by side, two codespaces in different languages, or read only workspaces
-that mirror the program as blocks in other modes.
+side by side, two codespaces in different languages, or more workspaces that
+show the program as blocks in other modes, read only or editable.
 
 ```ts
 const right = engine.addView({
@@ -25,7 +25,7 @@ await right.ready;                  // text views load their editor in the backg
 | --- | --- |
 | `preview` | Shows the program as text in its mode, read only. |
 | `codespace` | Edits the program as text in its mode: drops, inline value edits, deleting, the grip, like the built-in codespace. |
-| `workspace` | Shows the program as blocks in its mode and follows every change of the main workspace. Read only: `editable: false` is the only value for now, and the default. A click on a block selects it everywhere. |
+| `workspace` | Shows the program as blocks in its mode and follows every change of the main workspace. Read only by default; with `editable: true`, blocks can be moved, connected, edited and deleted there and tiles dropped on it, and every change goes to the main workspace, which stays the program. Undo follows the program's history. A click on a block selects it everywhere. |
 
 Every added view takes part in [selection sync](/guides/selection-sync/) and
 highlights the selected block like the built-in views.
