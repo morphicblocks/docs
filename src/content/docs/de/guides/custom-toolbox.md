@@ -109,7 +109,8 @@ CSS-Vertrag.
 ### Breite
 
 Die Toolbox nimmt die Breite, die dein Layout ihr gibt; ein breiterer Block
-wird abgeschnitten. Das Framework veröffentlicht den breitesten Block einer
+oder eine breitere Codezeile wird abgeschnitten. Das Framework veröffentlicht
+den breitesten Block oder als Text gezeigten Code (`render: "text"`) einer
 Kachel als `--morphic-toolbox-block-width` am Toolbox-Container, aktualisiert
 bei jedem neuen Zeichnen der Kacheln (Mode- oder Schriftwechsel). Die
 Variable steht am Container, nutze sie also dort, plus deinem eigenen
@@ -125,8 +126,11 @@ wachsen:
 }
 ```
 
-Nur Blöcke zählen, lange Beschreibungen, die umbrechen, verbreitern ihn also
-nicht. Ohne eine solche Regel ändert sich nichts.
+Nur Blöcke und Code zählen, da beide nicht umbrechen; lange Beschreibungen,
+die umbrechen, verbreitern ihn nicht. Als Text gezeigter Code wird auf der
+Seite gemessen, eine Toolbox, die beim Zeichnen ihrer Kacheln verborgen ist,
+zählt also bis zum nächsten Neuzeichnen nur ihre Blöcke. Ohne eine solche
+Regel ändert sich nichts.
 
 ### Kacheln, die nur der Block sind
 

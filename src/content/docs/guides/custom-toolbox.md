@@ -105,8 +105,9 @@ See [Styling Modes](/guides/styling-modes/) for the full CSS contract.
 
 ### Width
 
-The toolbox takes the width your layout gives it; a block wider than that is
-cut off. The framework publishes the widest block drawn on a tile as
+The toolbox takes the width your layout gives it; a block or a line of code
+wider than that is cut off. The framework publishes the widest block or code
+shown as text (`render: "text"`) on a tile as
 `--morphic-toolbox-block-width` on the toolbox container, updated whenever the
 tiles are drawn again (a mode or font change). The variable is set on the
 container, so use it there, adding your own tile padding, and let the column
@@ -121,8 +122,10 @@ around it grow to its minimum width:
 }
 ```
 
-Only blocks count, so long descriptions, which wrap, do not widen it. Without
-such a rule nothing changes.
+Only blocks and code count, since neither wraps; long descriptions, which wrap,
+do not widen it. Code shown as text is measured on the page, so a toolbox that
+is hidden while its tiles are drawn counts only its blocks until the next
+redraw. Without such a rule nothing changes.
 
 ### Tiles that are just the block
 
