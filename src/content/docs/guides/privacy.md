@@ -14,8 +14,23 @@ example, no visitor's browser contacts another server.
 
 ## Copy the media
 
-Blockly's media comes with the package. The `morphic-blocks` command copies it
-into the folder your app serves; run it before `dev` and `build`:
+Blockly's media comes with the package. A bundler plugin copies it into
+`public/blockly-media/` whenever `dev` or `build` starts, with no script line:
+
+```ts
+// vite.config.ts
+import blocklyMedia from "morphic-blocks/vite";
+
+export default { plugins: [blocklyMedia()] };
+```
+
+The same plugin comes for webpack, Rspack, Rollup and esbuild:
+`morphic-blocks/webpack`, `/rspack`, `/rollup` and `/esbuild`. For another
+folder, pass it: `blocklyMedia({ folder: "static/blockly-media" })`, relative to
+where the bundler runs.
+
+With Parcel, Turbopack (Next.js) or no bundler, the `morphic-blocks` command
+does the same; run it before `dev` and `build`:
 
 ```json
 {
@@ -26,7 +41,7 @@ into the folder your app serves; run it before `dev` and `build`:
 }
 ```
 
-It copies only when the folder is new or Blockly was updated, so running it
+Both copy only when the folder is new or Blockly was updated, so running them
 every time costs nothing. The copy is generated, so add `public/blockly-media/`
 to your `.gitignore`.
 

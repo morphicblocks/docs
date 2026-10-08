@@ -16,8 +16,23 @@ Besucher einen anderen Server.
 
 ## Die Medien kopieren
 
-Blocklys Medien kommen mit dem Paket. Der Befehl `morphic-blocks` kopiert sie in
-den Ordner, den deine App ausliefert; führe ihn vor `dev` und `build` aus:
+Blocklys Medien kommen mit dem Paket. Ein Bundler-Plugin kopiert sie nach
+`public/blockly-media/`, sobald `dev` oder `build` startet, ohne Skriptzeile:
+
+```ts
+// vite.config.ts
+import blocklyMedia from "morphic-blocks/vite";
+
+export default { plugins: [blocklyMedia()] };
+```
+
+Dasselbe Plugin gibt es für webpack, Rspack, Rollup und esbuild:
+`morphic-blocks/webpack`, `/rspack`, `/rollup` und `/esbuild`. Für einen anderen
+Ordner gib ihn an: `blocklyMedia({ folder: "static/blockly-media" })`, relativ
+zu dem Ort, an dem der Bundler läuft.
+
+Mit Parcel, Turbopack (Next.js) oder ohne Bundler macht der Befehl
+`morphic-blocks` dasselbe; führe ihn vor `dev` und `build` aus:
 
 ```json
 {
@@ -28,8 +43,8 @@ den Ordner, den deine App ausliefert; führe ihn vor `dev` und `build` aus:
 }
 ```
 
-Er kopiert nur, wenn der Ordner neu ist oder Blockly aktualisiert wurde; ihn
-jedes Mal auszuführen kostet also nichts. Die Kopie wird erzeugt, deshalb gehört
+Beide kopieren nur, wenn der Ordner neu ist oder Blockly aktualisiert wurde;
+sie jedes Mal auszuführen kostet also nichts. Die Kopie wird erzeugt, deshalb gehört
 `public/blockly-media/` in deine `.gitignore`.
 
 `public/` ist der Ordner, den Vite unverändert ausliefert; Next.js nutzt

@@ -43,16 +43,18 @@ Dependency, es wird also automatisch mitinstalliert:
 ## Blocklys Medien
 
 Blocklys Bilder und Sounds werden aus `blockly-media/` neben deiner Seite
-geladen. Kopiere sie vor `dev` und `build` mit dem Befehl, der mit dem Paket
-kommt, dorthin:
+geladen. Das Bundler-Plugin, das mit dem Paket kommt, kopiert sie dorthin,
+sobald `dev` oder `build` startet:
 
-```json
-"scripts": {
-  "dev": "morphic-blocks copy-media public/blockly-media && vite",
-  "build": "morphic-blocks copy-media public/blockly-media && vite build"
-}
+```ts
+// vite.config.ts (auch morphic-blocks/webpack, /rspack, /rollup, /esbuild)
+import blocklyMedia from "morphic-blocks/vite";
+
+export default { plugins: [blocklyMedia()] };
 ```
 
+Mit Parcel, Turbopack oder ohne Bundler führe stattdessen
+`morphic-blocks copy-media public/blockly-media` vor `dev` und `build` aus.
 Andere Ordner und Server beschreibt
 [Datenschutz & externe Anfragen](/de/guides/privacy/).
 
