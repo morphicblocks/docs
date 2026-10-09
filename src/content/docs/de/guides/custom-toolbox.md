@@ -37,6 +37,12 @@ Modell.
 | `highlight`  | `true`  | Code, der auf Kacheln als Text steht (`render: "text"`), mit dem [Highlighting](/de/guides/syntax-highlighting/) seines Elements färben, wie der Codespace; `false` lässt ihn schlicht |
 | `touch`      | `true`  | Kacheln lassen sich mit Finger oder Stift ziehen; siehe [Touch und Tastatur](#touch-und-tastatur) |
 | `keyboard`   | `true`  | Kacheln sind mit Tab erreichbar und werden mit Enter oder Leertaste hinzugefügt; siehe [Touch und Tastatur](#touch-und-tastatur) |
+| `layout`     | `"stacked"` | `"stacked"`: jede Kategorie unter ihrer Überschrift; `"tabs"`: eine Liste der Kategorienamen und die Kacheln der gewählten; siehe [Kategorien](#kategorien) |
+| `categoryHeadings` | `true` | Eine Überschrift mit dem Namen der Kategorie über ihren Kacheln |
+| `collapsible` | `true` | Ein Klick auf eine Überschrift klappt ihre Kategorie zu oder auf |
+| `collapsed`  | alle offen | `true` klappt zu Beginn alle zu, eine Liste von Namen nur diese |
+| `onCategoryToggle` | — | `(name, collapsed) => …`, etwa um den Zustand zu merken |
+| `scrollbar`  | `false` | `false` blendet die Scrollbar aus und lässt die Ränder auslaufen, wo weitere Kacheln warten; `true` zeigt sie; siehe [Scrollen](#scrollen) |
 
 Alle lassen sich auch in `mount()` unter `toolbox` setzen, sodass auch eine
 über `toolboxContainer` eingerichtete Toolbox sie bekommt:
@@ -65,6 +71,61 @@ für das Markup). Die Toolbox rendert neu, wenn sich der Toolbox-Mode ändert �
 über `setModes({ toolboxMode })` oder einen Preset-Wechsel — und respektiert die
 [Render-Überschreibung](/de/concepts/presets-and-views/#die-toolbox-render-überschreibung)
 des Preset, um Code-Elements als Blöcke oder als Quelltext zu zeigen.
+
+## Kategorien
+
+Mit Kategorien bekommt jede eine Überschrift mit ihrem Namen. Ein Klick darauf,
+oder Enter oder Leertaste, klappt die Kategorie zu oder auf, und der Zustand
+bleibt, wenn die Kacheln neu gezeichnet werden (Mode- oder Preset-Wechsel). Das
+Markup:
+
+```html
+<div class="morphic-toolbox morphic-toolbox-stacked">
+  <div data-category="output" data-collapsed style="--morphic-category-color: #5C81A6">
+    <button class="morphic-category-heading" aria-expanded="false">Output</button>
+    <div class="morphic-category-tiles" hidden>…Kacheln…</div>
+  </div>
+</div>
+```
+
+`layout: "tabs"` zeigt eine Kategorie auf einmal, wie Blocklys eigene Toolbox:
+eine Liste der Namen (`.morphic-category-tabs`, Buttons `.morphic-category-tab`
+mit `aria-selected`) und die Kacheln der gewählten Kategorie. Zu Beginn ist die
+erste gewählt; Kacheln ohne Kategorie bleiben sichtbar. Wo die Liste sitzt,
+bestimmt dein CSS, etwa neben den Kacheln:
+
+```css
+.morphic-toolbox-tabs { display: grid; grid-template-columns: auto 1fr; gap: 0.5rem; }
+.morphic-category-tabs { display: flex; flex-direction: column; gap: 4px; }
+.morphic-category-tab[aria-selected="true"] { background: var(--morphic-category-color); color: white; }
+```
+
+Die Breite der Toolbox zählt jede Kategorie, ob zugeklappt oder nicht, das
+Aufklappen verbreitert sie also nie. Ohne Kategorien sind die Kacheln eine
+flache Liste, und `"tabs"` warnt über `onWarning`.
+
+## Scrollen
+
+Standardmäßig blendet die Toolbox ihre Scrollbar aus und lässt den Rand
+auslaufen, wo oben oder unten weitere Kacheln warten. Der Container bekommt
+Klassen, um das selbst zu gestalten:
+
+| Klasse | Solange |
+| --- | --- |
+| `morphic-toolbox` | immer |
+| `morphic-toolbox-more-above` | oben Kacheln verborgen sind |
+| `morphic-toolbox-more-below` | unten Kacheln verborgen sind |
+
+Die Standard-Styles haben kein Gewicht (`:where()`), jede deiner Regeln gewinnt
+also, etwa ein Schatten statt des Auslaufens:
+
+```css
+.morphic-toolbox-more-below { mask-image: none; box-shadow: inset 0 -12px 12px -12px rgb(0 0 0 / 0.3); }
+```
+
+`scrollbar: true` behält die normale Scrollbar (gestalte sie mit
+`scrollbar-width` und `scrollbar-color`); die Klassen bleiben. Das funktioniert,
+wenn der Toolbox-Container das Element ist, das scrollt (`overflow-y: auto`).
 
 ## Touch und Tastatur
 

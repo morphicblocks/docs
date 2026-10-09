@@ -37,6 +37,12 @@ model.
 | `highlight`  | `true`  | Colour code shown as text on tiles (`render: "text"`) with its element's [highlighting](/guides/syntax-highlighting/), like the codespace; `false` leaves it plain |
 | `touch`      | `true`  | Tiles can be dragged with a finger or pen; see [Touch and keyboard](#touch-and-keyboard) |
 | `keyboard`   | `true`  | Tiles can be reached with Tab and added with Enter or Space; see [Touch and keyboard](#touch-and-keyboard) |
+| `layout`     | `"stacked"` | `"stacked"`: every category under its heading; `"tabs"`: a list of the category names and the tiles of the chosen one; see [Categories](#categories) |
+| `categoryHeadings` | `true` | A heading with the category's name above its tiles |
+| `collapsible` | `true` | A click on a heading collapses or expands its category |
+| `collapsed`  | all open | `true` collapses all at the start, a list of names only those |
+| `onCategoryToggle` | — | `(name, collapsed) => …`, e.g. to remember the state |
+| `scrollbar`  | `false` | `false` hides the scrollbar and fades the edges where more tiles wait; `true` shows it; see [Scrolling](#scrolling) |
 
 All of them can also be set in `mount()` under `toolbox`, so a toolbox set up by
 `toolboxContainer` gets them too:
@@ -64,6 +70,59 @@ markup). The toolbox re-renders when the toolbox mode changes — via
 `setModes({ toolboxMode })` or a preset switch — and honours the preset's
 [render override](/concepts/presets-and-views/#the-toolbox-render-override)
 for showing code elements as blocks or as source text.
+
+## Categories
+
+With categories, each one gets a heading with its name. A click on it, or
+Enter or Space, collapses or expands the category, and the state stays when the
+tiles are drawn again (a mode or preset change). The markup:
+
+```html
+<div class="morphic-toolbox morphic-toolbox-stacked">
+  <div data-category="output" data-collapsed style="--morphic-category-color: #5C81A6">
+    <button class="morphic-category-heading" aria-expanded="false">Output</button>
+    <div class="morphic-category-tiles" hidden>…tiles…</div>
+  </div>
+</div>
+```
+
+`layout: "tabs"` shows one category at a time, like Blockly's own toolbox: a
+list of the names (`.morphic-category-tabs`, buttons `.morphic-category-tab`
+with `aria-selected`) and the chosen category's tiles. The first is shown at
+the start; tiles without a category stay in view. Where the list sits is your
+CSS, for example beside the tiles:
+
+```css
+.morphic-toolbox-tabs { display: grid; grid-template-columns: auto 1fr; gap: 0.5rem; }
+.morphic-category-tabs { display: flex; flex-direction: column; gap: 4px; }
+.morphic-category-tab[aria-selected="true"] { background: var(--morphic-category-color); color: white; }
+```
+
+The toolbox's width counts every category, collapsed or not, so opening one
+never widens it. Without categories the tiles are a flat list, and `"tabs"`
+warns through `onWarning`.
+
+## Scrolling
+
+By default the toolbox hides its scrollbar and fades the edge where more tiles
+wait above or below. The container gets classes to style that yourself:
+
+| Class | While |
+| --- | --- |
+| `morphic-toolbox` | always |
+| `morphic-toolbox-more-above` | tiles are hidden above |
+| `morphic-toolbox-more-below` | tiles are hidden below |
+
+The default styles have no weight (`:where()`), so any rule of yours wins, for
+example a shadow instead of the fade:
+
+```css
+.morphic-toolbox-more-below { mask-image: none; box-shadow: inset 0 -12px 12px -12px rgb(0 0 0 / 0.3); }
+```
+
+`scrollbar: true` keeps the normal scrollbar (style it with `scrollbar-width`
+and `scrollbar-color`); the classes stay. This works when the toolbox
+container is the element that scrolls (`overflow-y: auto`).
 
 ## Touch and keyboard
 
