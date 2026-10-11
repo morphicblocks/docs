@@ -41,7 +41,6 @@ Ein Klick auf eine leere Fläche in einer Text-View löscht die Hervorhebung
 engine.mount({
   // …Container
   selectionSync: {
-    highlightColor: "rgba(85, 189, 203, 0.25)",
     blockToCode: true,
     codeToBlock: true,
   },
@@ -50,14 +49,17 @@ engine.mount({
 
 | Option           | Standard | Zweck                                    |
 | --- | --- | --- |
-| `highlightColor` | die Auswahlfarbe der Ansicht | CSS-Hintergrund für hervorgehobene Zeilen |
 | `blockToCode`    | `true`  | Richtung Block → Code aktivieren          |
 | `codeToBlock`    | `true`  | Richtung Code → Block aktivieren          |
 
-Standardmäßig hebt jede Textansicht in einem helleren Ton ihrer eigenen
-`selectionBackground` hervor (aus `editorTheme` oder `previewTheme`), sodass die
-Hervorhebung auf hellen wie dunklen Themes sichtbar ist. Setze
-`highlightColor`, um in allen Ansichten eine eigene Farbe zu verwenden.
+Jede Textansicht hebt in einem helleren Ton ihrer eigenen `selectionBackground`
+hervor (aus `editorTheme` oder `previewTheme`), sodass die Hervorhebung auf
+hellen wie dunklen Themes sichtbar ist. Für eine eigene Farbe setze die
+CSS-Variable `--morphic-highlight-color`; sie hat Vorrang vor dem Theme:
+
+```css
+.cm-content { --morphic-highlight-color: rgb(85 189 203 / 0.25); }
+```
 
 Ausschalten mit `engine.disableSelectionSync()`.
 

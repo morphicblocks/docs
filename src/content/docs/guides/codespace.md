@@ -61,6 +61,65 @@ Empty value slots render their configured
 [empty defaults](/concepts/definitions-format/#shadows-placeholders-and-empty-slots),
 or an editable `___` marker when none is set.
 
+## Groups of blocks
+
+Blocks that are connected form a group, like a stack in the workspace. In the
+text views (codespace, previews), the framework marks each group's lines with
+classes. The text itself and its line numbers stay unchanged:
+
+| Class | On |
+| --- | --- |
+| `morphic-group-start` | the first line of a group |
+| `morphic-group-end` | the last line of a group |
+| `morphic-group-line` | every line of a group with more than one line |
+| `morphic-group-odd` / `morphic-group-even` | every line of every other group |
+| `morphic-group-hover` | every line of the group under the mouse |
+
+The line numbers carry the same classes. Without your own CSS, nothing changes.
+Some ideas:
+
+**1. Space between groups**, looking like an empty line without adding one. The
+gap goes below each group, so every line number stays on its line:
+
+```css
+.cm-content .cm-line.morphic-group-end:not(:last-child) { padding-bottom: 1lh; }
+```
+
+**2. A bar along each group:**
+
+```css
+.cm-content .morphic-group-line { box-shadow: inset 3px 0 0 #c9d6e3; }
+```
+
+**3. Every other group tinted:**
+
+```css
+.cm-content .morphic-group-even { background: rgb(0 0 0 / 0.03); }
+```
+
+**4. A separator line between groups:**
+
+```css
+.cm-content .morphic-group-start:not(:first-child) { border-top: 1px dashed #d0d7de; }
+```
+
+**5. The group under the mouse:**
+
+```css
+.cm-content .morphic-group-hover { box-shadow: inset 3px 0 0 #00509b; }
+```
+
+The block under the mouse (codespace) and the selected block are highlighted
+already, so a bar stays easier to tell apart from them than a background. A
+background works too (`background: rgb(0 80 155 / 0.06)`). To show only the
+groups, turn the other highlights off:
+
+```css
+.cm-content .morphic-hover-target { background: none; }    /* block under the mouse */
+.cm-content .morphic-editable-hover { outline: none; }     /* outline of an editable value */
+.cm-content { --morphic-highlight-color: transparent; }    /* selected block */
+```
+
 ## Options
 
 `mountCodespace(options?)` takes the same options as the code editor

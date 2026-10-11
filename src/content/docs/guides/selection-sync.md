@@ -39,7 +39,6 @@ Pass the options to `mount()`, or to `enableSelectionSync()`:
 engine.mount({
   // …containers
   selectionSync: {
-    highlightColor: "rgba(85, 189, 203, 0.25)",
     blockToCode: true,
     codeToBlock: true,
   },
@@ -48,14 +47,17 @@ engine.mount({
 
 | Option           | Default | Purpose                                  |
 | --- | --- | --- |
-| `highlightColor` | the view's selection color | CSS background for highlighted lines |
 | `blockToCode`    | `true`  | Enable the block → code direction        |
 | `codeToBlock`    | `true`  | Enable the code → block direction        |
 
-By default each text view highlights in a lighter tint of its own
-`selectionBackground` (from `editorTheme` or `previewTheme`), so the highlight
-shows on light and dark themes alike. Set `highlightColor` to use one color of
-your own in every view.
+Each text view highlights in a lighter tint of its own `selectionBackground`
+(from `editorTheme` or `previewTheme`), so the highlight shows on light and
+dark themes alike. To use a color of your own, set the CSS variable
+`--morphic-highlight-color`; it wins over the theme:
+
+```css
+.cm-content { --morphic-highlight-color: rgb(85 189 203 / 0.25); }
+```
 
 Turn it off with `engine.disableSelectionSync()`.
 

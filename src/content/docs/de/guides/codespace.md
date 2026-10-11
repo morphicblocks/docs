@@ -64,6 +64,66 @@ Leere Value-Slots rendern ihre konfigurierten
 [Empty-Defaults](/de/concepts/definitions-format/#shadows-placeholder-und-leere-slots)
 oder eine editierbare `___`-Markierung, wenn keine gesetzt ist.
 
+## Gruppen von Blöcken
+
+Verbundene Blöcke bilden eine Gruppe, wie ein Stapel im Workspace. In den
+Text-Views (Codespace, Previews) markiert das Framework die Zeilen jeder Gruppe
+mit Klassen. Der Text selbst und seine Zeilennummern bleiben unverändert:
+
+| Klasse | An |
+| --- | --- |
+| `morphic-group-start` | der ersten Zeile einer Gruppe |
+| `morphic-group-end` | der letzten Zeile einer Gruppe |
+| `morphic-group-line` | jeder Zeile einer Gruppe mit mehr als einer Zeile |
+| `morphic-group-odd` / `morphic-group-even` | jeder Zeile jeder zweiten Gruppe |
+| `morphic-group-hover` | jeder Zeile der Gruppe unter der Maus |
+
+Die Zeilennummern tragen dieselben Klassen. Ohne eigenes CSS ändert sich nichts.
+Einige Ideen:
+
+**1. Abstand zwischen Gruppen**, der wie eine Leerzeile aussieht, ohne eine
+hinzuzufügen. Der Abstand kommt unter jede Gruppe, so bleibt jede Zeilennummer
+an ihrer Zeile:
+
+```css
+.cm-content .cm-line.morphic-group-end:not(:last-child) { padding-bottom: 1lh; }
+```
+
+**2. Ein Balken entlang jeder Gruppe:**
+
+```css
+.cm-content .morphic-group-line { box-shadow: inset 3px 0 0 #c9d6e3; }
+```
+
+**3. Jede zweite Gruppe getönt:**
+
+```css
+.cm-content .morphic-group-even { background: rgb(0 0 0 / 0.03); }
+```
+
+**4. Eine Trennlinie zwischen Gruppen:**
+
+```css
+.cm-content .morphic-group-start:not(:first-child) { border-top: 1px dashed #d0d7de; }
+```
+
+**5. Die Gruppe unter der Maus:**
+
+```css
+.cm-content .morphic-group-hover { box-shadow: inset 3px 0 0 #00509b; }
+```
+
+Der Block unter der Maus (Codespace) und der ausgewählte Block sind schon
+hervorgehoben, ein Balken bleibt daher leichter von ihnen zu unterscheiden als
+ein Hintergrund. Ein Hintergrund geht auch (`background: rgb(0 80 155 / 0.06)`).
+Um nur die Gruppen zu zeigen, schalte die anderen Hervorhebungen aus:
+
+```css
+.cm-content .morphic-hover-target { background: none; }    /* Block unter der Maus */
+.cm-content .morphic-editable-hover { outline: none; }     /* Kontur eines editierbaren Werts */
+.cm-content { --morphic-highlight-color: transparent; }    /* ausgewählter Block */
+```
+
 ## Optionen
 
 `mountCodespace(options?)` nimmt dieselben Optionen wie der Code-Editor
