@@ -51,7 +51,10 @@ ever see text.
   dropdown) overlays an input on the exact range;
   [shadows](/concepts/definitions-format/#shadows-placeholders-and-empty-slots)
   materialise to real blocks on first edit.
-- **Delete** — Delete/Backspace on a block's line, or the gutter `✕`.
+- **Delete** — Delete/Backspace on a block's line, or the gutter `✕`, removes
+  the block the line belongs to with everything inside it, as in the workspace:
+  the statement starting on the line, the block a closing line ends, or a value
+  standing as its own group.
 
 Drops follow the same connection checks as the workspace: a block goes only
 where its connections fit (a value only into a slot whose `check` accepts its

@@ -54,7 +54,9 @@ Nutzer nur Text sehen.
   [Shadows](/de/concepts/definitions-format/#shadows-placeholder-und-leere-slots)
   materialisieren beim ersten Editieren zu echten Blöcken.
 - **Löschen** — Entf/Rücktaste auf der Zeile eines Blocks oder das `✕` in der
-  Leiste.
+  Leiste entfernt den Block, zu dem die Zeile gehört, mit allem darin, wie im
+  Workspace: die Anweisung, die in der Zeile beginnt, den Block, den eine
+  schließende Zeile beendet, oder einen Wert, der als eigene Gruppe steht.
 
 Drops folgen denselben Verbindungsprüfungen wie der Workspace: Ein Block landet
 nur dort, wo seine Verbindungen passen (ein Wert nur in einem Slot, dessen
