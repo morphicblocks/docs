@@ -58,7 +58,9 @@ ever see text.
 
 Drops follow the same connection checks as the workspace: a block goes only
 where its connections fit (a value only into a slot whose `check` accepts its
-type), and a refused drop changes nothing.
+type), and a refused drop changes nothing. A value dropped onto a filled slot
+keeps the old value, as in the workspace: it goes into the new block's only
+slot that takes it, else to its own line below the others.
 
 Empty value slots render their configured
 [empty defaults](/concepts/definitions-format/#shadows-placeholders-and-empty-slots),

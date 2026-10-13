@@ -60,7 +60,10 @@ Nutzer nur Text sehen.
 
 Drops folgen denselben Verbindungsprüfungen wie der Workspace: Ein Block landet
 nur dort, wo seine Verbindungen passen (ein Wert nur in einem Slot, dessen
-`check` seinen Typ annimmt), und ein abgelehnter Drop ändert nichts.
+`check` seinen Typ annimmt), und ein abgelehnter Drop ändert nichts. Ein Wert,
+der auf einen belegten Slot fällt, behält den alten Wert, wie im Workspace:
+Der alte landet im einzigen Slot des neuen Blocks, der ihn annimmt, sonst in
+einer eigenen Zeile unter den anderen.
 
 Leere Value-Slots rendern ihre konfigurierten
 [Empty-Defaults](/de/concepts/definitions-format/#shadows-placeholder-und-leere-slots)
