@@ -42,7 +42,8 @@ Omitting `items` gives the pane's defaults:
 
 | Pane                    | Items                                                             |
 | --- | --- |
-| `workspace`, `codespace` | mode label · spacer · undo · redo · copy · paste · zoom in/out/fit · clear |
+| `workspace` | mode label · spacer · undo · redo · copy · paste · zoom in/out/fit · clear |
+| `codespace` | mode label · spacer · undo · redo · copy · paste · delete · zoom in/out/fit · clear |
 | `preview`, added workspace | mode label · spacer · copy · zoom in/out/fit · read-only badge     |
 
 Pass `items: []` to render none, or compose your own from the exported
@@ -75,6 +76,9 @@ view name (`workspace`, `codespace`, `preview`, or an added view's):
   block (offset from the original).
 - `engine.hasClipboardContents()`: whether there is a block to paste, e.g. to
   disable a paste button of your own.
+- `engine.deleteSelectedLines(view)`: deletes the blocks of the lines selected
+  in a codespace; `engine.hasSelectedLines(view)` tells whether any are, e.g.
+  to enable a button of your own.
 - `engine.zoomPane(view, "in" | "out" | "fit")` — Blockly zoom on a
   workspace; font-size scaling on a text view.
 

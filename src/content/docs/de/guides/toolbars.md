@@ -43,7 +43,8 @@ Lässt du `items` weg, erhältst du die Standardwerte des Pane:
 
 | Pane                    | Elemente                                                         |
 | --- | --- |
-| `workspace`, `codespace` | Mode-Label · Spacer · Undo · Redo · Kopieren · Einfügen · Zoom rein/raus/passend · Leeren |
+| `workspace` | Mode-Label · Spacer · Undo · Redo · Kopieren · Einfügen · Zoom rein/raus/passend · Leeren |
+| `codespace` | Mode-Label · Spacer · Undo · Redo · Kopieren · Einfügen · Löschen · Zoom rein/raus/passend · Leeren |
 | `preview`, zusätzlicher Workspace | Mode-Label · Spacer · Kopieren · Zoom rein/raus/passend · Read-only-Badge |
 
 Übergib `items: []`, um keine zu rendern, oder stelle eigene aus den
@@ -78,6 +79,9 @@ zusätzlichen View):
   Block ein (versetzt zum Original).
 - `engine.hasClipboardContents()`: ob ein Block zum Einfügen bereitliegt, etwa
   um einen eigenen Einfügen-Button zu deaktivieren.
+- `engine.deleteSelectedLines(view)`: löscht die Blöcke der in einem Codespace
+  ausgewählten Zeilen; `engine.hasSelectedLines(view)` sagt, ob welche
+  ausgewählt sind, etwa um einen eigenen Button freizugeben.
 - `engine.zoomPane(view, "in" | "out" | "fit")` — Blockly-Zoom in einem
   Workspace; Schriftgrößen-Skalierung in einer Text-View.
 

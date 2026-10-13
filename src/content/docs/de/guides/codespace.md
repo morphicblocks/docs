@@ -56,7 +56,10 @@ Nutzer nur Text sehen.
 - **Löschen** — Entf/Rücktaste auf der Zeile eines Blocks oder das `✕` in der
   Leiste entfernt den Block, zu dem die Zeile gehört, mit allem darin, wie im
   Workspace: die Anweisung, die in der Zeile beginnt, den Block, den eine
-  schließende Zeile beendet, oder einen Wert, der als eigene Gruppe steht.
+  schließende Zeile beendet, oder einen Wert, der als eigene Gruppe steht. Sind
+  mehrere Zeilen ausgewählt (mit der Maus ziehen oder Umschalt und Pfeiltasten),
+  entfernen Entf/Rücktaste oder das `✕` der Toolbar die Blöcke aller dieser
+  Zeilen in einem Rückgängig-Schritt.
 
 Drops folgen denselben Verbindungsprüfungen wie der Workspace: Ein Block landet
 nur dort, wo seine Verbindungen passen (ein Wert nur in einem Slot, dessen
@@ -139,6 +142,23 @@ Standardwerte, die du überschreiben kannst:
 | --- | --- |
 | `onDelete`     | Löscht den Block in der angegebenen Zeile aus dem Modell    |
 | `canDragBlock` | Griffe erscheinen für alle beweglichen Blöcke (Statement und Value) |
+
+Jede Art zu löschen ist standardmäßig an und lässt sich abschalten, für den
+Codespace, den `mount()` einrichtet, mit `codespace`, für einen
+[zusätzlichen Codespace](/de/guides/added-views/) mit `delete`:
+
+```ts
+engine.mount({
+  // …Container
+  codespace: { delete: { lineButtons: false, keys: true, toolbarButton: true } },
+});
+```
+
+| Option | Schaltet ab |
+| --- | --- |
+| `lineButtons` | das `✕` neben jeder Zeile, in der ein Block beginnt |
+| `keys` | Entf und Rücktaste |
+| `toolbarButton` | das `✕` der Toolbar für die ausgewählten Zeilen |
 
 Theme zur Laufzeit: `engine.setCodespaceTheme(theme)`.
 

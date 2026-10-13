@@ -54,7 +54,9 @@ ever see text.
 - **Delete** — Delete/Backspace on a block's line, or the gutter `✕`, removes
   the block the line belongs to with everything inside it, as in the workspace:
   the statement starting on the line, the block a closing line ends, or a value
-  standing as its own group.
+  standing as its own group. With several lines selected (drag with the mouse,
+  or Shift and the arrow keys), Delete/Backspace or the toolbar's `✕` removes
+  the blocks of all of them in one undo step.
 
 Drops follow the same connection checks as the workspace: a block goes only
 where its connections fit (a value only into a slot whose `check` accepts its
@@ -135,6 +137,23 @@ defaults you can override:
 | --- | --- |
 | `onDelete`     | Deletes the block at the given line from the model          |
 | `canDragBlock` | Grips appear for all movable blocks (statement and value)   |
+
+Each way of deleting is on by default and can be turned off, for the codespace
+`mount()` sets up with `codespace`, for an
+[added codespace](/guides/added-views/) with `delete`:
+
+```ts
+engine.mount({
+  // …containers
+  codespace: { delete: { lineButtons: false, keys: true, toolbarButton: true } },
+});
+```
+
+| Option | Turns off |
+| --- | --- |
+| `lineButtons` | the `✕` beside each line where a block starts |
+| `keys` | Delete and Backspace |
+| `toolbarButton` | the toolbar's `✕` for the selected lines |
 
 Theme at runtime: `engine.setCodespaceTheme(theme)`.
 
