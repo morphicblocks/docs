@@ -116,6 +116,7 @@ language can be real, simplified, invented, or plain words.
 | `stringQuote` | Delimiter wrapped around framework-supplied literals in `String`-checked slots, so the codespace renders `print("hello")` rather than `print(hello)`. Omit to disable quoting. |
 | `empty` | Defaults for empty value slots (see [below](#shadows-placeholders-and-empty-slots)) |
 | `emptyStatement` | Written into an empty statement slot where the language needs one, e.g. `"pass"` for Python, so an empty loop body stays valid code. Omit to leave empty bodies empty. |
+| `types` | Names `%1:type` writes, keyed by the value's type (see [Type names](#type-names)) |
 | `highlighting` | Token colors for the codespace and preview (see [below](#highlighting)) |
 | `values` | How printed values read while this element is shown (`True`, `None`, `['a']`); see [Behaviors & Code Generation](/concepts/behaviors-and-codegen/#printed-values-in-the-shown-language) |
 
@@ -421,6 +422,7 @@ instead — an undeclared `%FIELDNAME` token is left for the behavior to fill.
 | ------------ | ---------------------------------------------------------------------- |
 | `%1`, `%2`   | Input slot — a Blockly input *and* a substitution point in text views  |
 | `%FIELDNAME` | Inline field declared in [`fields`](#fields) (uppercase token, e.g. `%NUM`) — rendered on the block, substituted in text views |
+| `%1:type`    | The name of the type of slot 1's value (see [Type names](#type-names)) |
 | `<img …>`    | Image (Blockly `FieldImage` on workspace blocks)                       |
 | Plain text   | Becomes a Blockly label field                                          |
 
@@ -433,6 +435,33 @@ compounds across nesting:
 
 renders multi-line with its body indented — nested blocks indent further
 automatically.
+
+### Type names
+
+`%1:type` writes the type of the value in slot 1, so a typed language needs no
+type dropdown and the type always fits the value. The value's type is its
+block's `output` check, or the slot's `check` while the slot is empty. Each
+language names the types in its [`code`](#code) settings; `default` is used
+when no key fits, and without it nothing is written:
+
+```json
+"code": {
+  "java": { "types": { "Number": "int", "String": "String", "Boolean": "boolean", "default": "var" } }
+},
+"blocks": [{
+  "identifier": "declare",
+  "elements": { "java": "%1:type %NAME = %1;", "js": "let %NAME = %1;" },
+  "inputSlots": { "1": { "kind": "value", "name": "VALUE" } }
+}]
+```
+
+With `"hey"` in the slot, Java reads `String s = "hey";`; with `5`, `int s = 5;`.
+A language without types leaves the token out, as `js` does here. In blocks the
+name is a label that changes with the value. `%2:type` is the type of slot 2.
+
+Take a block's type from one place: `%1:type` in every language that writes a
+type, or a field of its own (e.g. `int x;` with no value), not both. A field in
+one language and `%1:type` in another can disagree.
 
 ## Validation
 
@@ -447,6 +476,7 @@ Throws (every problem is collected and reported at once):
   block plugged into it, would vanish when switching modes
 - a `%FIELDNAME` token with no [`fields`](#fields) entry and no `onViewApplied`
   to supply the field
+- a `%N:type` token whose template has no value slot `%N`
 - a `shadow` / `placeholder` that names neither one of your blocks nor a real
   Blockly type
 - a setting in its place from before 0.3.0 (`stringQuote` or `empty` in

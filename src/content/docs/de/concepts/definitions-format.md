@@ -120,6 +120,7 @@ erfunden oder Alltagssprache sein.
 | `stringQuote` | Begrenzer um framework-gelieferte Literale in `String`-geprüften Slots, sodass der Codespace `print("hello")` statt `print(hello)` rendert. Weglassen deaktiviert das Quoting. |
 | `empty` | Vorgaben für leere Value-Slots (siehe [unten](#shadows-placeholder-und-leere-slots)) |
 | `emptyStatement` | Wird in einen leeren Statement-Slot geschrieben, wo die Sprache eine Anweisung braucht, z. B. `"pass"` für Python, damit ein leerer Schleifenrumpf gültiger Code bleibt. Weglassen lässt leere Rümpfe leer. |
+| `types` | Namen, die `%1:type` schreibt, geschlüsselt nach dem Typ des Werts (siehe [Typnamen](#typnamen)) |
 | `highlighting` | Token-Farben für Codespace und Preview (siehe [unten](#highlighting)) |
 | `values` | Wie ausgegebene Werte sich lesen, solange dieses Element gezeigt wird (`True`, `None`, `['a']`); siehe [Behaviors & Code-Erzeugung](/de/concepts/behaviors-and-codegen/#ausgegebene-werte-in-der-gezeigten-sprache) |
 
@@ -434,6 +435,7 @@ Der Inhalt eines `code`-Elements ist ein Template:
 | --- | --- |
 | `%1`, `%2` | Input-Slot — ein Blockly-Input *und* eine Einsetzstelle in Text-Views |
 | `%FIELDNAME` | Inline-Feld deklariert in [`fields`](#felder) (Großbuchstaben-Token, z. B. `%NUM`) — auf dem Block gerendert, in Text-Views eingesetzt |
+| `%1:type` | Der Name des Typs des Werts in Slot 1 (siehe [Typnamen](#typnamen)) |
 | `<img …>` | Bild (Blockly `FieldImage` auf Workspace-Blöcken) |
 | Klartext | Wird zu einem Blockly-Label-Feld |
 
@@ -447,6 +449,34 @@ Einrückung summiert sich über die Verschachtelung:
 rendert mehrzeilig mit eingerücktem Rumpf — verschachtelte Blöcke rücken
 automatisch weiter ein.
 
+### Typnamen
+
+`%1:type` schreibt den Typ des Werts in Slot 1. So braucht eine typisierte
+Sprache kein Typ-Dropdown, und der Typ passt immer zum Wert. Der Typ des Werts
+ist der `output`-Check seines Blocks, oder der `check` des Slots, solange er
+leer ist. Jede Sprache benennt die Typen in ihren [`code`](#code)-Einstellungen;
+`default` gilt, wenn kein Schlüssel passt, und ohne ihn wird nichts geschrieben:
+
+```json
+"code": {
+  "java": { "types": { "Number": "int", "String": "String", "Boolean": "boolean", "default": "var" } }
+},
+"blocks": [{
+  "identifier": "declare",
+  "elements": { "java": "%1:type %NAME = %1;", "js": "let %NAME = %1;" },
+  "inputSlots": { "1": { "kind": "value", "name": "VALUE" } }
+}]
+```
+
+Mit `"hey"` im Slot liest Java `String s = "hey";`, mit `5` `int s = 5;`. Eine
+Sprache ohne Typen lässt das Token weg, wie hier `js`. In Blöcken ist der Name
+ein Label, das sich mit dem Wert ändert. `%2:type` ist der Typ von Slot 2.
+
+Nimm den Typ eines Blocks aus einer Quelle: `%1:type` in jeder Sprache, die
+einen Typ schreibt, oder ein eigenes Feld (z. B. `int x;` ohne Wert), nicht
+beides. Ein Feld in einer Sprache und `%1:type` in einer anderen können sich
+widersprechen.
+
 ## Validierung
 
 Das Framework prüft deine Definitionen beim `mount()`, damit Probleme, die sonst
@@ -459,6 +489,7 @@ Wirft (alle Probleme werden gesammelt und auf einmal gemeldet):
 - ein Block, dessen `code`-Elemente sich über ihre `%N`-Menge uneinig sind — ein
   Input, und jeder daran gesteckte Block, würde beim Mode-Wechsel verschwinden
 - ein `%FIELDNAME`-Token ohne [`fields`](#felder)-Eintrag und ohne `onViewApplied`
+- ein `%N:type`-Token, dessen Template keinen Value-Slot `%N` hat
 - ein `shadow` / `placeholder`, der weder einen deiner Blöcke noch einen echten
   Blockly-Typ benennt
 - eine Einstellung an ihrem Platz von vor 0.3.0 (`stringQuote` oder `empty` in
