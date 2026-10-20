@@ -1,141 +1,161 @@
 ---
 title: Presets & Views
-description: "Weise jedem View einen Mode zu: Toolbox, Workspace, Codespace, Preview."
+description: "Deklariere die Views, gib ihnen Container und sag, was jeder zeigt."
 ---
 
-Morphic Blocks rendert in bis zu vier **Views**:
+Das Programm erscheint in **Views**. Jeder View hat einen Namen und eine Art:
 
-| View        | Was es ist                                                        |
-| ----------- | ----------------------------------------------------------------- |
-| `toolbox`   | HTML-Kacheln, aus denen der Nutzer Blöcke zieht                    |
-| `workspace` | Die Blockly-Fläche mit ziehbaren Blöcken                           |
-| `codespace` | Eine über die Struktur editierbare *Text*-Ansicht desselben Modells |
-| `preview`   | Eine schreibgeschützte Text-Ansicht (z. B. JavaScript neben Python) |
+| Art         | Was es ist                                                          |
+| ----------- | ------------------------------------------------------------------- |
+| `workspace` | Eine Blockly-Fläche mit ziehbaren Blöcken                           |
+| `codespace` | Eine Text-Ansicht desselben Block-Modells, über die Struktur editierbar |
 
-Jeder View rendert **dasselbe Block-Modell**, jeder in seinem eigenen
-[Mode](/de/concepts/modes/). Ein **Preset** ist eine benannte Zuordnung von
-Modes zu Views:
+Ein Codespace mit `editable: false` zeigt das Programm als Text,
+schreibgeschützt (was 0.3 die Preview nannte). Neben den Views zeigt die
+**Toolbox** die Kacheln, in einem [Mode](/de/concepts/modes/).
+
+## Views deklarieren
+
+Views werden in den Definitionen mit Namen deklariert:
+
+```json
+{
+  "views": {
+    "blocks": "workspace",
+    "code": "codespace",
+    "read": { "kind": "codespace", "editable": false }
+  }
+}
+```
+
+Eine bloße Art ist die Kurzform. Die Langform nimmt:
+
+| Feld       | Zweck                                                                   |
+| ---------- | ----------------------------------------------------------------------- |
+| `kind`     | `"workspace"` oder `"codespace"`                                        |
+| `editable` | Ob sich das Programm dort ändern lässt. Standard `true`                 |
+| `rtl`      | Von rechts nach links (`true`) oder von links nach rechts (`false`); siehe [Textrichtung](/de/guides/text-direction/) |
+| `delete`   | Wie Blöcke in einem Codespace gelöscht werden; siehe [Codespace](/de/guides/codespace/#optionen) |
+
+Ohne `views` gibt es zwei: `workspace` und `codespace`.
+
+Die App gibt Container mit Namen, und nur die Views, die einen bekommen,
+werden eingerichtet. So dienen dieselben Definitionen einer ganzen Seite und
+einer kleinen Einbettung:
+
+```ts
+engine.mount({
+  containers: { blocks: blocksElement, code: codeElement, read: readElement },
+  toolboxContainer,
+});
+```
+
+`workspaceContainer` und `codespaceContainer` sind kurz für
+`containers.workspace` und `containers.codespace`.
+
+**Das Programm** liegt im ersten Workspace, der einen Container hat. Jeder
+andere Workspace zeigt eine Kopie und schickt seine Änderungen dorthin. Ganz
+ohne Workspace läuft Blockly verborgen, so dass auch ein Codespace allein ein
+echtes Block-Modell bearbeitet.
+
+## Was ein View zeigt
+
+Ein View zeigt ein **Code-Element**, keinen Mode: `"python"`, `"concept"`.
+Modes sind für die Toolbox-Kacheln. Ohne Preset zeigt jeder View das erste
+Code-Element des ersten Modes.
+
+## Presets
+
+Ein **Preset** sagt, was die Toolbox und jeder View zeigen:
 
 ```json
 {
   "presets": [
-    { "name": "iconic", "label": "Iconic", "toolbox": "iconic", "workspace": "conceptual" },
-    { "name": "hybrid", "label": "Hybrid",
-      "toolbox": "conceptual", "workspace": "conceptual",
-      "codespace": "python", "preview": "javascript" },
-    { "name": "text", "label": "Text",
-      "toolbox": { "mode": "python", "render": { "python": "text" } },
-      "codespace": "python" }
+    { "name": "start", "label": "Start", "toolbox": "iconic", "views": { "blocks": "concept" } },
+    { "name": "both", "label": "Beides", "toolbox": "concept",
+      "views": { "blocks": "concept", "code": "python", "read": "javascript" } },
+    { "name": "text", "label": "Text", "toolbox": "python-text", "views": { "code": "python" } }
   ]
 }
 ```
 
-| Feld        | Erforderlich | Zweck                                                    |
-| ----------- | ------------ | -------------------------------------------------------- |
-| `name`      | ja           | Preset-Identifier                                        |
-| `label`     | nein         | Anzeige-Label (fällt auf `name` zurück)                  |
-| `toolbox`   | ja           | Toolbox-Mode, oder `{ mode, render }` (siehe unten)      |
-| `workspace` | nein*        | Mode für den Block-Workspace                             |
-| `codespace` | nein*        | Mode, dessen Quell-Element der Codespace rendert          |
-| `preview`   | nein         | Mode, dessen Quell-Element die schreibgeschützte Preview rendert |
-| `views`     | nein         | Modes [zusätzlicher Views](/de/guides/added-views/), nach View-Namen |
+| Feld      | Pflicht | Zweck                                                |
+| --------- | ------- | ---------------------------------------------------- |
+| `name`    | ja      | Bezeichner des Presets                               |
+| `label`   | nein    | Anzeigename (sonst `name`)                           |
+| `toolbox` | ja      | Der [Mode](/de/concepts/modes/) der Kacheln          |
+| `views`   | ja      | Das Code-Element, das jeder View zeigt, nach View-Name |
 
-\* Mindestens ein Editier-Bereich (`workspace` oder `codespace`) muss gesetzt
-sein. **Das Vorhandensein eines View-Schlüssels bedeutet, dass dieser View
-gezeigt wird** — Workspace und Codespace können gleichzeitig sichtbar sein, in
-verschiedenen Modes.
+Die Views, die ein Preset aufführt, sind die, die es zeigt; Views, die es
+weglässt, behalten, was sie zeigen. Ein Name, der kein deklarierter View ist,
+warnt nur, denn ein [später hinzugefügter View](/de/guides/added-views/) kann
+ihn tragen.
 
-## Die Toolbox-Render-Überschreibung
-
-Der `toolbox`-Eintrag eines Preset ist entweder:
-
-- ein **Mode-Name** — alle `code`-Elements des Mode rendern als ziehbare
-  Mini-Blöcke, oder
-- ein **Objekt** `{ mode, render }` — wobei `render` Element-Namen auf
-  `"block"` oder `"text"` abbildet und so überschreibt, wie jedes
-  `code`-Element auf der Kachel rendert.
-
-`{ "mode": "python", "render": { "python": "text" } }` zeigt das
-Python-Template als Quelltext auf der Kachel statt als Block. Weil diese
-Entscheidung im Preset liegt, kann derselbe Mode in verschiedenen Presets
-unterschiedlich rendern.
-
-Der Text lautet genau so, wie der Codespace den Block schreiben würde:
-Feldwerte und Slot-Vorgaben sind eingesetzt (`for i in range(3):`), ein leerer
-Slot erscheint als seine Typ-Markierung (`[NUMBER]`).
-
-Jedes `code`-Element, das **nicht** in `render` genannt ist, rendert als
-**Block** — `render` überschreibt nur die aufgeführten. Und `render` gilt
-**nur für die Toolbox-Kachel**: Codespace, Preview und Workspace rendern immer
-das [Quell-Element](/de/concepts/modes/#das-quell-element) des zugewiesenen
-Mode, unabhängig von `render`.
-
-## Presets verwenden
-
-Übergib Presets in der Mount-Konfiguration und wechsle zur Laufzeit:
+Gib Presets in den Definitionen (oder der Mount-Konfiguration) an und wechsle
+zur Laufzeit:
 
 ```ts
 engine.mount({
-  workspaceContainer,
-  codespaceContainer,          // erforderlich, wenn ein Preset einen Codespace nutzt
-  modes: definitions.modes,
-  presets: definitions.presets,
-  preset: "iconic",            // Anfangs-Preset
+  containers,
+  preset: "start",             // Start-Preset, standardmäßig das erste
   onPresetApplied(preset) {
-    // Panes je nach vorhandenen View-Schlüsseln ein-/ausblenden
+    // die Bereiche der Views in preset.views zeigen, die anderen verbergen
   },
 });
 
-engine.applyPreset("hybrid");  // per Name oder Index
-
+engine.applyPreset("both");    // nach Name oder Index
 engine.getPresets();           // alle Presets, z. B. für deine Buttons
-engine.getActivePreset();      // das zuletzt angewendete, z. B. um seinen Button zu markieren
+engine.getActivePreset();      // das zuletzt angewandte, z. B. um seinen Button zu markieren
 ```
 
-Presets werden beim Mount validiert: unbekannte Modes, fehlende Code-Elements,
-ein Codespace-Preset ohne `codespaceContainer`, doppelte Namen und ungültige
-`render`-Werte werden sofort gemeldet.
+Presets werden beim Mount geprüft: unbekannte Toolbox-Modes, Views, die kein
+Code-Element zeigen, und doppelte Namen werden sofort gemeldet.
 
-`onPresetApplied(preset)` ist dein Layout-Hook — das Framework steuert nie dein
-Seitenlayout; es teilt dir mit, welche Views das Preset nutzt, und du ordnest
-die Panes an.
+`onPresetApplied(preset)` ist dein Layout-Hook. Das Framework steuert nie dein
+Seitenlayout: Es sagt dir, welche Views das Preset zeigt, und du ordnest die
+Bereiche an. Nach dem Zeigen oder Verbergen eines Bereichs musst du den
+Workspace nicht neu skalieren; das Framework zeichnet Blockly neu, sobald sich
+die Größe seines Containers ändert.
 
-Nach dem Ein- oder Ausblenden von Panes musst du den Workspace nicht neu
-skalieren. Das Framework beobachtet den Workspace-Container und zeichnet Blockly
-neu, sobald sich seine Größe ändert, sei es durch einen Preset-Wechsel, eine
-Fenstergröße oder einen gezogenen Trenner.
+## show()
 
-## Die tieferliegende API: setModes()
-
-Presets bündeln Mode-Wechsel; `setModes()` ist das Primitiv darunter:
+Presets bündeln diese Wechsel; `show()` ist der Aufruf darunter, in derselben
+Form:
 
 ```ts
-engine.setModes({
-  workspaceMode: "conceptual",
-  toolboxMode: "python",
-  toolboxRender: { python: "text" },
-  codespaceMode: "python",
-  previewMode: "javascript",
-});
+engine.show({ toolbox: "python-text", views: { blocks: "concept", code: "python" } });
 ```
 
-Alle Schlüssel sind optional — setze, was du ändern willst. Ein `null` löscht
-den Codespace-/Preview-Mode und die Toolbox-Render-Überschreibung.
+Alles Weggelassene bleibt, wie es ist.
 
+## Klassen für dein CSS
 
-## Die aktuellen Modes auslesen
+Der Container jedes Views trägt Klassen, die du kombinieren kannst:
 
-Die Engine meldet, was jede View zeigt, sodass der Host nichts selbst
-mitführen muss, etwa um den aktiven Mode in seiner Oberfläche zu markieren:
+| Klasse | An |
+| --- | --- |
+| `morphic-view`, `morphic-view-<name>` | jedem View, und diesem View nach Name |
+| `morphic-shows-<element>` | dem Element, das der View zeigt |
+| `morphic-preset-<name>` | dem zuletzt angewandten Preset |
+| `morphic-workspace-root`, `morphic-codespace-root` | der Art des Views |
+| `morphic-read-only` | einem View mit `editable: false` |
+
+Workspace-Blöcke tragen ebenfalls `morphic-shows-<element>`; Kacheln tragen
+ihren Mode, `morphic-mode-<mode>`. Zum Beispiel eine Monospace-Schrift für
+Python-Blöcke und ein Rand an jedem View in einem Preset:
+
+```css
+.morphic-workspace-root.morphic-shows-python .blocklyText { font-family: monospace; }
+.morphic-view.morphic-preset-both { border-top: 3px solid #3776ab; }
+```
+
+## Den aktuellen Stand lesen
 
 | Methode | Liefert |
 | --- | --- |
-| `getAvailableModes()` | alle Mode-Namen aus den Definitionen |
-| `getWorkspaceMode()` | den Mode des Workspace |
-| `getCodespaceMode()` | den Mode des Codespace, sonst den des Workspace |
-| `getPreviewMode()` | den Mode der Preview, oder `undefined` ohne eine |
-| `getViewMode(name)` | den Mode jeder View nach Namen, zusätzliche Views eingeschlossen |
-| `getActivePrimarySourceElement()` | das Code-Element, das der Codespace rendert |
-| `getActivePreviewElement()` | das Code-Element, das die Preview rendert |
+| `getAvailableModes()` | jeden Mode-Namen aus den Definitionen |
+| `getToolboxMode()` | den Mode der Kacheln |
+| `getViewElement(name)` | das Element, das ein View zeigt, zusätzliche Views eingeschlossen |
+| `getViewNames()` | die eingerichteten Views |
 
-Vor `mount()` liefern alle `undefined` (oder eine leere Liste).
+Alle liefern vor `mount()` `undefined` (oder eine leere Liste).

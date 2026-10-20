@@ -1,49 +1,57 @@
 ---
-title: Preview & Code Editor
-description: Read-only source preview and the optional CodeMirror editor.
+title: Read Only Views & Code Editor
+description: A codespace that only shows the program, and the optional CodeMirror editor.
 ---
 
 Two more text views complement the [codespace](/guides/codespace/):
 
 | View            | Shows                                              | Editable |
 | --- | --- | --- |
-| **Preview**     | The preview mode's source element, rendered as text | No |
+| **Read only codespace** | The program as text, in the element it shows | No |
 | **Code editor** | The *generated* JavaScript (via behaviors)          | No (display) |
 
-Both are CodeMirror-based and lazy-loaded — they need the optional
+Both are CodeMirror-based and lazy-loaded; they need the optional
 [CodeMirror packages](/getting-started/installation/#optional-code-editor-packages).
 
-## Preview
+## Read only codespace
 
-The preview renders whatever the preview mode's
-[source element](/concepts/modes/#the-source-element) says — e.g. show
-JavaScript alongside a Python codespace, so learners see two syntaxes of the
-same program simultaneously:
+A codespace with `editable: false` shows the program as text without letting
+it change, e.g. JavaScript beside a Python codespace, so learners see two
+syntaxes of the same program at once. Until 0.4.0 this was the preview.
+
+```json
+{
+  "views": {
+    "blocks": "workspace",
+    "code": "codespace",
+    "read": { "kind": "codespace", "editable": false }
+  },
+  "presets": [
+    { "name": "both", "toolbox": "conceptual", "views": { "blocks": "concept", "code": "python", "read": "javascript" } }
+  ]
+}
+```
 
 ```ts
 await engine.mount({
-  workspaceContainer,
-  previewContainer: document.getElementById("preview")!,
-  previewTheme,                  // optional, defaults to editorTheme
+  containers: { blocks: blocksElement, code: codeElement, read: readElement },
+  themes: { read: readTheme },   // optional, defaults to editorTheme
 });
 ```
 
-To set the preview up later, or with other options, use
-`engine.mountPreview(container, options)`.
+What it shows comes from the preset or `show({ views: { read: "javascript" } })`.
+Highlighting resolves from the shown element's
+[`highlighting`](/guides/syntax-highlighting/); the value markers of the
+codespace are left out, since nothing can be edited there. Its container gets
+`morphic-read-only` beside `morphic-codespace-root`.
 
-The preview mode comes from the active preset's `preview` key or
-`setModes({ previewMode })`. Highlighting rules resolve automatically from the
-[`highlighting`](/guides/syntax-highlighting/) in the definitions' `code` section; placeholder
-markers are suppressed (they're an editing affordance, and the preview is
-read-only by design).
-
-Theme at runtime: `engine.setPreviewTheme(theme)`.
+Theme at runtime: `engine.setViewTheme("read", theme)`.
 
 ## Code editor
 
-The code editor displays the output of `generateJavaScript()` — the
-executable code your [behaviors](/concepts/behaviors-and-codegen/) produce —
-and updates as the model changes:
+The code editor displays the output of `generateJavaScript()`, the executable
+code your [behaviors](/concepts/behaviors-and-codegen/) produce, and updates
+as the model changes:
 
 ```ts
 await engine.mount({
@@ -58,31 +66,26 @@ engine.isCodeEditorVisible();
 engine.setCodeEditorTheme(theme);
 ```
 
-It always shows **JavaScript** — the execution target — regardless of the
-active modes, and unlike the preview it carries **no** definition highlighting
-by default. So it's primarily a **developer aid**: a live look at what your
-behaviors actually generate while building and debugging. For a reader-facing
-view of the program, prefer the **preview**, which renders any mode's source
-element *with* the definitions'
-[syntax highlighting](/guides/syntax-highlighting/). The code editor stays
-available whenever exposing the raw generated JavaScript is what you want.
+It always shows **JavaScript**, the execution target, whatever the views show,
+and it carries **no** definition highlighting by default. So it's primarily a
+**developer aid**: a live look at what your behaviors actually generate while
+building and debugging. For a reader-facing view of the program, prefer a
+read only codespace, which shows any code element *with* the definitions'
+[syntax highlighting](/guides/syntax-highlighting/).
 
 ## Shared options
 
-`mountPreview` / `mountCodeEditor` (and `mountCodespace`) accept
-`MorphicCodeEditorOptions`:
+`mountCodeEditor(container, options)` accepts `MorphicCodeEditorOptions`:
 
 | Option           | Purpose                                                       |
 | --- | --- |
 | `theme`          | Visual theme (sensible defaults provided)                     |
 | `extensions`     | Raw CodeMirror extensions, appended after the built-in ones   |
-| `highlightRules` | Token-level highlighting override (defaults from definitions) |
-| `onDelete`       | Install a delete keymap + gutter `✕` (codespace default)      |
-| `canDragBlock`   | Show a grip gutter for draggable blocks                       |
+| `highlightRules` | Token-level highlighting override                             |
 
-The `extensions` escape hatch means anything CodeMirror can do — line
-wrapping, custom keymaps, additional gutters — composes with the framework's
-own behavior.
+The `extensions` escape hatch means anything CodeMirror can do (line wrapping,
+custom keymaps, additional gutters) composes with the framework's own
+behavior.
 
 ## Themes
 
@@ -100,9 +103,8 @@ is optional and falls back to the default:
 | `fontSize`            | `14px`      | Size of the code                     |
 | `lineHeight`          | `1.5`       | Line spacing, as a multiplier        |
 
-`mount()` takes two themes: `editorTheme` for the codespace and the code
-editor, and `previewTheme` for the preview (it falls back to `editorTheme`).
-A light page needs its own colors:
+`editorTheme` colours every text view and the code editor; `themes` gives
+single views their own, by view name. A light page needs its own colors:
 
 ```ts
 await engine.mount({
@@ -117,9 +119,9 @@ await engine.mount({
 });
 ```
 
-Change a theme at runtime with `setCodespaceTheme()`, `setPreviewTheme()` and
-`setCodeEditorTheme()`, e.g. when the page switches between light and dark.
-Token colors (keywords, strings, numbers) come from each code element's
+Change a theme at runtime with `setViewTheme(view, theme)` and
+`setCodeEditorTheme(theme)`, e.g. when the page switches between light and
+dark. Token colors (keywords, strings, numbers) come from each code element's
 [`highlighting`](/guides/syntax-highlighting/), not from the theme. On a
 light theme, also set a visible
 [selection highlight](/guides/selection-sync/#options).

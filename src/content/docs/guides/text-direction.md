@@ -17,22 +17,27 @@ engine.mount({
 });
 ```
 
-- **Blocks:** `blockly.rtl` draws the workspace right to left; added
-  workspaces and the toolbox tiles follow it.
-- **Text views:** the codespace, the preview and added text views follow the
-  page's `dir`, like any other element.
+- **Blocks:** `blockly.rtl` draws the workspaces right to left; the toolbox
+  tiles follow it.
+- **Text views:** codespaces follow the page's `dir`, like any other element.
 
-## One text view the other way
+## One view the other way
 
-A text view takes the direction of the element around it. To show Python
-left to right on a right to left page, set `dir` on its container:
+A view's `rtl` sets its direction on its own, e.g. Python left to right on a
+right to left page, or Arabic blocks beside English ones:
 
-```html
-<div id="codespace" dir="ltr"></div>
+```json
+{
+  "views": {
+    "blocks": "workspace",
+    "code": { "kind": "codespace", "rtl": false }
+  }
+}
 ```
 
-On a left to right page, only the view that should run right to left needs
-`dir="rtl"`.
+Left out, a view follows the page (codespaces) or `blockly.rtl`
+(workspaces), which is what most apps want. For a codespace, `dir` on its
+container does the same.
 
 ## Switching the direction
 

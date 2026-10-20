@@ -34,15 +34,19 @@ Everything a block *is* lives in one JSON document. A complete, small example:
     }
   },
   "modes": [
-    { "name": "iconic",     "elements": ["icon", "title", "description"] },
-    { "name": "conceptual", "elements": ["title", "concept"] },
-    { "name": "python",     "elements": ["title", "python"] },
-    { "name": "javascript", "elements": ["title", "javascript"] }
+    { "name": "iconic",      "elements": ["icon", "title", "description"] },
+    { "name": "conceptual",  "elements": ["title", "concept"] },
+    { "name": "python-text", "elements": ["title", "python"], "render": { "python": "text-based" } }
   ],
+  "views": {
+    "blocks": "workspace",
+    "code": "codespace",
+    "read": { "kind": "codespace", "editable": false }
+  },
   "presets": [
-    { "name": "iconic", "label": "Iconic", "toolbox": "iconic", "workspace": "conceptual" },
+    { "name": "iconic", "label": "Iconic", "toolbox": "iconic", "views": { "blocks": "concept" } },
     { "name": "hybrid", "label": "Hybrid", "toolbox": "conceptual",
-      "workspace": "conceptual", "codespace": "python", "preview": "javascript" }
+      "views": { "blocks": "concept", "code": "python", "read": "javascript" } }
   ],
   "categories": [
     { "name": "Output", "color": "#5C81A6" }
@@ -117,7 +121,7 @@ language can be real, simplified, invented, or plain words.
 | `empty` | Defaults for empty value slots (see [below](#shadows-placeholders-and-empty-slots)) |
 | `emptyStatement` | Written into an empty statement slot where the language needs one, e.g. `"pass"` for Python, so an empty loop body stays valid code. Omit to leave empty bodies empty. |
 | `types` | Names `%1:type` writes, keyed by the value's type (see [Type names](#type-names)) |
-| `highlighting` | Token colors for the codespace and preview (see [below](#highlighting)) |
+| `highlighting` | Token colors for the codespaces (see [below](#highlighting)) |
 | `values` | How printed values read while this element is shown (`True`, `None`, `['a']`); see [Behaviors & Code Generation](/concepts/behaviors-and-codegen/#printed-values-in-the-shown-language) |
 
 Up to 0.2, `stringQuote` and `empty` sat on the element in `elementTypes` and
@@ -189,13 +193,19 @@ it by dragging a value block into the slot.
 
 ## `modes`
 
-The list of mode definitions (`{ name, elements }`) — covered in detail in
-[Modes](/concepts/modes/).
+The list of mode definitions (`{ name, elements, render? }`), what toolbox
+tiles show; covered in detail in [Modes](/concepts/modes/).
+
+## `views`
+
+The views by name, each a kind (`workspace`, `codespace`) or
+`{ kind, editable?, rtl?, delete? }`; `mount()` sets up each one it gets a
+container for. Covered in [Presets & Views](/concepts/presets-and-views/).
 
 ## `presets`
 
-Named per-view mode assignments — covered in
-[Presets & Views](/concepts/presets-and-views/).
+What the toolbox and each view show (`{ name, label?, toolbox, views }`);
+covered in [Presets & Views](/concepts/presets-and-views/).
 
 ## `categories`
 
@@ -207,7 +217,7 @@ Optional toolbox groupings. Blocks reference them by name:
 
 ## `highlighting`
 
-Syntax highlighting for the codespace and preview, set per code element as
+Syntax highlighting for the codespaces, set per code element as
 `code.<name>.highlighting`:
 
 | Field      | Meaning                                                              |
@@ -402,7 +412,7 @@ JavaScript reads `true`, both storing and executing `true`:
 ```
 
 Resolution when element `E` renders: the workspace block shows
-`display[E] ?? label ?? value`; the codespace and preview show
+`display[E] ?? label ?? value`; the codespaces show
 `display[E] ?? value` (`label` stays block-only). Execution, codegen, and
 serialization always use the **value**. This is the *representation* axis only
 (Python vs JavaScript spelling) — natural-language translation is a separate
@@ -481,6 +491,10 @@ Throws (every problem is collected and reported at once):
   Blockly type
 - a setting in its place from before 0.3.0 (`stringQuote` or `empty` in
   `elementTypes`, a top level `highlighting` map), naming where it moved
+- a setting in its place from before 0.4.0 (a preset's `toolbox` object or its
+  `workspace`, `codespace` and `preview` keys, the `render` values `"block"`
+  and `"text"`), naming where it moved
+- a view of an unknown kind, or a container for a view that isn't declared
 
 Warns:
 
@@ -491,6 +505,8 @@ Warns:
 - `size` on a non-`image` element, which is ignored
 - a block `category` not listed in `categories`
 - a name reused across element / mode / preset (see [Modes](/concepts/modes/))
+- a preset naming a view that isn't declared (one added later with `addView()` may carry it)
+- a mode's `render` naming no code element of the mode
 
 To check a file *before* mounting — in a test or build step — call the exported
 `validateDefinitions(...)`, which returns `{ errors, warnings }` instead of

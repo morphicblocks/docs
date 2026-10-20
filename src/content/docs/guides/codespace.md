@@ -3,8 +3,8 @@ title: Codespace
 description: An editable-by-structure text view of the workspace.
 ---
 
-The **codespace** shows the block model as text — rendered from the codespace
-mode's [source element](/concepts/modes/#the-source-element) — and lets users
+The **codespace** shows the block model as text, written in the code element
+it shows (`python`, `concept`), and lets users
 *edit the program through its structure*: dragging, dropping, reordering, and
 editing values, all against the same underlying Blockly model as the
 workspace. It is not free-text editing; every change is a model operation, so
@@ -12,7 +12,9 @@ the program can never become syntactically broken.
 
 ## Mounting
 
-Give `mount()` a container, and it sets the codespace up there:
+A codespace is a [view](/concepts/presets-and-views/) of kind `codespace`.
+Without declared views there is one named `codespace`; give `mount()` its
+container, and it sets the codespace up there:
 
 ```ts
 await engine.mount({
@@ -25,15 +27,12 @@ await engine.mount({
 
 Awaiting `mount()` waits for the codespace, because CodeMirror is lazy-loaded
 (see [Installation](/getting-started/installation/#optional-code-editor-packages)).
-To set it up again later with other [options](#options), call
-`engine.mountCodespace(options)`.
-Which mode the codespace shows is set by the active
+Which element the codespace shows is set by the active
 [preset](/concepts/presets-and-views/), or at runtime with
-`setModes({ codespaceMode })`.
+`show({ views: { codespace: "python" } })`.
 
-**Headless mode:** `mount()` accepts `workspaceContainer`,
-`codespaceContainer`, or both. With only a `codespaceContainer`, Blockly runs
-headless (offscreen) — the block model stays authoritative while users only
+**Headless mode:** without a container for any workspace, Blockly runs
+headless (offscreen): the block model stays authoritative while users only
 ever see text.
 
 ## What users can do
@@ -71,7 +70,7 @@ or an editable `___` marker when none is set.
 ## Groups of blocks
 
 Blocks that are connected form a group, like a stack in the workspace. In the
-text views (codespace, previews), the framework marks each group's lines with
+text views (every codespace), the framework marks each group's lines with
 classes. The text itself and its line numbers stay unchanged:
 
 | Class | On |
@@ -129,24 +128,17 @@ groups, turn the other highlights off:
 
 ## Options
 
-`mountCodespace(options?)` takes the same options as the code editor
-(`theme`, `extensions`, `highlightRules`, …). Two have codespace-specific
-defaults you can override:
+A codespace's options sit on its view in the definitions' `views` (or on
+`addView()` for an [added codespace](/guides/added-views/)). Each way of
+deleting is on by default and can be turned off with `delete`:
 
-| Option         | Default behavior                                            |
-| --- | --- |
-| `onDelete`     | Deletes the block at the given line from the model          |
-| `canDragBlock` | Grips appear for all movable blocks (statement and value)   |
-
-Each way of deleting is on by default and can be turned off, for the codespace
-`mount()` sets up with `codespace`, for an
-[added codespace](/guides/added-views/) with `delete`:
-
-```ts
-engine.mount({
-  // …containers
-  codespace: { delete: { lineButtons: false, keys: true, toolbarButton: true } },
-});
+```json
+{
+  "views": {
+    "workspace": "workspace",
+    "codespace": { "kind": "codespace", "delete": { "lineButtons": false } }
+  }
+}
 ```
 
 | Option | Turns off |
@@ -155,10 +147,14 @@ engine.mount({
 | `keys` | Delete and Backspace |
 | `toolbarButton` | the toolbar's `✕` for the selected lines |
 
-Theme at runtime: `engine.setCodespaceTheme(theme)`.
+`editable: false` makes a codespace read only (see
+[Read Only Views](/guides/preview-and-code-editor/)), and `rtl` sets its
+direction (see [Text Direction](/guides/text-direction/)).
+
+Theme at runtime: `engine.setViewTheme("codespace", theme)`.
 
 ## Related
 
-- [Preview & Code Editor](/guides/preview-and-code-editor/) — the read-only siblings
+- [Read Only Views & Code Editor](/guides/preview-and-code-editor/), the read only siblings
 - [Syntax Highlighting](/guides/syntax-highlighting/) — coloring the rendered text
 - [Selection Sync](/guides/selection-sync/) — linked highlighting across views

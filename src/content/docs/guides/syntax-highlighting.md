@@ -1,9 +1,9 @@
 ---
 title: Syntax Highlighting
-description: Definition-driven highlighting for codespace and preview.
+description: Definition-driven highlighting for the codespaces.
 ---
 
-The codespace and preview color their text from each code element's
+The codespaces color their text from each code element's
 `highlighting` in the [`code` section](/concepts/definitions-format/#code) of
 your definitions — **no grammar files, no language plugins**. Since a mode's
 [source element](/concepts/modes/#the-source-element) already names the
@@ -49,18 +49,18 @@ definitions costs five lines of JSON.
 
 - The rules come from the definitions handed to the engine; a `code` section
   in the mount config replaces them.
-- Each codespace/preview picks the entry matching its mode's source element.
-- Switching modes at runtime (`setModes()`, presets) swaps the rules live.
-- Code shown as text on toolbox tiles (`render: "text"`) takes the same
+- Each codespace picks the entry of the element it shows.
+- Switching what a view shows at runtime (`show()`, presets) swaps the rules live.
+- Code shown as text on toolbox tiles (`render: "text-based"`) takes the same
   rules and colours; the toolbox option `highlight: false` turns that off.
 
 ## Overriding per editor
 
-For full control on a single editor, pass `highlightRules` in its mount
-options — it takes precedence over the definitions lookup:
+The code editor takes `highlightRules` in its options, ahead of the
+definitions:
 
 ```ts
-await engine.mountPreview(container, {
+await engine.mountCodeEditor(container, {
   highlightRules: { keywords: ["SELECT", "FROM"], strings: ["'"] },
 });
 ```

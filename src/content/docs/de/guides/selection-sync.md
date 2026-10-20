@@ -5,15 +5,15 @@ description: Verknüpfte Block-↔-Text-Auswahl über alle Views.
 
 Mit aktivierter Selection-Sync hebt das Auswählen eines Blocks seine
 entsprechenden Zeilen in jeder Text-View hervor — und ein Klick auf eine Zeile
-in einer Text-View wählt den Block aus. Das funktioniert über alle
-eingebundenen Views: Workspace, Code-Editor, Codespace und Preview.
+in einer Text-View wählt den Block aus. Das funktioniert über alle Views:
+Workspaces, Codespaces (auch schreibgeschützte) und den Code-Editor.
 
 Selection-Sync ist **standardmäßig an**, sobald `mount()` mehr als eine View
 einrichtet. Schalte sie mit `mount({ selectionSync: false })` aus, oder aktiviere
 sie später selbst:
 
 ```ts
-// nach mindestens einem von mountCodeEditor / mountCodespace / mountPreview
+// sobald eine Text-View oder der Code-Editor eingerichtet ist
 engine.enableSelectionSync();
 ```
 
@@ -53,7 +53,7 @@ engine.mount({
 | `codeToBlock`    | `true`  | Richtung Code → Block aktivieren          |
 
 Jede Textansicht hebt in einem helleren Ton ihrer eigenen `selectionBackground`
-hervor (aus `editorTheme` oder `previewTheme`), sodass die Hervorhebung auf
+hervor (aus `editorTheme` oder `themes`), sodass die Hervorhebung auf
 hellen wie dunklen Themes sichtbar ist. Für eine eigene Farbe setze die
 CSS-Variable `--morphic-highlight-color`; sie hat Vorrang vor dem Theme:
 
@@ -67,5 +67,5 @@ Ausschalten mit `engine.disableSelectionSync()`.
 
 Verknüpftes Hervorheben ist es, was nebeneinanderliegende Modes *lehrreich*
 macht: Eine Lernende klickt `print("hi")` im Python-Codespace an und sieht
-dieselbe Anweisung im Block-Workspace und in der JavaScript-Preview aufleuchten
-— drei Repräsentationen, sichtbar ein Programm.
+dieselbe Anweisung im Block-Workspace und in der schreibgeschützten
+JavaScript-Ansicht aufleuchten: drei Repräsentationen, sichtbar ein Programm.

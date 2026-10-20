@@ -38,10 +38,11 @@ selbst bleibt unberührt.
 2. Du lieferst **Behaviors** (JS/TS): eine Funktion pro Block-Typ, die
    ausführbaren Code erzeugt.
 3. Du lieferst **CSS**: ein Stylesheet pro Mode.
-4. Du bindest die Engine in deine Container ein und wählst ein **Preset** — eine
-   Zuordnung von Modes zu Views (Toolbox, Workspace, Codespace, Preview).
-5. Ein Wechsel von Modes oder Presets zur Laufzeit rendert jede View aus
-   demselben Modell neu.
+4. Du deklarierst die **Views** (Workspaces, Codespaces), bindest die Engine in
+   ihre Container ein und wählst ein **Preset**: den Mode der Toolbox und das
+   Code-Element, das jeder View zeigt.
+5. Ein Wechsel von Presets zur Laufzeit rendert jeden View aus demselben
+   Modell neu.
 
 ## Anwendungsfälle
 

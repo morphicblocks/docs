@@ -1,94 +1,83 @@
 ---
 title: Modes
-description: Modes wählen aus, welche Elements ein Block zeigt.
+description: Modes wählen, welche Elemente eine Toolbox-Kachel zeigt.
 ---
 
 Ein **Mode** ist eine benannte Teilmenge von
-[Elements](/de/concepts/blocks-and-elements/). Einem View einen Mode
-zuzuweisen entscheidet, welche visuellen Bestandteile jedes Blocks dieser View
-rendert — mehr nicht. Modes sind rein darstellend: Ein Wechsel ändert nie das
-zugrunde liegende Block-Modell.
+[Elementen](/de/concepts/blocks-and-elements/), die eine **Toolbox-Kachel**
+zeigt. Modes sind rein darstellerisch: Ein Wechsel ändert nie das Block-Modell
+darunter. Seit 0.4.0 sind sie nur für die Kacheln da;
+[Views](/de/concepts/presets-and-views/) zeigen stattdessen ein Code-Element.
 
 ```json
 {
   "modes": [
-    { "name": "iconic",     "elements": ["icon", "title", "description"] },
-    { "name": "conceptual", "elements": ["title", "concept"] },
-    { "name": "syntax-py",  "elements": ["title", "python"] }
+    { "name": "iconic",      "elements": ["icon", "title", "description"] },
+    { "name": "conceptual",  "elements": ["title", "concept"] },
+    { "name": "python-text", "elements": ["title", "python"],
+      "render": { "python": "text-based" } },
+    { "name": "side-by-side", "elements": ["title", "concept", "python"],
+      "render": { "concept": "block-based", "python": "text-based" } }
   ]
 }
 ```
 
-| Feld       | Erforderlich | Zweck                                                        |
-| ---------- | ------------ | ------------------------------------------------------------ |
-| `name`     | ja           | Mode-Identifier — halte ihn getrennt von Element- und Preset-Namen |
-| `elements` | ja           | Element-Namen, die auf der Toolbox-Kachel gerendert werden, **in Listenreihenfolge** |
+| Feld       | Pflicht | Zweck                                                      |
+| ---------- | ------- | ---------------------------------------------------------- |
+| `name`     | ja      | Bezeichner des Modes; halte ihn verschieden von Element- und Preset-Namen |
+| `elements` | ja      | Element-Namen auf der Kachel, **in Listenreihenfolge** |
+| `render`   | nein    | Wie jedes Code-Element auf der Kachel gezeichnet wird: `"block-based"` (Standard) oder `"text-based"` |
 
-Die **Reihenfolge** von `elements` ist die Reihenfolge, in der die Teile auf der
-Toolbox-Kachel erscheinen — die Liste umsortieren, um die Kachel umzuordnen.
+Die **Reihenfolge** von `elements` ist die Reihenfolge der Teile auf der
+Kachel; ordne die Liste um, um sie neu anzuordnen.
 
-Die Mode-Namen liegen bei dir. Ein „Mode" kann eine Hilfestellungs-Stufe sein
-(`iconic` → `conceptual` → `syntax-py`), eine natürliche Sprache (`english`,
-`deutsch`), eine Zielsyntax (`syntax-py`, `syntax-js`), eine Barrierefreiheits-
-Variante — was auch immer deine Anwendung braucht.
+Mode-Namen sind dir überlassen. Ein „Mode" kann eine Gerüst-Stufe sein
+(`iconic`, `conceptual`, `python-text`), eine natürliche Sprache (`english`,
+`deutsch`), eine Barrierefreiheits-Variante, was deine Anwendung braucht.
 
-Halte jeden Mode-Namen **getrennt von deinen Element- und Preset-Namen**. Einen
-Mode nach seinem Quell-Element zu benennen (ein `python`-Mode, dessen Quelle das
-`python`-Element ist) lässt ein Wort zwei Dinge bedeuten; das Framework gibt eine
-Warnung aus, wenn ein Element-, Mode- oder Preset-Name kollidiert. Deshalb heißt
-der Mode oben `syntax-py`, nicht `python`.
+Halte jeden Mode-Namen **verschieden von deinen Element- und Preset-Namen**.
+Einen Mode nach einem Element zu benennen (ein `python`-Mode, der das
+`python`-Element zeigt) gibt einem Wort zwei Bedeutungen; das Framework warnt,
+wenn Element-, Mode- oder Preset-Namen kollidieren.
+
+## Blöcke oder Text auf einer Kachel
+
+`render` sagt pro Code-Element, ob eine Kachel es als ziehbaren Mini-Block oder
+als seinen Quelltext zeichnet. Weglassen heißt `block-based`, aber wo ein Mode
+beides mischt, liest sich die Datei leichter, wenn `block-based` ausgeschrieben
+ist, wie oben in `side-by-side`.
+
+Der Text liest sich genau so, wie der Codespace den Block schreiben würde:
+Feldwerte und Slot-Vorgaben eingesetzt (`for i in range(3):`), ein leerer Slot
+als seine Typ-Markierung (`[NUMBER]`).
+
+Bis 0.3 saß `render` am `toolbox`-Eintrag des Presets (`{ mode, render }`,
+Werte `"block"` und `"text"`); `mount()` meldet diesen Platz mit dem neuen.
 
 ## Das Quell-Element
 
-Wird ein Mode einem **Codespace** oder einer **Preview** (Text-Views)
-zugewiesen, muss das Framework wissen, *welches* Element es als Quelltext
-rendert. Das ist das **Quell-Element** des Mode: das erste `type: "code"`-Element
-in seinem `elements`-Array.
-
-Für den obigen `syntax-py`-Mode ist das Quell-Element `python` — ein Codespace in
-diesem Mode rendert das `python`-Template jedes Blocks als Text.
-
-Wie die Code-Elements eines Mode auf einer **Toolbox-Kachel** rendern (als
-Mini-Block oder als Quelltext) entscheidet *nicht* der Mode — das entscheidet
-der `toolbox`-Eintrag des Preset. So bleiben Modes wiederverwendbar: Derselbe
-Mode kann in einem Einsteiger-Preset block-artig und in einem
-fortgeschrittenen text-artig erscheinen. Siehe
-[Presets & Views](/de/concepts/presets-and-views/).
-
-## Auflösung des Workspace-Templates
-
-Wird ein Mode dem **Workspace** zugewiesen, braucht jeder Block ein
-Blockly-Template. Es wird der Reihe nach aufgelöst:
-
-1. Das erste `type: "code"`-Element im `elements`-Array des Mode
-2. Fallback: das erste `type: "code"`-Element in der Block-Definition
-3. Fallback: ein Element mit dem wörtlichen Namen `"block"` (Abwärtskompatibilität)
-4. Fallback: das erste Element in der Definition
-
-In der Praxis denkst du selten darüber nach — führe ein Code-Element im Mode
-auf, und das ist das Template.
+Das **Quell-Element** eines Modes ist das erste `type: "code"`-Element in
+seinen `elements`. Views zeigen es, wo nichts anderes ein Element nennt: Ohne
+Preset zeigt jeder View das Quell-Element des ersten Modes.
 
 ## Modes wechseln
 
-Modes werden pro View zur Laufzeit gewechselt, einzeln über
-[`setModes()`](/de/concepts/presets-and-views/#die-tieferliegende-api-setmodes)
-oder als benanntes Bündel über [Presets](/de/concepts/presets-and-views/). Die
-Blöcke werden an Ort und Stelle neu gerendert; das Programm bleibt unberührt.
+Der Toolbox-Mode wechselt mit einem [Preset](/de/concepts/presets-and-views/)
+oder `show({ toolbox: "conceptual" })`. Kacheln werden an Ort und Stelle neu
+gezeichnet; das Programm bleibt unberührt.
 
-Jeder Mode wird von einer CSS-Datei gestützt, die steuert, wie seine Elements
-aussehen — siehe [Modes mit CSS gestalten](/de/guides/styling-modes/).
+Hinter jedem Mode steht eine CSS-Datei, die das Aussehen seiner Elemente
+steuert; siehe [Modes gestalten](/de/guides/styling-modes/).
 
-## Elements eines Modes ändern
+## Die Elemente eines Modes ändern
 
-Die Element-Liste eines Modes lässt sich auch zur Laufzeit ändern, etwa damit
-Nutzer wählen, was die Toolbox-Kacheln zeigen:
+Die Element-Liste eines Modes kann sich auch zur Laufzeit ändern, etwa damit
+der Nutzer wählt, was die Kacheln zeigen:
 
 ```ts
 engine.setModeElements("iconic", ["icon", "title"]);
 ```
 
-Jede View mit diesem Mode wird neu gezeichnet, und nennt die Liste ein anderes
-Code-Element, wechseln die Workspace-Blöcke zu dessen Template. Deine
-Definitionsdatei bleibt unverändert, und ein neues `mount()` beginnt wieder mit
-ihr. Unbekannte Element-Namen werden abgelehnt, ebenso eine Liste ohne
-Code-Element für einen Mode, den ein Codespace oder eine Preview darstellt.
+Die Kacheln werden neu gezeichnet; die Views sind nicht betroffen. Deine
+Definitionsdatei bleibt, wie sie ist, und ein neues `mount()` beginnt wieder
+mit ihr. Unbekannte Element-Namen werden abgelehnt.

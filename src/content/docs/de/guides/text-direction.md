@@ -17,23 +17,29 @@ engine.mount({
 });
 ```
 
-- **Blöcke:** `blockly.rtl` zeichnet den Workspace von rechts nach links;
-  zusätzliche Workspaces und die Toolbox-Kacheln folgen ihm.
-- **Text-Views:** Codespace, Preview und zusätzliche Text-Views folgen dem
-  `dir` der Seite, wie jedes andere Element.
+- **Blöcke:** `blockly.rtl` zeichnet die Workspaces von rechts nach links; die
+  Toolbox-Kacheln folgen ihm.
+- **Text-Views:** Codespaces folgen dem `dir` der Seite, wie jedes andere
+  Element.
 
-## Eine Text-View in die andere Richtung
+## Ein View in die andere Richtung
 
-Eine Text-View übernimmt die Richtung des Elements um sie herum. Um Python auf
-einer Seite von rechts nach links von links nach rechts zu zeigen, setz `dir`
-auf ihren Container:
+Das `rtl` eines Views setzt seine Richtung für sich, z. B. Python von links
+nach rechts auf einer Seite von rechts nach links, oder arabische Blöcke neben
+englischen:
 
-```html
-<div id="codespace" dir="ltr"></div>
+```json
+{
+  "views": {
+    "blocks": "workspace",
+    "code": { "kind": "codespace", "rtl": false }
+  }
+}
 ```
 
-Auf einer Seite von links nach rechts braucht nur die View `dir="rtl"`, die von
-rechts nach links laufen soll.
+Weggelassen folgt ein View der Seite (Codespaces) oder `blockly.rtl`
+(Workspaces), was die meisten Apps wollen. Bei einem Codespace tut `dir` an
+seinem Container dasselbe.
 
 ## Die Richtung wechseln
 

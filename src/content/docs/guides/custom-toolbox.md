@@ -34,7 +34,7 @@ model.
 | `modeLabel`  | `true`  | Header at the top of the toolbox: `true` shows `Mode: <name>`, `false` none, a string that text, a function `(mode) => text` its result |
 | `blocks`     | all     | Show only a subset of blocks (list of identifiers)         |
 | `categories` | —       | Category grouping; with neither this nor the mount config's `toolbox.categories`, blocks render as a flat list |
-| `highlight`  | `true`  | Colour code shown as text on tiles (`render: "text"`) with its element's [highlighting](/guides/syntax-highlighting/), like the codespace; `false` leaves it plain |
+| `highlight`  | `true`  | Colour code shown as text on tiles (`render: "text-based"`) with its element's [highlighting](/guides/syntax-highlighting/), like the codespace; `false` leaves it plain |
 | `touch`      | `true`  | Tiles can be dragged with a finger or pen; see [Touch and keyboard](#touch-and-keyboard) |
 | `keyboard`   | `true`  | Tiles can be reached with Tab and added with Enter or Space; see [Touch and keyboard](#touch-and-keyboard) |
 | `layout`     | `"stacked"` | `"stacked"`: every category under its heading; `"tabs"`: a list of the category names and the tiles of the chosen one; see [Categories](#categories) |
@@ -66,10 +66,10 @@ Category entries are `{ name, color?, blocks? }` — when a category omits its
 Each tile renders **all** of a block's elements; the active toolbox mode's CSS
 decides which are visible (see
 [Blocks & Elements](/concepts/blocks-and-elements/#the-rendered-tile) for the
-markup). The toolbox re-renders when the toolbox mode changes — via
-`setModes({ toolboxMode })` or a preset switch — and honours the preset's
-[render override](/concepts/presets-and-views/#the-toolbox-render-override)
-for showing code elements as blocks or as source text.
+markup). The toolbox re-renders when the toolbox mode changes, via
+`show({ toolbox })` or a preset switch, and honours the mode's
+[`render`](/concepts/modes/#blocks-or-text-on-a-tile) for showing code
+elements as blocks or as source text.
 
 ## Categories
 
@@ -166,7 +166,7 @@ See [Styling Modes](/guides/styling-modes/) for the full CSS contract.
 
 The toolbox takes the width your layout gives it; a block or a line of code
 wider than that is cut off. The framework publishes the widest block or code
-shown as text (`render: "text"`) on a tile as
+shown as text (`render: "text-based"`) on a tile as
 `--morphic-toolbox-block-width` on the toolbox container, updated whenever the
 tiles are drawn again (a mode or font change). The variable is set on the
 container, so use it there, adding your own tile padding, and let the column

@@ -1,9 +1,9 @@
 ---
 title: Syntax-Highlighting
-description: Definitionsgesteuertes Highlighting für Codespace und Preview.
+description: Definitionsgesteuertes Highlighting für die Codespaces.
 ---
 
-Codespace und Preview färben ihren Text aus dem `highlighting` jedes
+Die Codespaces färben ihren Text aus dem `highlighting` jedes
 Code-Elements im [`code`-Abschnitt](/de/concepts/definitions-format/#code)
 deiner Definitionen — **keine Grammatik-Dateien, keine Sprach-Plugins**. Da das
 [Quell-Element](/de/concepts/modes/#das-quell-element) eines Mode die „Sprache"
@@ -49,20 +49,19 @@ fünf Zeilen JSON kostet.
 
 - Die Regeln kommen aus den Definitionen, die der Engine übergeben werden; ein
   `code`-Abschnitt in der Mount-Konfiguration ersetzt sie.
-- Jeder Codespace/jede Preview wählt den Eintrag, der zum Quell-Element seines
-  Mode passt.
-- Ein Mode-Wechsel zur Laufzeit (`setModes()`, Presets) tauscht die Regeln live.
-- Code, der auf Toolbox-Kacheln als Text steht (`render: "text"`), nimmt
+- Jeder Codespace wählt den Eintrag des Elements, das er zeigt.
+- Ein Wechsel dessen, was ein View zeigt, zur Laufzeit (`show()`, Presets) tauscht die Regeln live.
+- Code, der auf Toolbox-Kacheln als Text steht (`render: "text-based"`), nimmt
   dieselben Regeln und Farben; die Toolbox-Option `highlight: false` schaltet
   das ab.
 
 ## Pro Editor überschreiben
 
-Für volle Kontrolle über einen einzelnen Editor übergib `highlightRules` in
-dessen Mount-Optionen — sie hat Vorrang vor der Definitions-Suche:
+Der Code-Editor nimmt `highlightRules` in seinen Optionen, vor den
+Definitionen:
 
 ```ts
-await engine.mountPreview(container, {
+await engine.mountCodeEditor(container, {
   highlightRules: { keywords: ["SELECT", "FROM"], strings: ["'"] },
 });
 ```

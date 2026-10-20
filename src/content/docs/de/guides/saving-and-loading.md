@@ -22,8 +22,8 @@ const saved = localStorage.getItem("program");
 if (saved) engine.loadWorkspace(JSON.parse(saved));
 ```
 
-Das Wiederherstellen rendert alle eingebundenen Views (Workspace, Codespace,
-Preview, Code-Editor) in ihren aktuellen Modes neu — der gespeicherte Zustand
+Das Wiederherstellen rendert alle Views (Workspaces, Codespaces, den
+Code-Editor) in dem neu, was sie gerade zeigen: Der gespeicherte Zustand
 trägt das *Programm*, nicht die Darstellung. Ein im `iconic`-Mode gespeichertes
 Programm lädt problemlos in eine Sitzung, die im `python`-Mode läuft.
 

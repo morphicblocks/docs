@@ -22,8 +22,8 @@ const saved = localStorage.getItem("program");
 if (saved) engine.loadWorkspace(JSON.parse(saved));
 ```
 
-Restoring re-renders all mounted views (workspace, codespace, preview, code
-editor) in their current modes — saved state carries the *program*, not the
+Restoring re-renders all views (workspaces, codespaces, the code editor) in
+what they currently show: saved state carries the *program*, not the
 presentation. A program saved in `iconic` mode loads fine into a session
 running `python` mode.
 

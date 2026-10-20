@@ -29,17 +29,22 @@ wie sie angeordnet werden**:
 .morphic-mode-iconic .morphic-element-title { display: block; font-weight: 600; }
 ```
 
-Die Blockly-Workspace-Wurzel erhält die Mode-Klasse ebenfalls:
+Views zeigen ein Element, keinen Mode, daher tragen Workspace-Views und ihre
+Blöcke statt der Mode-Klasse `morphic-shows-<element>` (siehe
+[Presets & Views](/de/concepts/presets-and-views/#klassen-für-dein-css)):
 
 ```css
-/* python.css — Monospace-Text auf Workspace-Blöcken im python-Mode */
-.morphic-workspace-root.morphic-mode-python .blocklyText {
+/* python.css: Monospace-Text auf Workspace-Blöcken, die python zeigen */
+.morphic-workspace-root.morphic-shows-python .blocklyText {
   font-family: "Fira Code", monospace;
 }
 ```
 
+Mode-Stylesheets werden für jeden Mode geladen, also können Regeln für Views
+in jedem davon stehen, oder in deinem eigenen CSS.
+
 Blöcke werden passend zur Schrift bemessen, die dein CSS ihrem Text gibt.
-Schriftart, Größe und Stärke von `.blocklyText` werden bei jedem Mode-Wechsel
+Schriftart, Größe und Stärke von `.blocklyText` werden bei jedem Wechsel
 übernommen, und erneut, sobald ein Stylesheet oder eine Webfont fertig geladen
 ist. So ragt Text nie aus seinem Block heraus. Das gilt auch für Blöcke auf
 Toolbox-Kacheln, die die Schrift ihres Elements übernehmen. Andere
@@ -49,12 +54,12 @@ Eigenschaften, etwa Farben, ändern nichts an der Größe.
 Schriftgröße, rufe danach `engine.refresh()` auf, damit Blöcke und Kacheln neu
 bemessen werden.
 
-Auch die Container von Codespace und Preview tragen den Mode, den sie zeigen,
-als `morphic-codespace-root` und `morphic-preview-root`. So kann ein Mode seine
-Text-Views gestalten:
+Codespaces tragen `morphic-codespace-root` und das Element, das sie zeigen,
+schreibgeschützte zusätzlich `morphic-read-only`:
 
 ```css
-.morphic-codespace-root.morphic-mode-python { font-size: 15px; }
+.morphic-codespace-root.morphic-shows-python { font-size: 15px; }
+.morphic-codespace-root.morphic-read-only { opacity: 0.9; }
 ```
 
 Block-Farben lassen sich über die Custom Property aus CSS steuern:

@@ -97,11 +97,11 @@ engine.mount({
    Ziehe die *Print*-Kachel aus der Toolbox in den Workspace — dabei entsteht
    ein echter Blockly-Block.
 
-5. **Wechsle den Mode zur Laufzeit.** Dieselben Blöcke werden mit dem
+5. **Wechsle zur Laufzeit.** Dieselben Blöcke werden mit dem
    `python`-Element als Template neu gerendert:
 
    ```ts
-   engine.setModes({ workspaceMode: "python", toolboxMode: "python" });
+   engine.show({ toolbox: "python", views: { workspace: "python" } });
    ```
 
 6. **Erzeuge Code** aus dem Workspace über deine Behaviors:

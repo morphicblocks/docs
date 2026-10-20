@@ -1,136 +1,156 @@
 ---
 title: Presets & Views
-description: "Assign a mode to each view: toolbox, workspace, codespace, preview."
+description: "Declare the views, give them containers, and say what each one shows."
 ---
 
-Morphic Blocks renders into up to four **views**:
+The program shows in **views**. Each view has a name and a kind:
 
-| View        | What it is                                                        |
-| ----------- | ----------------------------------------------------------------- |
-| `toolbox`   | HTML tiles the user drags blocks from                             |
-| `workspace` | The Blockly canvas of draggable blocks                            |
-| `codespace` | An editable-by-structure *text* view of the same block model      |
-| `preview`   | A read-only text view (e.g. show JavaScript next to Python)       |
+| Kind        | What it is                                                         |
+| ----------- | ------------------------------------------------------------------ |
+| `workspace` | A Blockly canvas of draggable blocks                               |
+| `codespace` | A text view of the same block model, editable by structure         |
 
-Every view renders **the same block model**, each in its own
-[mode](/concepts/modes/). A **preset** is a named assignment of modes to views:
+A codespace with `editable: false` shows the program as text, read only (what
+0.3 called the preview). Beside the views, the **toolbox** shows the tiles, in
+a [mode](/concepts/modes/).
+
+## Declaring views
+
+Views are declared by name in the definitions:
+
+```json
+{
+  "views": {
+    "blocks": "workspace",
+    "code": "codespace",
+    "read": { "kind": "codespace", "editable": false }
+  }
+}
+```
+
+A bare kind is the short form. The long form takes:
+
+| Field      | Purpose                                                                 |
+| ---------- | ----------------------------------------------------------------------- |
+| `kind`     | `"workspace"` or `"codespace"`                                          |
+| `editable` | Whether the program can be changed there. Default `true`                |
+| `rtl`      | Right to left (`true`) or left to right (`false`); see [Text Direction](/guides/text-direction/) |
+| `delete`   | How blocks are deleted in a codespace; see [Codespace](/guides/codespace/#options) |
+
+Without `views`, there are two: `workspace` and `codespace`.
+
+The app gives containers by name, and only the views it gives one to are set
+up. So the same definitions serve a full page and a small embed:
+
+```ts
+engine.mount({
+  containers: { blocks: blocksElement, code: codeElement, read: readElement },
+  toolboxContainer,
+});
+```
+
+`workspaceContainer` and `codespaceContainer` are short for
+`containers.workspace` and `containers.codespace`.
+
+**The program** lives in the first workspace that has a container. Every other
+workspace shows a copy and sends its edits there. Without any workspace,
+Blockly runs hidden, so a codespace alone still edits a real block model.
+
+## What a view shows
+
+A view shows a **code element**, not a mode: `"python"`, `"concept"`. Modes
+are for the toolbox tiles. Without a preset, every view shows the first code
+element of the first mode.
+
+## Presets
+
+A **preset** says what the toolbox and each view show:
 
 ```json
 {
   "presets": [
-    { "name": "iconic", "label": "Iconic", "toolbox": "iconic", "workspace": "conceptual" },
-    { "name": "hybrid", "label": "Hybrid",
-      "toolbox": "conceptual", "workspace": "conceptual",
-      "codespace": "python", "preview": "javascript" },
-    { "name": "text", "label": "Text",
-      "toolbox": { "mode": "python", "render": { "python": "text" } },
-      "codespace": "python" }
+    { "name": "start", "label": "Start", "toolbox": "iconic", "views": { "blocks": "concept" } },
+    { "name": "both", "label": "Both", "toolbox": "concept",
+      "views": { "blocks": "concept", "code": "python", "read": "javascript" } },
+    { "name": "text", "label": "Text", "toolbox": "python-text", "views": { "code": "python" } }
   ]
 }
 ```
 
-| Field       | Required | Purpose                                                  |
-| ----------- | -------- | -------------------------------------------------------- |
-| `name`      | yes      | Preset identifier                                        |
-| `label`     | no       | Display label (falls back to `name`)                     |
-| `toolbox`   | yes      | Toolbox mode, or `{ mode, render }` (see below)          |
-| `workspace` | no*      | Mode for the block workspace                             |
-| `codespace` | no*      | Mode whose source element the codespace renders          |
-| `preview`   | no       | Mode whose source element the read-only preview renders  |
-| `views`     | no       | Modes of [added views](/guides/added-views/), by view name |
+| Field     | Required | Purpose                                              |
+| --------- | -------- | ---------------------------------------------------- |
+| `name`    | yes      | Preset identifier                                    |
+| `label`   | no       | Display label (falls back to `name`)                 |
+| `toolbox` | yes      | The tiles' [mode](/concepts/modes/)                  |
+| `views`   | yes      | The code element each view shows, by view name       |
 
-\* At least one editing space (`workspace` or `codespace`) must be set.
-**Presence of a view key means that view is shown** — workspace and codespace
-can be visible simultaneously, in different modes.
+The views a preset lists are the ones it shows; views it leaves out keep what
+they show. A name that is no declared view only warns, since a view
+[added later](/guides/added-views/) may carry it.
 
-## The toolbox render override
-
-A preset's `toolbox` is either:
-
-- a **mode name** — all of the mode's `code` elements render as draggable mini
-  blocks, or
-- an **object** `{ mode, render }` — where `render` maps element names to
-  `"block"` or `"text"`, overriding how each `code` element renders on the
-  tile.
-
-`{ "mode": "python", "render": { "python": "text" } }` shows the Python
-template as source text on the tile instead of a block. Because this choice
-lives in the preset, the same mode can render differently across presets.
-
-The text reads exactly as the codespace would write the block: field values and
-slot defaults filled in (`for i in range(3):`), an empty slot as its type
-marker (`[NUMBER]`).
-
-Any `code` element **not** named in `render` renders as a **block** — `render`
-only overrides the ones you list. And `render` applies to the **toolbox tile
-only**: the codespace, preview, and workspace always render the assigned mode's
-[source element](/concepts/modes/#the-source-element), regardless of `render`.
-
-## Using presets
-
-Pass presets in the mount config and switch at runtime:
+Pass presets in the definitions (or the mount config) and switch at runtime:
 
 ```ts
 engine.mount({
-  workspaceContainer,
-  codespaceContainer,          // required when any preset uses a codespace
-  modes: definitions.modes,
-  presets: definitions.presets,
-  preset: "iconic",            // initial preset
+  containers,
+  preset: "start",             // initial preset, default the first
   onPresetApplied(preset) {
-    // show/hide panes based on which view keys are present
+    // show the panes of the views in preset.views, hide the others
   },
 });
 
-engine.applyPreset("hybrid");  // by name or index
-
+engine.applyPreset("both");    // by name or index
 engine.getPresets();           // all presets, e.g. to build your buttons
 engine.getActivePreset();      // the one applied last, e.g. to mark its button
 ```
 
-Presets are validated at mount: unknown modes, missing code elements, a
-codespace preset without a `codespaceContainer`, duplicate names, and invalid
-`render` values are all reported immediately.
+Presets are checked at mount: unknown toolbox modes, views showing something
+that is no code element, and duplicate names are reported right away.
 
-`onPresetApplied(preset)` is your layout hook — the framework never controls
-your page layout; it tells you which views the preset uses and you arrange the
-panes.
+`onPresetApplied(preset)` is your layout hook. The framework never controls
+your page layout: it tells you which views the preset shows and you arrange
+the panes. You don't need to resize a workspace after showing or hiding its
+pane; the framework redraws Blockly whenever its container's size changes.
 
-You don't need to resize the workspace after showing or hiding panes. The
-framework watches the workspace container and redraws Blockly whenever its size
-changes, whether from a preset switch, a window resize, or a dragged divider.
+## show()
 
-## The lower-level API: setModes()
-
-Presets bundle mode switches; `setModes()` is the primitive underneath:
+Presets bundle these switches; `show()` is the call underneath, in the same
+shape:
 
 ```ts
-engine.setModes({
-  workspaceMode: "conceptual",
-  toolboxMode: "python",
-  toolboxRender: { python: "text" },
-  codespaceMode: "python",
-  previewMode: "javascript",
-});
+engine.show({ toolbox: "python-text", views: { blocks: "concept", code: "python" } });
 ```
 
-All keys are optional — set what you want to change. Passing `null` clears the
-codespace/preview mode and the toolbox render override.
+Everything left out stays as it is.
 
+## Classes for your CSS
 
-## Reading the current modes
+Every view's container carries classes you can combine:
 
-The engine reports what each view shows, so the host needs no bookkeeping of
-its own, for example to mark the active mode in its UI:
+| Class | On |
+| --- | --- |
+| `morphic-view`, `morphic-view-<name>` | every view, and this view by name |
+| `morphic-shows-<element>` | the element the view shows |
+| `morphic-preset-<name>` | the preset applied last |
+| `morphic-workspace-root`, `morphic-codespace-root` | the view's kind |
+| `morphic-read-only` | a view with `editable: false` |
+
+Workspace blocks carry `morphic-shows-<element>` too; tiles carry their mode,
+`morphic-mode-<mode>`. For example, a monospace font for Python blocks, and a
+border on every view in one preset:
+
+```css
+.morphic-workspace-root.morphic-shows-python .blocklyText { font-family: monospace; }
+.morphic-view.morphic-preset-both { border-top: 3px solid #3776ab; }
+```
+
+## Reading the current state
 
 | Method | Returns |
 | --- | --- |
 | `getAvailableModes()` | every mode name from the definitions |
-| `getWorkspaceMode()` | the workspace's mode |
-| `getCodespaceMode()` | the codespace's mode, else the workspace's |
-| `getPreviewMode()` | the preview's mode, or `undefined` without one |
-| `getViewMode(name)` | the mode of any view by name, added views included |
-| `getActivePrimarySourceElement()` | the code element the codespace renders |
-| `getActivePreviewElement()` | the code element the preview renders |
+| `getToolboxMode()` | the tiles' mode |
+| `getViewElement(name)` | the element a view shows, added views included |
+| `getViewNames()` | the views that are set up |
 
 All return `undefined` (or an empty list) before `mount()`.

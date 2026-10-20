@@ -34,7 +34,7 @@ Modell.
 | `modeLabel`  | `true`  | Kopfzeile oben in der Toolbox: `true` zeigt `Mode: <name>`, `false` keine, ein String diesen Text, eine Funktion `(mode) => text` ihr Ergebnis |
 | `blocks`     | alle    | Nur eine Teilmenge der Blöcke zeigen (Liste von Identifiern) |
 | `categories` | —       | Kategorie-Gruppierung; ohne diese und ohne `toolbox.categories` der Mount-Konfiguration rendern Blöcke als flache Liste |
-| `highlight`  | `true`  | Code, der auf Kacheln als Text steht (`render: "text"`), mit dem [Highlighting](/de/guides/syntax-highlighting/) seines Elements färben, wie der Codespace; `false` lässt ihn schlicht |
+| `highlight`  | `true`  | Code, der auf Kacheln als Text steht (`render: "text-based"`), mit dem [Highlighting](/de/guides/syntax-highlighting/) seines Elements färben, wie der Codespace; `false` lässt ihn schlicht |
 | `touch`      | `true`  | Kacheln lassen sich mit Finger oder Stift ziehen; siehe [Touch und Tastatur](#touch-und-tastatur) |
 | `keyboard`   | `true`  | Kacheln sind mit Tab erreichbar und werden mit Enter oder Leertaste hinzugefügt; siehe [Touch und Tastatur](#touch-und-tastatur) |
 | `layout`     | `"stacked"` | `"stacked"`: jede Kategorie unter ihrer Überschrift; `"tabs"`: eine Liste der Kategorienamen und die Kacheln der gewählten; siehe [Kategorien](#kategorien) |
@@ -67,10 +67,10 @@ deren `category`-Feld zum Namen passt.
 Jede Kachel rendert **alle** Elements eines Blocks; das CSS des aktiven
 Toolbox-Mode entscheidet, welche sichtbar sind (siehe
 [Blocks & Elements](/de/concepts/blocks-and-elements/#die-gerenderte-kachel)
-für das Markup). Die Toolbox rendert neu, wenn sich der Toolbox-Mode ändert —
-über `setModes({ toolboxMode })` oder einen Preset-Wechsel — und respektiert die
-[Render-Überschreibung](/de/concepts/presets-and-views/#die-toolbox-render-überschreibung)
-des Preset, um Code-Elements als Blöcke oder als Quelltext zu zeigen.
+für das Markup). Die Toolbox rendert neu, wenn sich der Toolbox-Mode ändert,
+über `show({ toolbox })` oder einen Preset-Wechsel, und respektiert das
+[`render`](/de/concepts/modes/#blöcke-oder-text-auf-einer-kachel) des Modes,
+um Code-Elemente als Blöcke oder als Quelltext zu zeigen.
 
 ## Kategorien
 
@@ -171,7 +171,7 @@ CSS-Vertrag.
 
 Die Toolbox nimmt die Breite, die dein Layout ihr gibt; ein breiterer Block
 oder eine breitere Codezeile wird abgeschnitten. Das Framework veröffentlicht
-den breitesten Block oder als Text gezeigten Code (`render: "text"`) einer
+den breitesten Block oder als Text gezeigten Code (`render: "text-based"`) einer
 Kachel als `--morphic-toolbox-block-width` am Toolbox-Container, aktualisiert
 bei jedem neuen Zeichnen der Kacheln (Mode- oder Schriftwechsel). Die
 Variable steht am Container, nutze sie also dort, plus deinem eigenen

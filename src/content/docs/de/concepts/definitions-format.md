@@ -35,15 +35,19 @@ kleines Beispiel:
     }
   },
   "modes": [
-    { "name": "iconic",     "elements": ["icon", "title", "description"] },
-    { "name": "conceptual", "elements": ["title", "concept"] },
-    { "name": "python",     "elements": ["title", "python"] },
-    { "name": "javascript", "elements": ["title", "javascript"] }
+    { "name": "iconic",      "elements": ["icon", "title", "description"] },
+    { "name": "conceptual",  "elements": ["title", "concept"] },
+    { "name": "python-text", "elements": ["title", "python"], "render": { "python": "text-based" } }
   ],
+  "views": {
+    "blocks": "workspace",
+    "code": "codespace",
+    "read": { "kind": "codespace", "editable": false }
+  },
   "presets": [
-    { "name": "iconic", "label": "Iconic", "toolbox": "iconic", "workspace": "conceptual" },
+    { "name": "iconic", "label": "Iconic", "toolbox": "iconic", "views": { "blocks": "concept" } },
     { "name": "hybrid", "label": "Hybrid", "toolbox": "conceptual",
-      "workspace": "conceptual", "codespace": "python", "preview": "javascript" }
+      "views": { "blocks": "concept", "code": "python", "read": "javascript" } }
   ],
   "categories": [
     { "name": "Output", "color": "#5C81A6" }
@@ -121,7 +125,7 @@ erfunden oder Alltagssprache sein.
 | `empty` | Vorgaben für leere Value-Slots (siehe [unten](#shadows-placeholder-und-leere-slots)) |
 | `emptyStatement` | Wird in einen leeren Statement-Slot geschrieben, wo die Sprache eine Anweisung braucht, z. B. `"pass"` für Python, damit ein leerer Schleifenrumpf gültiger Code bleibt. Weglassen lässt leere Rümpfe leer. |
 | `types` | Namen, die `%1:type` schreibt, geschlüsselt nach dem Typ des Werts (siehe [Typnamen](#typnamen)) |
-| `highlighting` | Token-Farben für Codespace und Preview (siehe [unten](#highlighting)) |
+| `highlighting` | Token-Farben für die Codespaces (siehe [unten](#highlighting)) |
 | `values` | Wie ausgegebene Werte sich lesen, solange dieses Element gezeigt wird (`True`, `None`, `['a']`); siehe [Behaviors & Code-Erzeugung](/de/concepts/behaviors-and-codegen/#ausgegebene-werte-in-der-gezeigten-sprache) |
 
 Bis 0.2 standen `stringQuote` und `empty` am Element in `elementTypes`, und
@@ -196,13 +200,20 @@ hat. Zum Füllen einen Wert-Block in den Slot ziehen.
 
 ## `modes`
 
-Die Liste der Mode-Definitionen (`{ name, elements }`) — ausführlich behandelt
-in [Modes](/de/concepts/modes/).
+Die Liste der Mode-Definitionen (`{ name, elements, render? }`), was
+Toolbox-Kacheln zeigen; ausführlich behandelt in [Modes](/de/concepts/modes/).
+
+## `views`
+
+Die Views nach Name, jeder eine Art (`workspace`, `codespace`) oder
+`{ kind, editable?, rtl?, delete? }`; `mount()` richtet jeden ein, für den es
+einen Container bekommt. Behandelt in
+[Presets & Views](/de/concepts/presets-and-views/).
 
 ## `presets`
 
-Benannte Mode-Zuordnungen pro View — behandelt in
-[Presets & Views](/de/concepts/presets-and-views/).
+Was die Toolbox und jeder View zeigen (`{ name, label?, toolbox, views }`);
+behandelt in [Presets & Views](/de/concepts/presets-and-views/).
 
 ## `categories`
 
@@ -214,7 +225,7 @@ Optionale Toolbox-Gruppierungen. Blöcke referenzieren sie per Name:
 
 ## `highlighting`
 
-Syntax-Highlighting für Codespace und Preview, pro Code-Element gesetzt als
+Syntax-Highlighting für die Codespaces, pro Code-Element gesetzt als
 `code.<name>.highlighting`:
 
 | Feld | Bedeutung |
@@ -414,7 +425,7 @@ also `True`, JavaScript `true`, wobei beide `true` speichern und ausführen:
 ```
 
 Auflösung beim Rendern von Element `E`: der Workspace-Block zeigt
-`display[E] ?? label ?? value`; Codespace und Preview zeigen
+`display[E] ?? label ?? value`; die Codespaces zeigen
 `display[E] ?? value` (`label` bleibt block-only). Ausführung, Codegen und
 Serialisierung nutzen immer den **Wert**. Das betrifft nur die
 *Repräsentations*-Achse (Python- vs. JavaScript-Schreibweise) — die Übersetzung
@@ -494,6 +505,10 @@ Wirft (alle Probleme werden gesammelt und auf einmal gemeldet):
   Blockly-Typ benennt
 - eine Einstellung an ihrem Platz von vor 0.3.0 (`stringQuote` oder `empty` in
   `elementTypes`, eine `highlighting`-Map auf oberster Ebene), mit dem neuen Ort
+- eine Einstellung an ihrem Platz von vor 0.4.0 (das `toolbox`-Objekt eines
+  Presets oder seine Schlüssel `workspace`, `codespace` und `preview`, die
+  `render`-Werte `"block"` und `"text"`), mit dem neuen Ort
+- ein View unbekannter Art, oder ein Container für einen nicht deklarierten View
 
 Warnt:
 
@@ -506,6 +521,9 @@ Warnt:
 - eine Block-`category`, die nicht in `categories` steht
 - ein Name, der über Element / Mode / Preset hinweg mehrfach verwendet wird
   (siehe [Modes](/de/concepts/modes/))
+- ein Preset, das einen nicht deklarierten View nennt (ein später mit
+  `addView()` hinzugefügter kann den Namen tragen)
+- ein `render` eines Modes, das kein Code-Element des Modes nennt
 
 Um eine Datei *vor* dem Mounten zu prüfen — in einem Test oder Build-Schritt —
 rufe das exportierte `validateDefinitions(...)` auf, das `{ errors, warnings }`

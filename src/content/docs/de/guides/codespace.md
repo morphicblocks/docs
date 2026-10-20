@@ -3,8 +3,8 @@ title: Codespace
 description: Eine über die Struktur editierbare Text-Ansicht des Workspace.
 ---
 
-Der **Codespace** zeigt das Block-Modell als Text — gerendert aus dem
-[Quell-Element](/de/concepts/modes/#das-quell-element) des Codespace-Mode — und
+Der **Codespace** zeigt das Block-Modell als Text, geschrieben im
+Code-Element, das er zeigt (`python`, `concept`), und
 lässt Nutzer *das Programm über seine Struktur bearbeiten*: Ziehen, Ablegen,
 Umsortieren und Editieren von Werten, alles gegen dasselbe zugrunde liegende
 Blockly-Modell wie der Workspace. Es ist kein Freitext-Editieren; jede Änderung
@@ -12,7 +12,9 @@ ist eine Modell-Operation, sodass das Programm nie syntaktisch kaputtgehen kann.
 
 ## Einbinden
 
-Gib `mount()` einen Container, und es richtet den Codespace dort ein:
+Ein Codespace ist ein [View](/de/concepts/presets-and-views/) der Art
+`codespace`. Ohne deklarierte Views gibt es einen namens `codespace`; gib
+`mount()` seinen Container, und es richtet den Codespace dort ein:
 
 ```ts
 await engine.mount({
@@ -26,16 +28,12 @@ await engine.mount({
 Das Warten auf `mount()` wartet auf den Codespace, weil CodeMirror verzögert
 geladen wird (siehe
 [Installation](/de/getting-started/installation/#optional-pakete-für-den-code-editor)).
-Um ihn später mit anderen [Optionen](#optionen) neu einzurichten, rufe
-`engine.mountCodespace(options)` auf.
-Welchen Mode der Codespace zeigt, legt das aktive
+Welches Element der Codespace zeigt, legt das aktive
 [Preset](/de/concepts/presets-and-views/) fest, oder zur Laufzeit
-`setModes({ codespaceMode })`.
+`show({ views: { codespace: "python" } })`.
 
-**Headless-Modus:** `mount()` akzeptiert `workspaceContainer`,
-`codespaceContainer` oder beides. Nur mit einem `codespaceContainer` läuft
-Blockly headless (offscreen) — das Block-Modell bleibt maßgeblich, während
-Nutzer nur Text sehen.
+**Headless-Modus:** Ohne Container für einen Workspace läuft Blockly headless
+(offscreen): Das Block-Modell bleibt maßgeblich, während Nutzer nur Text sehen.
 
 ## Was Nutzer tun können
 
@@ -75,7 +73,7 @@ oder eine editierbare `___`-Markierung, wenn keine gesetzt ist.
 ## Gruppen von Blöcken
 
 Verbundene Blöcke bilden eine Gruppe, wie ein Stapel im Workspace. In den
-Text-Views (Codespace, Previews) markiert das Framework die Zeilen jeder Gruppe
+Text-Views (jedem Codespace) markiert das Framework die Zeilen jeder Gruppe
 mit Klassen. Der Text selbst und seine Zeilennummern bleiben unverändert:
 
 | Klasse | An |
@@ -134,24 +132,18 @@ Um nur die Gruppen zu zeigen, schalte die anderen Hervorhebungen aus:
 
 ## Optionen
 
-`mountCodespace(options?)` nimmt dieselben Optionen wie der Code-Editor
-(`theme`, `extensions`, `highlightRules`, …). Zwei haben codespace-spezifische
-Standardwerte, die du überschreiben kannst:
+Die Optionen eines Codespace sitzen an seinem View in den `views` der
+Definitionen (oder an `addView()` für einen
+[zusätzlichen Codespace](/de/guides/added-views/)). Jede Art zu löschen ist
+standardmäßig an und lässt sich mit `delete` abschalten:
 
-| Option         | Standardverhalten                                          |
-| --- | --- |
-| `onDelete`     | Löscht den Block in der angegebenen Zeile aus dem Modell    |
-| `canDragBlock` | Griffe erscheinen für alle beweglichen Blöcke (Statement und Value) |
-
-Jede Art zu löschen ist standardmäßig an und lässt sich abschalten, für den
-Codespace, den `mount()` einrichtet, mit `codespace`, für einen
-[zusätzlichen Codespace](/de/guides/added-views/) mit `delete`:
-
-```ts
-engine.mount({
-  // …Container
-  codespace: { delete: { lineButtons: false, keys: true, toolbarButton: true } },
-});
+```json
+{
+  "views": {
+    "workspace": "workspace",
+    "codespace": { "kind": "codespace", "delete": { "lineButtons": false } }
+  }
+}
 ```
 
 | Option | Schaltet ab |
@@ -160,10 +152,14 @@ engine.mount({
 | `keys` | Entf und Rücktaste |
 | `toolbarButton` | das `✕` der Toolbar für die ausgewählten Zeilen |
 
-Theme zur Laufzeit: `engine.setCodespaceTheme(theme)`.
+`editable: false` macht einen Codespace schreibgeschützt (siehe
+[Schreibgeschützte Views](/de/guides/preview-and-code-editor/)), und `rtl`
+setzt seine Richtung (siehe [Textrichtung](/de/guides/text-direction/)).
+
+Theme zur Laufzeit: `engine.setViewTheme("codespace", theme)`.
 
 ## Verwandt
 
-- [Preview & Code-Editor](/de/guides/preview-and-code-editor/) — die schreibgeschützten Geschwister
+- [Schreibgeschützte Views & Code-Editor](/de/guides/preview-and-code-editor/), die schreibgeschützten Geschwister
 - [Syntax-Highlighting](/de/guides/syntax-highlighting/) — den gerenderten Text einfärben
 - [Selection-Sync](/de/guides/selection-sync/) — verknüpftes Hervorheben über Views hinweg

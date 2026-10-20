@@ -1,6 +1,6 @@
 ---
 title: Styling Modes with CSS
-description: One stylesheet per mode using .morphic-mode-* classes.
+description: One stylesheet per mode using .morphic-mode-* classes, and classes for the views.
 ---
 
 Modes have no built-in look — **you** define how each mode renders, one CSS
@@ -29,17 +29,22 @@ arranged**:
 .morphic-mode-iconic .morphic-element-title { display: block; font-weight: 600; }
 ```
 
-The Blockly workspace root gets the mode class too:
+Views show an element, not a mode, so workspace views and their blocks carry
+`morphic-shows-<element>` in place of the mode class (see
+[Presets & Views](/concepts/presets-and-views/#classes-for-your-css)):
 
 ```css
-/* python.css — monospace text on workspace blocks in python mode */
-.morphic-workspace-root.morphic-mode-python .blocklyText {
+/* python.css: monospace text on workspace blocks showing python */
+.morphic-workspace-root.morphic-shows-python .blocklyText {
   font-family: "Fira Code", monospace;
 }
 ```
 
+Mode stylesheets load for every mode, so rules for views can sit in any of
+them, or in your own CSS.
+
 Blocks are sized for the font your CSS gives their text. The font family, size
-and weight set on `.blocklyText` are picked up on every mode switch, and again
+and weight set on `.blocklyText` are picked up on every switch, and again
 once a stylesheet or web font finishes loading, so text never spills out of its
 block. The same applies to blocks shown on toolbox tiles, which take the font of
 their element. Other properties, like colors, change nothing about the size.
@@ -48,12 +53,12 @@ When your app changes the block font itself, for example with a font size
 switch, call `engine.refresh()` afterwards so blocks and tiles are measured
 again.
 
-The codespace and preview containers carry the mode they show as well, as
-`morphic-codespace-root` and `morphic-preview-root`, so a mode can style its
-text views:
+Codespaces carry `morphic-codespace-root` and the element they show, read
+only ones `morphic-read-only` too:
 
 ```css
-.morphic-codespace-root.morphic-mode-python { font-size: 15px; }
+.morphic-codespace-root.morphic-shows-python { font-size: 15px; }
+.morphic-codespace-root.morphic-read-only { opacity: 0.9; }
 ```
 
 Block colors can be driven from CSS via the custom property:

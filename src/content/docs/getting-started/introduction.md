@@ -35,10 +35,10 @@ touches the program.
 2. You provide **behaviors** (JS/TS): one function per block type that generates
    executable code.
 3. You provide **CSS**: one stylesheet per mode.
-4. You mount the engine into your containers and pick a **preset** — an
-   assignment of modes to views (toolbox, workspace, codespace, preview).
-5. Switching modes or presets at runtime re-renders every view from the same
-   model.
+4. You declare the **views** (workspaces, codespaces), mount the engine into
+   their containers and pick a **preset**: the toolbox's mode and the code
+   element each view shows.
+5. Switching presets at runtime re-renders every view from the same model.
 
 ## Use cases
 

@@ -58,7 +58,7 @@ Der Typ steuert das Rendering-Verhalten:
 
 `code`-Elements nutzen die [Template-Syntax](/de/concepts/definitions-format/#template-syntax)
 (`%1`-Input-Slots, `%FIELDNAME`-Felder, `<img>`-Tags) und dienen zugleich als
-Textdarstellung für Codespace und Preview.
+Textdarstellung für die Codespaces.
 
 ## Die gerenderte Kachel
 

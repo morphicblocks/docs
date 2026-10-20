@@ -56,7 +56,7 @@ The type drives rendering behavior:
 
 `code` elements use the [template syntax](/concepts/definitions-format/#template-syntax)
 (`%1` input slots, `%FIELDNAME` fields, `<img>` tags) and double as the text
-rendering for the codespace and preview views.
+rendering for the codespaces.
 
 ## The rendered tile
 

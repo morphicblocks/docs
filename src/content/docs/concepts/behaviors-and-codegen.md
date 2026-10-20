@@ -173,7 +173,7 @@ Two different things turn blocks into text — don't confuse them:
 
 - **Behaviors** produce the *executable* code (`generateJavaScript()`).
 - **Templates** (`code` elements with `%N` substitution) produce what the
-  codespace and preview *display*.
+  codespaces *display*.
 
 They are independent by design: what learners see can be Python while what
 runs is JavaScript. See [Presets & Views](/concepts/presets-and-views/) for

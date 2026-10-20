@@ -1,18 +1,18 @@
 ---
 title: Toolbars
-description: Per-pane toolbars with copy, paste, zoom, undo, and redo.
+description: Toolbars per view with copy, paste, zoom, undo, and redo.
 ---
 
-Each pane (workspace, codespace, preview) can mount its own toolbar. Like
-everything else in the framework, toolbars are **headless** — structural
-classes only, styling is yours.
+Each view can have its own toolbar. Like everything else in the framework,
+toolbars are **headless**: structural classes only, styling is yours.
 
-Give `mount()` a container per pane, and each gets the default toolbar:
+Give `mount()` a container per view, by view name, and each gets the default
+toolbar:
 
 ```ts
 engine.mount({
   // …containers
-  toolbarContainers: {
+  toolbars: {
     workspace: document.getElementById("workspace-toolbar")!,
     codespace: document.getElementById("codespace-toolbar")!,
   },
@@ -23,28 +23,23 @@ For [custom items](#custom-items), or to add a toolbar later, use
 `engine.mountToolbar()`:
 
 ```ts
-engine.mountToolbar(document.getElementById("workspace-toolbar")!, {
-  pane: "workspace",
-});
+engine.mountToolbar(document.getElementById("workspace-toolbar")!, { view: "workspace" });
 ```
 
-A toolbar can act on any view by name, `view` in place of `pane`: the built-in
-`workspace`, `codespace` and `preview`, or an [added view](/guides/added-views/)
-(which can also bring its own toolbar through `addView({ toolbar })`):
-
-```ts
-engine.mountToolbar(document.getElementById("right-toolbar")!, { view: "right" });
-```
+A toolbar acts on a view by name, declared or [added](/guides/added-views/)
+(an added view can also bring its own through `addView({ toolbar })`).
 
 ## Default items
 
-Omitting `items` gives the pane's defaults:
+Omitting `items` gives the defaults of the view's kind:
 
-| Pane                    | Items                                                             |
+| View                    | Items                                                             |
 | --- | --- |
-| `workspace` | mode label · spacer · undo · redo · copy · paste · zoom in/out/fit · clear |
-| `codespace` | mode label · spacer · undo · redo · copy · paste · delete · zoom in/out/fit · clear |
-| `preview`, added workspace | mode label · spacer · copy · zoom in/out/fit · read-only badge     |
+| `workspace` | view label · spacer · undo · redo · copy · paste · zoom in/out/fit · clear |
+| `codespace` | view label · spacer · undo · redo · copy · paste · delete · zoom in/out/fit · clear |
+| read only (`editable: false`) | view label · spacer · copy · zoom in/out/fit · read-only badge     |
+
+The view label shows the element the view shows (`python`).
 
 Pass `items: []` to render none, or compose your own from the exported
 factories:
@@ -53,10 +48,10 @@ factories:
 import { toolbarItems } from "morphic-blocks";
 
 engine.mountToolbar(el, {
-  pane: "codespace",
+  view: "codespace",
   display: "both",   // "icon" (default) | "label" | "both"
   items: [
-    toolbarItems.modeLabel(),
+    toolbarItems.viewLabel(),
     toolbarItems.spacer(),
     toolbarItems.undo(),
     toolbarItems.redo(),
@@ -68,7 +63,7 @@ engine.mountToolbar(el, {
 ## Block-aware clipboard and zoom
 
 Toolbar actions go through engine APIs you can also call directly. Each takes a
-view name (`workspace`, `codespace`, `preview`, or an added view's):
+view name:
 
 - `engine.copyActiveBlock(view)` — copies the block that owns the active
   line/selection; also mirrors the block's *code text* to the system clipboard.
@@ -93,22 +88,23 @@ An item is a plain object:
   label: "Run",
   icon: "<svg …>…</svg>",          // inline SVG string
   title: "Run the program",        // native tooltip
-  onClick: (ctx) => { /* ctx.engine, ctx.pane, ctx.refresh() */ },
+  onClick: (ctx) => { /* ctx.engine, ctx.view, ctx.refresh() */ },
   visible: (ctx) => true,          // omit item when false
   disabled: (ctx) => false,        // rendered disabled when true
   // render: (ctx) => …            // escape hatch: fully custom DOM
 }
 ```
 
-Every callback receives the toolbar context (`ctx.engine`, `ctx.pane` for the
-view's kind, `ctx.view` for its name, `ctx.refresh()`); pass `ctx.view` to the
-engine APIs above. Items can read pane state and request a re-render —
-that's how the built-in undo/redo items track their enabled state.
+Every callback receives the toolbar context (`ctx.engine`, `ctx.kind` for the
+view's kind, `ctx.readOnly`, `ctx.view` for its name, `ctx.refresh()`); pass
+`ctx.view` to the engine APIs above. Items can read the view's state and
+request a re-render; that's how the built-in undo/redo items track their
+enabled state.
 
 ## Styling
 
 ```css
-.morphic-toolbar { /* container; also has data-morphic-pane="workspace" and data-morphic-view="…" */ }
+.morphic-toolbar { /* container; also has data-morphic-kind="workspace" and data-morphic-view="…" */ }
 .morphic-toolbar-left, .morphic-toolbar-right { /* item groups */ }
 [data-toolbar-id="copy"] { /* single item */ }
 ```

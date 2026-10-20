@@ -5,15 +5,15 @@ description: Linked block ↔ text selection across all views.
 
 With selection sync enabled, selecting a block highlights its corresponding
 lines in every text view — and clicking a line in a text view selects the
-block. It works across all mounted views: workspace, code editor, codespace,
-and preview.
+block. It works across all views: workspaces, codespaces (read only ones
+too) and the code editor.
 
 Selection sync is **on by default** whenever `mount()` sets up more than one
 view. Turn it off with `mount({ selectionSync: false })`, or enable it later
 yourself:
 
 ```ts
-// after at least one of mountCodeEditor / mountCodespace / mountPreview
+// once a text view or the code editor is set up
 engine.enableSelectionSync();
 ```
 
@@ -51,7 +51,7 @@ engine.mount({
 | `codeToBlock`    | `true`  | Enable the code → block direction        |
 
 Each text view highlights in a lighter tint of its own `selectionBackground`
-(from `editorTheme` or `previewTheme`), so the highlight shows on light and
+(from `editorTheme` or `themes`), so the highlight shows on light and
 dark themes alike. To use a color of your own, set the CSS variable
 `--morphic-highlight-color`; it wins over the theme:
 
@@ -65,5 +65,5 @@ Turn it off with `engine.disableSelectionSync()`.
 
 Linked highlighting is what makes side-by-side modes *teach*: a learner
 clicks `print("hi")` in the Python codespace and sees the same statement
-light up in the block workspace and the JavaScript preview — three
+light up in the block workspace and the read only JavaScript view: three
 representations, visibly one program.

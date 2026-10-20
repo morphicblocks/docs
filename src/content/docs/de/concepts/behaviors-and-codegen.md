@@ -177,8 +177,8 @@ Framework die Absicht nicht ableiten kann.
 Zwei verschiedene Dinge machen aus Blöcken Text — verwechsle sie nicht:
 
 - **Behaviors** erzeugen den *ausführbaren* Code (`generateJavaScript()`).
-- **Templates** (`code`-Elements mit `%N`-Einsetzung) erzeugen, was Codespace
-  und Preview *anzeigen*.
+- **Templates** (`code`-Elements mit `%N`-Einsetzung) erzeugen, was die
+  Codespaces *anzeigen*.
 
 Sie sind absichtlich unabhängig: Was Lernende sehen, kann Python sein, während
 das, was läuft, JavaScript ist. Siehe [Presets & Views](/de/concepts/presets-and-views/)

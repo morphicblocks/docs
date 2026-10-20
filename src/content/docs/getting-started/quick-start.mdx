@@ -96,11 +96,11 @@ engine.mount({
    Drag the *Print* tile from the toolbox into the workspace — it creates a
    real Blockly block.
 
-5. **Switch modes at runtime.** The same blocks re-render with the `python`
+5. **Switch at runtime.** The same blocks re-render with the `python`
    element as their template:
 
    ```ts
-   engine.setModes({ workspaceMode: "python", toolboxMode: "python" });
+   engine.show({ toolbox: "python", views: { workspace: "python" } });
    ```
 
 6. **Generate code** from the workspace via your behaviors:
