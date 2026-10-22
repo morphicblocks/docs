@@ -119,6 +119,7 @@ export default defineConfig({
 						{ slug: 'guides/toolbars' },
 						{ slug: 'guides/styling-modes' },
 						{ slug: 'guides/text-direction' },
+						{ slug: 'guides/resizable-panes' },
 						{ slug: 'guides/saving-and-loading' },
 						{ slug: 'guides/privacy' },
 						{ slug: 'guides/testing' },
