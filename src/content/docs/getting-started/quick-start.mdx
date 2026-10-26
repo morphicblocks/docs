@@ -109,6 +109,9 @@ engine.mount({
    const js = engine.generateJavaScript();
    ```
 
+   Blockly's own options go under `blockly` and are passed through, e.g. the
+   block look: `mount({ blockly: { renderer: "zelos" } })` (default `geras`).
+
 </Steps>
 
 ## Where to go from here

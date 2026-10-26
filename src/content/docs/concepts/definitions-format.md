@@ -429,6 +429,28 @@ it and `display` works. For picking any color as a hex code, use Blockly's
 [`@blockly/field-colour`](https://www.npmjs.com/package/@blockly/field-colour)
 plugin in a behavior's `onViewApplied`.
 
+#### Styling the menu
+
+An open dropdown's menu gets two classes: `morphic-menu`, and
+`morphic-menu-<FIELD>` with the field's name. The look is yours: lay pictures
+out in a row or grid, hide the check marks, make choices bigger for touch, or
+give an operator menu a larger font. For example, a pen color menu with the
+swatches in a row and an outline on the chosen one:
+
+```css
+.morphic-menu-COLOR { display: flex; gap: 4px; padding: 4px; }
+.morphic-menu-COLOR .blocklyMenuItem { min-width: 0; padding: 4px; }
+.morphic-menu-COLOR .blocklyMenuItemCheckbox { display: none; }
+.morphic-menu-COLOR img { display: block; width: 24px; height: 24px; border-radius: 6px;
+  outline: 3px solid transparent; outline-offset: 1px; }
+.morphic-menu-COLOR .blocklyMenuItemSelected img { outline-color: #55bdcb; }
+```
+
+The field on the block keeps Blockly's look. An app that wants it painted in
+the chosen color, as the Turtle Drawing app in the
+[playground](https://playground.morphicblocks.com) does, builds its own field
+in a behavior's `onViewApplied`.
+
 
 #### Per-mode option text
 

@@ -442,6 +442,29 @@ zu wählen, nutze Blocklys Plugin
 [`@blockly/field-colour`](https://www.npmjs.com/package/@blockly/field-colour)
 im `onViewApplied` eines Behaviors.
 
+#### Das Menü gestalten
+
+Das Menü eines geöffneten Dropdowns bekommt zwei Klassen: `morphic-menu` und
+`morphic-menu-<FIELD>` mit dem Namen des Felds. Das Aussehen bestimmst du:
+Bilder in einer Reihe oder einem Raster, keine Häkchen, größere Auswahlen für
+Touch oder eine größere Schrift für ein Operator-Menü. Zum Beispiel ein Menü
+für Stiftfarben mit den Farbfeldern in einer Reihe und einem Rahmen um das
+gewählte:
+
+```css
+.morphic-menu-COLOR { display: flex; gap: 4px; padding: 4px; }
+.morphic-menu-COLOR .blocklyMenuItem { min-width: 0; padding: 4px; }
+.morphic-menu-COLOR .blocklyMenuItemCheckbox { display: none; }
+.morphic-menu-COLOR img { display: block; width: 24px; height: 24px; border-radius: 6px;
+  outline: 3px solid transparent; outline-offset: 1px; }
+.morphic-menu-COLOR .blocklyMenuItemSelected img { outline-color: #55bdcb; }
+```
+
+Das Feld auf dem Block behält Blocklys Aussehen. Eine App, die es in der
+gewählten Farbe füllen will, wie die App Turtle Drawing im
+[Playground](https://playground.morphicblocks.com), baut ihr eigenes Feld im
+`onViewApplied` eines Behaviors.
+
 
 #### Options-Text pro Modus
 
