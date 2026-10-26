@@ -55,10 +55,62 @@ Der Typ steuert das Rendering-Verhalten:
 | `text`  | Als HTML-Label gerendert               | Nie gezeigt                                                            |
 | `code`  | Als Blockly-SVG oder Quelltext gerendert | Als Blockly-Template verwendet (`<img>` im Inhalt wird zu FieldImage) |
 | `image` | Als `<img>` gerendert                  | Nie gezeigt                                                            |
+| `custom` | Von einer [Funktion der App](#eigene-elemente) gezeichnet | Nie gezeigt                                     |
 
 `code`-Elements nutzen die [Template-Syntax](/de/concepts/definitions-format/#template-syntax)
 (`%1`-Input-Slots, `%FIELDNAME`-Felder, `<img>`-Tags) und dienen zugleich als
 Textdarstellung für die Codespaces.
+
+## Eigene Elemente
+
+Ein `custom`-Element zeichnet eine Funktion der App auf die Kacheln, sodass
+eine Kachel alles enthalten kann, was die drei anderen Typen nicht abdecken:
+einen Info-Button, einen Ton zum Abspielen, einen Vorlese-Button, ein Video.
+Die Funktion bekommt den Inhalt des Blocks für das Element, sodass jeder Block
+seinen eigenen hat:
+
+```json
+{
+  "elementTypes": { "title": "text", "block": "code", "info": "custom" },
+  "modes": [
+    { "name": "novice", "elements": ["title", "block", "info"] },
+    { "name": "expert", "elements": ["block"] }
+  ],
+  "blocks": [
+    { "identifier": "print", "elements": {
+      "title": "Ausgabe", "block": "print %1", "info": "Schreibt eine Nachricht in die Ausgabe" } }
+  ]
+}
+```
+
+```ts
+engine.mount({
+  workspaceContainer,
+  toolboxContainer,
+  toolbox: {
+    custom: {
+      info: (content, { block, element, mode }) => {
+        const button = document.createElement("button");
+        button.textContent = "ⓘ";
+        button.setAttribute("aria-label", content);
+        button.onclick = () => showHelp(content);
+        return button;
+      },
+    },
+  },
+});
+```
+
+Die Funktion gibt einen DOM-Knoten zurück oder einen String, der als Text
+erscheint. Sie läuft bei jedem Neuzeichnen der Toolbox erneut, etwa wenn der
+Toolbox-Modus wechselt. Wie bei jedem Element entscheiden die Modes, wo es
+erscheint: hier haben die Novice-Kacheln den Button, die Expert-Kacheln nicht.
+
+Ein Druck auf einen Button, Link oder ein Eingabefeld in einem eigenen Element
+gilt diesem Steuerelement: Er zieht die Kachel nicht, und Enter oder Leertaste
+dort fügen den Block nicht hinzu. Ein eigenes Element zählt nicht zum Namen
+der Kachel für Screenreader, da seine Steuerelemente eigene Namen tragen. Ohne
+Funktion in `toolbox.custom` zeigt die Kachel den Inhalt als Text, und `mount()` warnt.
 
 ## Die gerenderte Kachel
 

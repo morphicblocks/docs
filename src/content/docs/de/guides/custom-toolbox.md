@@ -43,6 +43,7 @@ Modell.
 | `collapsed`  | alle offen | `true` klappt zu Beginn alle zu, eine Liste von Namen nur diese |
 | `onCategoryToggle` | — | `(name, collapsed) => …`, etwa um den Zustand zu merken |
 | `scrollbar`  | `false` | `false` blendet die Scrollbar aus und lässt die Ränder auslaufen, wo weitere Kacheln warten; `true` zeigt sie; siehe [Scrollen](#scrollen) |
+| `custom`     | — | Wie jedes `custom`-Element gezeichnet wird, nach Element-Name; siehe [Eigene Elemente](/de/concepts/blocks-and-elements/#eigene-elemente) |
 
 Alle lassen sich auch in `mount()` unter `toolbox` setzen, sodass auch eine
 über `toolboxContainer` eingerichtete Toolbox sie bekommt:

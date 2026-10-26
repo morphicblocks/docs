@@ -43,6 +43,7 @@ model.
 | `collapsed`  | all open | `true` collapses all at the start, a list of names only those |
 | `onCategoryToggle` | — | `(name, collapsed) => …`, e.g. to remember the state |
 | `scrollbar`  | `false` | `false` hides the scrollbar and fades the edges where more tiles wait; `true` shows it; see [Scrolling](#scrolling) |
+| `custom`     | — | How each `custom` element is drawn, by element name; see [Custom elements](/concepts/blocks-and-elements/#custom-elements) |
 
 All of them can also be set in `mount()` under `toolbox`, so a toolbox set up by
 `toolboxContainer` gets them too:

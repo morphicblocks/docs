@@ -53,10 +53,61 @@ The type drives rendering behavior:
 | `text`  | Rendered as HTML label                  | Never shown                                                            |
 | `code`  | Rendered as Blockly SVG or source text  | Used as the Blockly template (`<img>` in content becomes a FieldImage) |
 | `image` | Rendered as `<img>`                     | Never shown                                                            |
+| `custom` | Drawn by a [function of the app](#custom-elements) | Never shown                                           |
 
 `code` elements use the [template syntax](/concepts/definitions-format/#template-syntax)
 (`%1` input slots, `%FIELDNAME` fields, `<img>` tags) and double as the text
 rendering for the codespaces.
+
+## Custom elements
+
+A `custom` element is drawn on the tiles by a function of the app, so a tile
+can hold anything the three other types do not: an info button, a sound to
+play, a read aloud button, a video. The block's content for the element is
+passed to the function, so each block has its own:
+
+```json
+{
+  "elementTypes": { "title": "text", "block": "code", "info": "custom" },
+  "modes": [
+    { "name": "novice", "elements": ["title", "block", "info"] },
+    { "name": "expert", "elements": ["block"] }
+  ],
+  "blocks": [
+    { "identifier": "print", "elements": {
+      "title": "Print", "block": "print %1", "info": "Writes a message to the output" } }
+  ]
+}
+```
+
+```ts
+engine.mount({
+  workspaceContainer,
+  toolboxContainer,
+  toolbox: {
+    custom: {
+      info: (content, { block, element, mode }) => {
+        const button = document.createElement("button");
+        button.textContent = "ⓘ";
+        button.setAttribute("aria-label", content);
+        button.onclick = () => showHelp(content);
+        return button;
+      },
+    },
+  },
+});
+```
+
+The function returns a DOM node, or a string shown as text. It runs again on
+every redraw of the toolbox, e.g. when the toolbox mode switches. Like every
+element, modes decide where it shows: here the novice tiles have the button,
+the expert tiles do not.
+
+A press on a button, link or input inside a custom element is for that
+control: it does not drag the tile, and Enter or Space there does not add the
+block. A custom element is left out of the tile's name for screen readers,
+since its controls carry their own. Without a function in `toolbox.custom`, the tile shows the
+content as text and `mount()` warns.
 
 ## The rendered tile
 
