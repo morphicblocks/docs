@@ -402,6 +402,47 @@ Anzeige-Überschreibung auf dem Workspace-Block, sodass eine Option `÷` zeigen
 kann, während Text-Views und generierter Code `/` verwenden. Es gibt keinen
 separaten Serialisierungs-Schlüssel — Blockly speichert den Wert.
 
+#### Bilder als Auswahl
+
+Ein `label` kann auch ein Bild sein. Der Block zeigt es statt Text; die
+Text-Views und der generierte Code verwenden weiterhin den Wert.
+
+```json
+"fields": {
+  "DIR": {
+    "type": "dropdown",
+    "options": [
+      { "value": "left",  "label": { "src": "icons/arrow_left.svg" } },
+      { "value": "right", "label": { "src": "icons/arrow_right.svg", "alt": "nach rechts" } }
+    ]
+  },
+  "COLOR": {
+    "type": "dropdown",
+    "options": [
+      { "value": "red",  "label": { "color": "#e53935" } },
+      { "value": "blue", "label": { "color": "#1e88e5" } }
+    ]
+  }
+}
+```
+
+| Schlüssel | Bedeutung                                                       |
+| --------- | --------------------------------------------------------------- |
+| `src`     | Eine Bilddatei (SVG, PNG, …), wie bei `image`-Elementen          |
+| `color`   | Eine CSS-Farbe; das Framework zeichnet ein Farbfeld, ohne Datei  |
+| `alt`     | Was Screenreader vorlesen. Standard: der Wert                   |
+| `width`, `height` | Größe in Pixeln. Standard: 16 × 16                      |
+
+Ein Bild braucht `src` oder `color`. Bilder passen zu Auswahlen, die man
+leichter sieht als liest: Farben, Richtungen, Tiere, Figuren, Noten.
+
+Der Wert bleibt ein Wort deiner Wahl (`red`, `ink`), sodass die Text-Views
+ihn schreiben und `display` funktioniert. Um eine beliebige Farbe als Hex-Code
+zu wählen, nutze Blocklys Plugin
+[`@blockly/field-colour`](https://www.npmjs.com/package/@blockly/field-colour)
+im `onViewApplied` eines Behaviors.
+
+
 #### Options-Text pro Modus
 
 `display` lässt den *angezeigten* Text einer Option dem aktiven Modus folgen,

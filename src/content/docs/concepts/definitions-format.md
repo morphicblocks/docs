@@ -390,6 +390,46 @@ shown on the workspace block, so one option can show `÷` while the text views
 and generated code use `/`. There is no separate serialization key — Blockly
 stores the value.
 
+#### Pictures as choices
+
+A `label` can also be a picture. The block shows it in place of text; the text
+views and the generated code still use the value.
+
+```json
+"fields": {
+  "DIR": {
+    "type": "dropdown",
+    "options": [
+      { "value": "left",  "label": { "src": "icons/arrow_left.svg" } },
+      { "value": "right", "label": { "src": "icons/arrow_right.svg", "alt": "to the right" } }
+    ]
+  },
+  "COLOR": {
+    "type": "dropdown",
+    "options": [
+      { "value": "red",  "label": { "color": "#e53935" } },
+      { "value": "blue", "label": { "color": "#1e88e5" } }
+    ]
+  }
+}
+```
+
+| Key      | Meaning                                                          |
+| -------- | ---------------------------------------------------------------- |
+| `src`    | An image file (SVG, PNG, …), like the `image` elements           |
+| `color`  | A CSS color; the framework draws a swatch, no file needed        |
+| `alt`    | What screen readers say. Default: the value                      |
+| `width`, `height` | Size in pixels. Default: 16 × 16                        |
+
+A picture needs `src` or `color`. Pictures suit choices that are easier to
+see than to read: colors, directions, animals, sprites, notes.
+
+The value stays a word of your choice (`red`, `ink`), so the text views write
+it and `display` works. For picking any color as a hex code, use Blockly's
+[`@blockly/field-colour`](https://www.npmjs.com/package/@blockly/field-colour)
+plugin in a behavior's `onViewApplied`.
+
+
 #### Per-mode option text
 
 `display` makes an option's *shown* text follow the active mode while the value
