@@ -108,7 +108,7 @@ Objekt; jedes Feld ist optional und fällt auf den Standard zurück:
 
 `editorTheme` färbt jede Text-View und den Code-Editor; `themes` gibt
 einzelnen Views ihr eigenes, nach View-Name. Eine helle Seite braucht eigene
-Farben:
+Farben oder ein fertiges Theme aus [`@morphicblocks/themes`](/de/guides/themes/):
 
 ```ts
 await engine.mount({

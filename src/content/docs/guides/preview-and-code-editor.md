@@ -104,7 +104,8 @@ is optional and falls back to the default:
 | `lineHeight`          | `1.5`       | Line spacing, as a multiplier        |
 
 `editorTheme` colours every text view and the code editor; `themes` gives
-single views their own, by view name. A light page needs its own colors:
+single views their own, by view name. A light page needs its own colors, or a
+ready-made theme from [`@morphicblocks/themes`](/guides/themes/):
 
 ```ts
 await engine.mount({
