@@ -44,6 +44,7 @@ model.
 | `onCategoryToggle` | — | `(name, collapsed) => …`, e.g. to remember the state |
 | `scrollbar`  | `false` | `false` hides the scrollbar and fades the edges where more tiles wait; `true` shows it; see [Scrolling](#scrolling) |
 | `custom`     | — | How each `custom` element is drawn, by element name; see [Custom elements](/concepts/blocks-and-elements/#custom-elements) |
+| `label`      | what the tile shows | The element whose text names each tile for screen readers, or `(mode) => element`; see [Spoken labels](#spoken-labels) |
 
 All of them can also be set in `mount()` under `toolbox`, so a toolbox set up by
 `toolboxContainer` gets them too:
@@ -146,6 +147,43 @@ a visible style:
 ```css
 .morphic-block:focus-visible { outline: 2px solid; }
 ```
+
+### Spoken labels
+
+What a tile shows is not always what a screen reader should say: an icon mode
+shows a picture, a code mode reads `print(%1)` aloud. An element that no mode
+lists is hidden on every tile but still belongs to the block, so it can hold
+the spoken name. `label` tells the toolbox to name tiles after it:
+
+```json
+{
+  "elementTypes": { "icon": "image", "title": "text", "spoken": "text" },
+  "blocks": [
+    { "identifier": "print", "elements": {
+      "icon": "icons/print.svg", "title": "Print", "spoken": "Print block: writes a message" } }
+  ]
+}
+```
+
+```ts
+engine.mount({ workspaceContainer, toolboxContainer, toolbox: { label: "spoken" } });
+```
+
+A block without that element keeps the default name. For several languages,
+give each its own element and pass a function; it is asked again on every
+redraw, so after a language switch, redraw the toolbox:
+
+```ts
+let language = "en";
+engine.mount({ /* … */ toolbox: { label: () => `spoken-${language}` } });
+
+language = "de";
+engine.show({ toolbox: engine.getToolboxMode() });
+```
+
+A read aloud button on the tiles is the app's: a
+[custom element](/concepts/blocks-and-elements/#custom-elements) can speak the
+same text with the browser's speech.
 
 The workspace itself belongs to Blockly. To move and edit blocks there with
 the keyboard, add Blockly's keyboard navigation plugin to your app; the

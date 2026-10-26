@@ -44,6 +44,7 @@ Modell.
 | `onCategoryToggle` | — | `(name, collapsed) => …`, etwa um den Zustand zu merken |
 | `scrollbar`  | `false` | `false` blendet die Scrollbar aus und lässt die Ränder auslaufen, wo weitere Kacheln warten; `true` zeigt sie; siehe [Scrollen](#scrollen) |
 | `custom`     | — | Wie jedes `custom`-Element gezeichnet wird, nach Element-Name; siehe [Eigene Elemente](/de/concepts/blocks-and-elements/#eigene-elemente) |
+| `label`      | was die Kachel zeigt | Das Element, dessen Text jede Kachel für Screenreader benennt, oder `(mode) => element`; siehe [Gesprochene Namen](#gesprochene-namen) |
 
 Alle lassen sich auch in `mount()` unter `toolbox` setzen, sodass auch eine
 über `toolboxContainer` eingerichtete Toolbox sie bekommt:
@@ -150,6 +151,45 @@ baut. Der Fokus bleibt auf der Kachel. Gib dem Fokus einen sichtbaren Stil:
 ```css
 .morphic-block:focus-visible { outline: 2px solid; }
 ```
+
+### Gesprochene Namen
+
+Was eine Kachel zeigt, ist nicht immer das, was ein Screenreader sagen soll:
+ein Icon-Modus zeigt ein Bild, ein Code-Modus liest `print(%1)` vor. Ein
+Element, das kein Modus aufführt, ist auf jeder Kachel versteckt, gehört aber
+zum Block und kann so den gesprochenen Namen enthalten. `label` sagt der
+Toolbox, die Kacheln danach zu benennen:
+
+```json
+{
+  "elementTypes": { "icon": "image", "title": "text", "spoken": "text" },
+  "blocks": [
+    { "identifier": "print", "elements": {
+      "icon": "icons/print.svg", "title": "Ausgabe", "spoken": "Ausgabe-Block: schreibt eine Nachricht" } }
+  ]
+}
+```
+
+```ts
+engine.mount({ workspaceContainer, toolboxContainer, toolbox: { label: "spoken" } });
+```
+
+Ein Block ohne dieses Element behält den Standardnamen. Für mehrere Sprachen
+bekommt jede ihr eigenes Element, und du übergibst eine Funktion; sie wird bei
+jedem Neuzeichnen erneut gefragt, also zeichne die Toolbox nach einem
+Sprachwechsel neu:
+
+```ts
+let language = "en";
+engine.mount({ /* … */ toolbox: { label: () => `spoken-${language}` } });
+
+language = "de";
+engine.show({ toolbox: engine.getToolboxMode() });
+```
+
+Ein Vorlese-Button auf den Kacheln gehört der App: ein
+[eigenes Element](/de/concepts/blocks-and-elements/#eigene-elemente) kann
+denselben Text mit der Sprachausgabe des Browsers vorlesen.
 
 Der Workspace selbst gehört Blockly. Um Blöcke dort mit der Tastatur zu
 bewegen und zu bearbeiten, füge deiner App Blocklys Plugin für die
