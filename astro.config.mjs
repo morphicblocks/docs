@@ -124,7 +124,6 @@ export default defineConfig({
 						{ slug: 'guides/saving-and-loading' },
 						{ slug: 'guides/privacy' },
 						{ slug: 'guides/testing' },
-						{ slug: 'guides/upgrade-0-4' },
 					],
 				},
 				// An API Reference section will slot in here once the public
