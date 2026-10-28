@@ -24,8 +24,8 @@ if (saved) engine.loadWorkspace(JSON.parse(saved));
 
 Das Wiederherstellen rendert alle Views (Workspaces, Codespaces, den
 Code-Editor) in dem neu, was sie gerade zeigen: Der gespeicherte Zustand
-trägt das *Programm*, nicht die Darstellung. Ein im `iconic`-Mode gespeichertes
-Programm lädt problemlos in eine Sitzung, die im `python`-Mode läuft.
+trägt das *Programm*, nicht die Darstellung. Ein im Mode `icon-tiles` gespeichertes
+Programm lädt problemlos in eine Sitzung, die im Mode `python-tiles` läuft.
 
 ## Namespacing im gespeicherten Zustand
 

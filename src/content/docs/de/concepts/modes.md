@@ -12,11 +12,11 @@ darunter. Seit 0.4.0 sind sie nur für die Kacheln da;
 ```json
 {
   "modes": [
-    { "name": "iconic",      "elements": ["icon", "title", "description"] },
-    { "name": "conceptual",  "elements": ["title", "concept"] },
-    { "name": "python-text", "elements": ["title", "python"],
+    { "name": "icon-tiles",            "elements": ["icon", "title", "description"] },
+    { "name": "concept-tiles",         "elements": ["title", "concept"] },
+    { "name": "python-text-tiles",     "elements": ["title", "python"],
       "render": { "python": "text-based" } },
-    { "name": "side-by-side", "elements": ["title", "concept", "python"],
+    { "name": "concept-python-tiles",  "elements": ["title", "concept", "python"],
       "render": { "concept": "block-based", "python": "text-based" } }
   ]
 }
@@ -64,7 +64,7 @@ Preset zeigt jeder View das Quell-Element des ersten Modes.
 ## Modes wechseln
 
 Der Toolbox-Mode wechselt mit einem [Preset](/de/concepts/presets-and-views/)
-oder `show({ toolbox: "conceptual" })`. Kacheln werden an Ort und Stelle neu
+oder `show({ toolbox: "concept-tiles" })`. Kacheln werden an Ort und Stelle neu
 gezeichnet; das Programm bleibt unberührt.
 
 Hinter jedem Mode steht eine CSS-Datei, die das Aussehen seiner Elemente
@@ -76,7 +76,7 @@ Die Element-Liste eines Modes kann sich auch zur Laufzeit ändern, etwa damit
 der Nutzer wählt, was die Kacheln zeigen:
 
 ```ts
-engine.setModeElements("iconic", ["icon", "title"]);
+engine.setModeElements("icon-tiles", ["icon", "title"]);
 ```
 
 Die Kacheln werden neu gezeichnet; die Views sind nicht betroffen. Deine

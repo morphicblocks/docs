@@ -20,12 +20,12 @@ toolbox, and a workspace — with a runtime mode switch at the end.
    {
      "elementTypes": {
        "title":      "text",
-       "conceptual": "code",
+       "concept":    "code",
        "python":     "code"
      },
      "modes": [
-       { "name": "conceptual", "elements": ["title", "conceptual"] },
-       { "name": "python",     "elements": ["title", "python"] }
+       { "name": "concept-tiles", "elements": ["title", "concept"] },
+       { "name": "python-tiles",  "elements": ["title", "python"] }
      ],
      "categories": [
        { "name": "Output", "color": "#5C81A6" }
@@ -36,7 +36,7 @@ toolbox, and a workspace — with a runtime mode switch at the end.
          "category": "Output",
          "elements": {
            "title":      "Print",
-           "conceptual": "Output %1",
+           "concept":    "Output %1",
            "python":     "print(%1)"
          },
          "inputSlots": {
@@ -89,7 +89,7 @@ const engine = new MorphicBlocks(definitions, behaviors);
 engine.mount({
   workspaceContainer: document.getElementById("workspace")!,
   toolboxContainer: document.getElementById("toolbox")!,
-  // No presets here, so the first mode ("conceptual") is used.
+  // No presets here, so the first mode ("concept-tiles") is used.
 });`}
    />
 
@@ -100,7 +100,7 @@ engine.mount({
    element as their template:
 
    ```ts
-   engine.show({ toolbox: "python", views: { workspace: "python" } });
+   engine.show({ toolbox: "python-tiles", views: { workspace: "python" } });
    ```
 
 6. **Generate code** from the workspace via your behaviors:

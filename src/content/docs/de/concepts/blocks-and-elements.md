@@ -71,14 +71,14 @@ seinen eigenen hat:
 
 ```json
 {
-  "elementTypes": { "title": "text", "block": "code", "info": "custom" },
+  "elementTypes": { "title": "text", "concept": "code", "info": "custom" },
   "modes": [
-    { "name": "novice", "elements": ["title", "block", "info"] },
-    { "name": "expert", "elements": ["block"] }
+    { "name": "novice-tiles", "elements": ["title", "concept", "info"] },
+    { "name": "expert-tiles", "elements": ["concept"] }
   ],
   "blocks": [
     { "identifier": "print", "elements": {
-      "title": "Ausgabe", "block": "print %1", "info": "Schreibt eine Nachricht in die Ausgabe" } }
+      "title": "Ausgabe", "concept": "print %1", "info": "Schreibt eine Nachricht in die Ausgabe" } }
   ]
 }
 ```
@@ -118,7 +118,7 @@ In der HTML-Toolbox werden **alle Elements immer gerendert**; das CSS des
 aktiven Mode steuert, welche sichtbar sind:
 
 ```html
-<div class="morphic-block morphic-mode-iconic morphic-block-text_print"
+<div class="morphic-block morphic-mode-icon-tiles morphic-block-text_print"
      style="--morphic-block-color: #5C81A6">
   <div class="morphic-element-icon"><img src="assets/log.svg"></div>
   <div class="morphic-element-concept">Output <span class="morphic-slot"></span></div>

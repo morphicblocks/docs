@@ -24,8 +24,8 @@ if (saved) engine.loadWorkspace(JSON.parse(saved));
 
 Restoring re-renders all views (workspaces, codespaces, the code editor) in
 what they currently show: saved state carries the *program*, not the
-presentation. A program saved in `iconic` mode loads fine into a session
-running `python` mode.
+presentation. A program saved in the `icon-tiles` mode loads fine into a session
+running the `python-tiles` mode.
 
 ## Namespacing in saved state
 

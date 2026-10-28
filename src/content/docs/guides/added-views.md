@@ -15,7 +15,7 @@ const right = engine.addView({
   editable: false,                  // read only, default true
   container: document.getElementById("right")!,
   element: "javascript",
-  name: "right",                    // optional; otherwise view-1, view-2, …
+  name: "right-pane",                // optional; otherwise view-1, view-2, …
   toolbar: { container: document.getElementById("right-toolbar")! },
 });
 await right.ready;                  // text views load their editor in the background
@@ -61,7 +61,7 @@ kind. Any toolbar can also be attached later by view name; see
 A preset can name added views in its `views`, like declared ones:
 
 ```json
-{ "name": "compare", "toolbox": "pseudo", "views": { "blocks": "concept", "right": "javascript" } }
+{ "name": "compare-preset", "toolbox": "concept-tiles", "views": { "editor-pane": "concept", "right-pane": "javascript" } }
 ```
 
 Since the name is no declared view, `mount()` warns once; applying the preset

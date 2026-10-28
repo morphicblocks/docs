@@ -15,7 +15,7 @@ const right = engine.addView({
   editable: false,                  // schreibgeschützt, Standard true
   container: document.getElementById("right")!,
   element: "javascript",
-  name: "right",                    // optional; sonst view-1, view-2, …
+  name: "right-pane",                // optional; sonst view-1, view-2, …
   toolbar: { container: document.getElementById("right-toolbar")! },
 });
 await right.ready;                  // Text-Views laden ihren Editor im Hintergrund
@@ -63,7 +63,7 @@ anbinden; siehe [Toolbars](/de/guides/toolbars/).
 Ein Preset kann zusätzliche Views in seinen `views` nennen, wie deklarierte:
 
 ```json
-{ "name": "compare", "toolbox": "pseudo", "views": { "blocks": "concept", "right": "javascript" } }
+{ "name": "compare-preset", "toolbox": "concept-tiles", "views": { "editor-pane": "concept", "right-pane": "javascript" } }
 ```
 
 Da der Name kein deklarierter View ist, warnt `mount()` einmal; das Anwenden

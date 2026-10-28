@@ -81,7 +81,7 @@ tiles are drawn again (a mode or preset change). The markup:
 
 ```html
 <div class="morphic-toolbox morphic-toolbox-stacked">
-  <div data-category="output" data-collapsed style="--morphic-category-color: #5C81A6">
+  <div data-category="Output" data-collapsed style="--morphic-category-color: #5C81A6">
     <button class="morphic-category-heading" aria-expanded="false">Output</button>
     <div class="morphic-category-tiles" hidden>…tiles…</div>
   </div>
@@ -195,7 +195,7 @@ The toolbox is intentionally unstyled beyond structural classes. Target:
 
 ```css
 .morphic-block { /* every tile */ }
-.morphic-mode-iconic .morphic-element-title { /* per mode, per element */ }
+.morphic-mode-icon-tiles .morphic-element-title { /* per mode, per element */ }
 [data-category="Output"] { /* category wrapper */ }
 ```
 
@@ -233,11 +233,11 @@ only the code element, and let its CSS make the tile exactly as big as the
 block:
 
 ```json
-"modes": [{ "name": "blocks", "elements": ["block"] }]
+"modes": [{ "name": "block-only-tiles", "elements": ["concept"] }]
 ```
 
 ```css
-.morphic-block.morphic-mode-blocks {
+.morphic-block.morphic-mode-block-only-tiles {
   background: none;
   border: 0;
   padding: 0;

@@ -83,7 +83,7 @@ Markup:
 
 ```html
 <div class="morphic-toolbox morphic-toolbox-stacked">
-  <div data-category="output" data-collapsed style="--morphic-category-color: #5C81A6">
+  <div data-category="Output" data-collapsed style="--morphic-category-color: #5C81A6">
     <button class="morphic-category-heading" aria-expanded="false">Output</button>
     <div class="morphic-category-tiles" hidden>…Kacheln…</div>
   </div>
@@ -201,7 +201,7 @@ Die Toolbox ist über strukturelle Klassen hinaus bewusst unstilisiert. Zielklas
 
 ```css
 .morphic-block { /* jede Kachel */ }
-.morphic-mode-iconic .morphic-element-title { /* pro Mode, pro Element */ }
+.morphic-mode-icon-tiles .morphic-element-title { /* pro Mode, pro Element */ }
 [data-category="Output"] { /* Kategorie-Wrapper */ }
 ```
 
@@ -242,11 +242,11 @@ nur das Code-Element auflistet, und lass sein CSS die Kachel genau so groß wie
 den Block machen:
 
 ```json
-"modes": [{ "name": "blocks", "elements": ["block"] }]
+"modes": [{ "name": "block-only-tiles", "elements": ["concept"] }]
 ```
 
 ```css
-.morphic-block.morphic-mode-blocks {
+.morphic-block.morphic-mode-block-only-tiles {
   background: none;
   border: 0;
   padding: 0;

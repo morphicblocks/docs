@@ -21,12 +21,12 @@ Toolbox und ein Workspace — mit einem Mode-Wechsel zur Laufzeit am Ende.
    {
      "elementTypes": {
        "title":      "text",
-       "conceptual": "code",
+       "concept":    "code",
        "python":     "code"
      },
      "modes": [
-       { "name": "conceptual", "elements": ["title", "conceptual"] },
-       { "name": "python",     "elements": ["title", "python"] }
+       { "name": "concept-tiles", "elements": ["title", "concept"] },
+       { "name": "python-tiles",  "elements": ["title", "python"] }
      ],
      "categories": [
        { "name": "Output", "color": "#5C81A6" }
@@ -37,7 +37,7 @@ Toolbox und ein Workspace — mit einem Mode-Wechsel zur Laufzeit am Ende.
          "category": "Output",
          "elements": {
            "title":      "Print",
-           "conceptual": "Output %1",
+           "concept":    "Output %1",
            "python":     "print(%1)"
          },
          "inputSlots": {
@@ -90,7 +90,7 @@ const engine = new MorphicBlocks(definitions, behaviors);
 engine.mount({
   workspaceContainer: document.getElementById("workspace")!,
   toolboxContainer: document.getElementById("toolbox")!,
-  // Hier gibt es keine Presets, also wird der erste Mode („conceptual“) genutzt.
+  // Hier gibt es keine Presets, also wird der erste Mode („concept-tiles“) genutzt.
 });`}
    />
 
@@ -101,7 +101,7 @@ engine.mount({
    `python`-Element als Template neu gerendert:
 
    ```ts
-   engine.show({ toolbox: "python", views: { workspace: "python" } });
+   engine.show({ toolbox: "python-tiles", views: { workspace: "python" } });
    ```
 
 6. **Erzeuge Code** aus dem Workspace über deine Behaviors:

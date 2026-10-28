@@ -23,31 +23,31 @@ die Preview.
 ```json
 {
   "views": {
-    "blocks": "workspace",
-    "code": "codespace",
-    "read": { "kind": "codespace", "editable": false }
+    "editor-pane": "workspace",
+    "text-pane": "codespace",
+    "read-pane": { "kind": "codespace", "editable": false }
   },
   "presets": [
-    { "name": "both", "toolbox": "conceptual", "views": { "blocks": "concept", "code": "python", "read": "javascript" } }
+    { "name": "hybrid-preset", "toolbox": "concept-tiles", "views": { "editor-pane": "concept", "text-pane": "python", "read-pane": "javascript" } }
   ]
 }
 ```
 
 ```ts
 await engine.mount({
-  containers: { blocks: blocksElement, code: codeElement, read: readElement },
-  themes: { read: readTheme },   // optional, sonst editorTheme
+  containers: { "editor-pane": blocksElement, "text-pane": codeElement, "read-pane": readElement },
+  themes: { "read-pane": readTheme },   // optional, sonst editorTheme
 });
 ```
 
 Was er zeigt, kommt aus dem Preset oder aus
-`show({ views: { read: "javascript" } })`. Die Hervorhebung ergibt sich aus
+`show({ views: { "read-pane": "javascript" } })`. Die Hervorhebung ergibt sich aus
 dem [`highlighting`](/de/guides/syntax-highlighting/) des gezeigten Elements;
 die Wert-Markierungen des Codespace fehlen, da sich dort nichts bearbeiten
 lässt. Sein Container bekommt `morphic-read-only` neben
 `morphic-codespace-root`.
 
-Theme zur Laufzeit: `engine.setViewTheme("read", theme)`.
+Theme zur Laufzeit: `engine.setViewTheme("read-pane", theme)`.
 
 ## Code-Editor
 

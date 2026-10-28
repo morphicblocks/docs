@@ -12,7 +12,7 @@ Jede gerenderte Kachel trägt den aktiven Mode, den Block-Identifier und eine
 Klasse pro Element:
 
 ```html
-<div class="morphic-block morphic-mode-iconic morphic-block-text_print"
+<div class="morphic-block morphic-mode-icon-tiles morphic-block-text_print"
      style="--morphic-block-color: #5C81A6">
   <div class="morphic-element-icon">…</div>
   <div class="morphic-element-title">Print</div>
@@ -24,9 +24,9 @@ Ein Mode-Stylesheet entscheidet vor allem, **welche Elements sichtbar sind und
 wie sie angeordnet werden**:
 
 ```css
-/* iconic.css — Icon + Titel zeigen, alles andere verbergen */
-.morphic-mode-iconic .morphic-element-icon { display: block; }
-.morphic-mode-iconic .morphic-element-title { display: block; font-weight: 600; }
+/* icon-tiles.css — Icon + Titel zeigen, alles andere verbergen */
+.morphic-mode-icon-tiles .morphic-element-icon { display: block; }
+.morphic-mode-icon-tiles .morphic-element-title { display: block; font-weight: 600; }
 ```
 
 Views zeigen ein Element, keinen Mode, daher tragen Workspace-Views und ihre
@@ -87,13 +87,13 @@ Drei Wege, in der Mount-Konfiguration:
 
 ```ts
 engine.mount({
-  // 1. Ein ganzer Ordner, per Dateiname (Vite): modes/iconic.css → Mode "iconic".
+  // 1. Ein ganzer Ordner, per Dateiname (Vite): modes/icon-tiles.css → Mode "icon-tiles".
   //    Links (?url) oder CSS-Text (?raw) funktionieren beide.
   modesFolder: import.meta.glob("./modes/*.css", { eager: true, query: "?url" }),
 
   // 2. Mode für Mode, aus jedem Bundler oder ohne: CSS-Text oder ein Link pro Mode
   modeStyles: {
-    iconic: "/styles/iconic.css",
+    "icon-tiles": "/styles/icon-tiles.css",
     python: ".morphic-mode-python { … }",
   },
 

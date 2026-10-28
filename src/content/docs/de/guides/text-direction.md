@@ -31,8 +31,8 @@ englischen:
 ```json
 {
   "views": {
-    "blocks": "workspace",
-    "code": { "kind": "codespace", "rtl": false }
+    "editor-pane": "workspace",
+    "text-pane": { "kind": "codespace", "rtl": false }
   }
 }
 ```

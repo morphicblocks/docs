@@ -22,30 +22,30 @@ syntaxes of the same program at once. Until 0.4.0 this was the preview.
 ```json
 {
   "views": {
-    "blocks": "workspace",
-    "code": "codespace",
-    "read": { "kind": "codespace", "editable": false }
+    "editor-pane": "workspace",
+    "text-pane": "codespace",
+    "read-pane": { "kind": "codespace", "editable": false }
   },
   "presets": [
-    { "name": "both", "toolbox": "conceptual", "views": { "blocks": "concept", "code": "python", "read": "javascript" } }
+    { "name": "hybrid-preset", "toolbox": "concept-tiles", "views": { "editor-pane": "concept", "text-pane": "python", "read-pane": "javascript" } }
   ]
 }
 ```
 
 ```ts
 await engine.mount({
-  containers: { blocks: blocksElement, code: codeElement, read: readElement },
-  themes: { read: readTheme },   // optional, defaults to editorTheme
+  containers: { "editor-pane": blocksElement, "text-pane": codeElement, "read-pane": readElement },
+  themes: { "read-pane": readTheme },   // optional, defaults to editorTheme
 });
 ```
 
-What it shows comes from the preset or `show({ views: { read: "javascript" } })`.
+What it shows comes from the preset or `show({ views: { "read-pane": "javascript" } })`.
 Highlighting resolves from the shown element's
 [`highlighting`](/guides/syntax-highlighting/); the value markers of the
 codespace are left out, since nothing can be edited there. Its container gets
 `morphic-read-only` beside `morphic-codespace-root`.
 
-Theme at runtime: `engine.setViewTheme("read", theme)`.
+Theme at runtime: `engine.setViewTheme("read-pane", theme)`.
 
 ## Code editor
 

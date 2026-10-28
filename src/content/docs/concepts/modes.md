@@ -11,11 +11,11 @@ only; [views](/concepts/presets-and-views/) show a code element instead.
 ```json
 {
   "modes": [
-    { "name": "iconic",      "elements": ["icon", "title", "description"] },
-    { "name": "conceptual",  "elements": ["title", "concept"] },
-    { "name": "python-text", "elements": ["title", "python"],
+    { "name": "icon-tiles",            "elements": ["icon", "title", "description"] },
+    { "name": "concept-tiles",         "elements": ["title", "concept"] },
+    { "name": "python-text-tiles",     "elements": ["title", "python"],
       "render": { "python": "text-based" } },
-    { "name": "side-by-side", "elements": ["title", "concept", "python"],
+    { "name": "concept-python-tiles",  "elements": ["title", "concept", "python"],
       "render": { "concept": "block-based", "python": "text-based" } }
   ]
 }
@@ -63,7 +63,7 @@ preset, every view shows the first mode's source element.
 ## Switching modes
 
 The toolbox mode switches with a [preset](/concepts/presets-and-views/) or
-`show({ toolbox: "conceptual" })`. Tiles redraw in place; the program is
+`show({ toolbox: "concept-tiles" })`. Tiles redraw in place; the program is
 untouched.
 
 Each mode is backed by a CSS file that controls how its elements look; see
@@ -75,7 +75,7 @@ A mode's element list can also change while the app runs, for example to let
 the user pick what the tiles show:
 
 ```ts
-engine.setModeElements("iconic", ["icon", "title"]);
+engine.setModeElements("icon-tiles", ["icon", "title"]);
 ```
 
 The tiles redraw; the views are not affected. Your definitions file stays as

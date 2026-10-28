@@ -21,9 +21,9 @@ Views werden in den Definitionen mit Namen deklariert:
 ```json
 {
   "views": {
-    "blocks": "workspace",
-    "code": "codespace",
-    "read": { "kind": "codespace", "editable": false }
+    "editor-pane": "workspace",
+    "text-pane": "codespace",
+    "read-pane": { "kind": "codespace", "editable": false }
   }
 }
 ```
@@ -45,7 +45,7 @@ einer kleinen Einbettung:
 
 ```ts
 engine.mount({
-  containers: { blocks: blocksElement, code: codeElement, read: readElement },
+  containers: { "editor-pane": blocksElement, "text-pane": codeElement, "read-pane": readElement },
   toolboxContainer,
 });
 ```
@@ -74,10 +74,10 @@ Ein **Preset** sagt, was die Toolbox und jeder View zeigen:
 ```json
 {
   "presets": [
-    { "name": "start", "label": "Start", "toolbox": "iconic", "views": { "blocks": "concept" } },
-    { "name": "both", "label": "Beides", "toolbox": "concept",
-      "views": { "blocks": "concept", "code": "python", "read": "javascript" } },
-    { "name": "text", "label": "Text", "toolbox": "python-text", "views": { "code": "python" } }
+    { "name": "icon-preset", "label": "Start", "toolbox": "icon-tiles", "views": { "editor-pane": "concept" } },
+    { "name": "hybrid-preset", "label": "Beides", "toolbox": "concept-tiles",
+      "views": { "editor-pane": "concept", "text-pane": "python", "read-pane": "javascript" } },
+    { "name": "text-preset", "label": "Text", "toolbox": "python-text-tiles", "views": { "text-pane": "python" } }
   ]
 }
 ```
@@ -100,13 +100,13 @@ zur Laufzeit:
 ```ts
 engine.mount({
   containers,
-  preset: "start",             // Start-Preset, standardmäßig das erste
+  preset: "icon-preset",        // Start-Preset, standardmäßig das erste
   onPresetApplied(preset) {
     // die Bereiche der Views in preset.views zeigen, die anderen verbergen
   },
 });
 
-engine.applyPreset("both");    // nach Name oder Index
+engine.applyPreset("hybrid-preset"); // nach Name oder Index
 engine.getPresets();           // alle Presets, z. B. für deine Buttons
 engine.getActivePreset();      // das zuletzt angewandte, z. B. um seinen Button zu markieren
 ```
@@ -126,7 +126,7 @@ Presets bündeln diese Wechsel; `show()` ist der Aufruf darunter, in derselben
 Form:
 
 ```ts
-engine.show({ toolbox: "python-text", views: { blocks: "concept", code: "python" } });
+engine.show({ toolbox: "python-text-tiles", views: { "editor-pane": "concept", "text-pane": "python" } });
 ```
 
 Alles Weggelassene bleibt, wie es ist.
@@ -149,7 +149,7 @@ Python-Blöcke und ein Rand an jedem View in einem Preset:
 
 ```css
 .morphic-workspace-root.morphic-shows-python .blocklyText { font-family: monospace; }
-.morphic-view.morphic-preset-both { border-top: 3px solid #3776ab; }
+.morphic-view.morphic-preset-hybrid-preset { border-top: 3px solid #3776ab; }
 ```
 
 ## Den aktuellen Stand lesen

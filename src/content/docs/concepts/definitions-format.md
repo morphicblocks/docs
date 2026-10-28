@@ -34,19 +34,19 @@ Everything a block *is* lives in one JSON document. A complete, small example:
     }
   },
   "modes": [
-    { "name": "iconic",      "elements": ["icon", "title", "description"] },
-    { "name": "conceptual",  "elements": ["title", "concept"] },
-    { "name": "python-text", "elements": ["title", "python"], "render": { "python": "text-based" } }
+    { "name": "icon-tiles",            "elements": ["icon", "title", "description"] },
+    { "name": "concept-tiles",         "elements": ["title", "concept"] },
+    { "name": "python-text-tiles",     "elements": ["title", "python"], "render": { "python": "text-based" } }
   ],
   "views": {
-    "blocks": "workspace",
-    "code": "codespace",
-    "read": { "kind": "codespace", "editable": false }
+    "editor-pane": "workspace",
+    "text-pane": "codespace",
+    "read-pane": { "kind": "codespace", "editable": false }
   },
   "presets": [
-    { "name": "iconic", "label": "Iconic", "toolbox": "iconic", "views": { "blocks": "concept" } },
-    { "name": "hybrid", "label": "Hybrid", "toolbox": "conceptual",
-      "views": { "blocks": "concept", "code": "python", "read": "javascript" } }
+    { "name": "icon-preset", "label": "Iconic", "toolbox": "icon-tiles", "views": { "editor-pane": "concept" } },
+    { "name": "hybrid-preset", "label": "Hybrid", "toolbox": "concept-tiles",
+      "views": { "editor-pane": "concept", "text-pane": "python", "read-pane": "javascript" } }
   ],
   "categories": [
     { "name": "Output", "color": "#5C81A6" }

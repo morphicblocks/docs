@@ -68,14 +68,14 @@ passed to the function, so each block has its own:
 
 ```json
 {
-  "elementTypes": { "title": "text", "block": "code", "info": "custom" },
+  "elementTypes": { "title": "text", "concept": "code", "info": "custom" },
   "modes": [
-    { "name": "novice", "elements": ["title", "block", "info"] },
-    { "name": "expert", "elements": ["block"] }
+    { "name": "novice-tiles", "elements": ["title", "concept", "info"] },
+    { "name": "expert-tiles", "elements": ["concept"] }
   ],
   "blocks": [
     { "identifier": "print", "elements": {
-      "title": "Print", "block": "print %1", "info": "Writes a message to the output" } }
+      "title": "Print", "concept": "print %1", "info": "Writes a message to the output" } }
   ]
 }
 ```
@@ -115,7 +115,7 @@ In the HTML toolbox, **all elements are always rendered**; the active mode's CSS
 controls which are visible:
 
 ```html
-<div class="morphic-block morphic-mode-iconic morphic-block-text_print"
+<div class="morphic-block morphic-mode-icon-tiles morphic-block-text_print"
      style="--morphic-block-color: #5C81A6">
   <div class="morphic-element-icon"><img src="assets/log.svg"></div>
   <div class="morphic-element-concept">Output <span class="morphic-slot"></span></div>
