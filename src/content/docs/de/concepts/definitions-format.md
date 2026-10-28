@@ -559,35 +559,8 @@ still beim Rendern fehlschlagen würden, als klare Meldungen mit Nennung des
 Blocks auftauchen. Es **wirft** bei struktureller Beschädigung, die falsche
 Ausgabe garantiert, und **warnt** bei bloß beeinträchtigter oder toter Konfiguration.
 
-Wirft (alle Probleme werden gesammelt und auf einmal gemeldet):
-
-- ein Block, dessen `code`-Elemente sich über ihre `%N`-Menge uneinig sind — ein
-  Input, und jeder daran gesteckte Block, würde beim Mode-Wechsel verschwinden
-- ein `%FIELDNAME`-Token ohne [`fields`](#felder)-Eintrag und ohne `onViewApplied`
-- ein `%N:type`-Token, dessen Template keinen Value-Slot `%N` hat
-- ein `shadow` / `placeholder`, der weder einen deiner Blöcke noch einen echten
-  Blockly-Typ benennt
-- eine Einstellung an ihrem Platz von vor 0.3.0 (`stringQuote` oder `empty` in
-  `elementTypes`, eine `highlighting`-Map auf oberster Ebene), mit dem neuen Ort
-- eine Einstellung an ihrem Platz von vor 0.4.0 (das `toolbox`-Objekt eines
-  Presets oder seine Schlüssel `workspace`, `codespace` und `preview`, die
-  `render`-Werte `"block"` und `"text"`), mit dem neuen Ort
-- ein View unbekannter Art, oder ein Container für einen nicht deklarierten View
-
-Warnt:
-
-- ein `%N` ohne `inputSlots`-Eintrag, oder ein `inputSlots`-Eintrag ohne
-  passendes `%N`
-- ein Element-Name, der nicht in `elementTypes` deklariert ist, oder ein Mode,
-  der ein Element auflistet, das kein Block definiert
-- ein `code`-Schlüssel, der kein `code`-Element ist
-- `size` an einem Nicht-`image`-Element, das ignoriert wird
-- eine Block-`category`, die nicht in `categories` steht
-- ein Name, der über Element / Mode / Preset hinweg mehrfach verwendet wird
-  (siehe [Modes](/de/concepts/modes/))
-- ein Preset, das einen nicht deklarierten View nennt (ein später mit
-  `addView()` hinzugefügter kann den Namen tragen)
-- ein `render` eines Modes, das kein Code-Element des Modes nennt
+Jede Prüfung, mit einer Beispielmeldung und wie du sie behebst, steht unter
+[Fehler & Warnungen](/de/guides/errors-and-warnings/).
 
 Um eine Datei *vor* dem Mounten zu prüfen — in einem Test oder Build-Schritt —
 rufe das exportierte `validateDefinitions(...)` auf, das `{ errors, warnings }`

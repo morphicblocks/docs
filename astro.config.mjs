@@ -124,6 +124,7 @@ export default defineConfig({
 						{ slug: 'guides/resizable-panes' },
 						{ slug: 'guides/saving-and-loading' },
 						{ slug: 'guides/privacy' },
+						{ slug: 'guides/errors-and-warnings' },
 						{ slug: 'guides/testing' },
 					],
 				},

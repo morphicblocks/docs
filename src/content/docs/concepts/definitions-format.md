@@ -542,33 +542,8 @@ otherwise fail silently at render time surface as clear messages naming the
 block. It **throws** on structural breakage that guarantees wrong output, and
 **warns** on config that is merely degraded or dead.
 
-Throws (every problem is collected and reported at once):
-
-- a block whose `code` elements disagree on their `%N` set — an input, and any
-  block plugged into it, would vanish when switching modes
-- a `%FIELDNAME` token with no [`fields`](#fields) entry and no `onViewApplied`
-  to supply the field
-- a `%N:type` token whose template has no value slot `%N`
-- a `shadow` / `placeholder` that names neither one of your blocks nor a real
-  Blockly type
-- a setting in its place from before 0.3.0 (`stringQuote` or `empty` in
-  `elementTypes`, a top level `highlighting` map), naming where it moved
-- a setting in its place from before 0.4.0 (a preset's `toolbox` object or its
-  `workspace`, `codespace` and `preview` keys, the `render` values `"block"`
-  and `"text"`), naming where it moved
-- a view of an unknown kind, or a container for a view that isn't declared
-
-Warns:
-
-- a `%N` with no `inputSlots` entry, or an `inputSlots` entry with no matching `%N`
-- an element name not declared in `elementTypes`, or a mode listing an element
-  no block defines
-- a `code` key that isn't a `code` element
-- `size` on a non-`image` element, which is ignored
-- a block `category` not listed in `categories`
-- a name reused across element / mode / preset (see [Modes](/concepts/modes/))
-- a preset naming a view that isn't declared (one added later with `addView()` may carry it)
-- a mode's `render` naming no code element of the mode
+Every check, with an example message and how to fix it, is listed on
+[Errors & Warnings](/guides/errors-and-warnings/).
 
 To check a file *before* mounting — in a test or build step — call the exported
 `validateDefinitions(...)`, which returns `{ errors, warnings }` instead of
