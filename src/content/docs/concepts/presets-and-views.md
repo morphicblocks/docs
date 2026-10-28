@@ -54,7 +54,10 @@ engine.mount({
 
 **The program** lives in the first workspace that has a container. Every other
 workspace shows a copy and sends its edits there. Without any workspace,
-Blockly runs hidden, so a codespace alone still edits a real block model.
+Blockly runs hidden, so a codespace alone still edits a real block model. The
+hidden program shows what a preset gives the first declared workspace (a
+`workspace` view without a container), e.g. an element that keeps every
+field; without one, it follows the first view that has a container.
 
 ## What a view shows
 

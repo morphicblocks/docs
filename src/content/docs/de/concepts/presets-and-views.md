@@ -56,7 +56,10 @@ engine.mount({
 **Das Programm** liegt im ersten Workspace, der einen Container hat. Jeder
 andere Workspace zeigt eine Kopie und schickt seine Änderungen dorthin. Ganz
 ohne Workspace läuft Blockly verborgen, so dass auch ein Codespace allein ein
-echtes Block-Modell bearbeitet.
+echtes Block-Modell bearbeitet. Das verborgene Programm zeigt, was ein Preset
+dem ersten deklarierten Workspace gibt (einem `workspace`-View ohne
+Container), etwa ein Element, das jedes Feld behält; ohne einen solchen folgt
+es dem ersten View mit Container.
 
 ## Was ein View zeigt
 
