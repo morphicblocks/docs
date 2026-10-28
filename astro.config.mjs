@@ -103,6 +103,7 @@ export default defineConfig({
 						{ slug: 'concepts/modes' },
 						{ slug: 'concepts/presets-and-views' },
 						{ slug: 'concepts/definitions-format' },
+						{ slug: 'concepts/naming' },
 						{ slug: 'concepts/behaviors-and-codegen' },
 					],
 				},

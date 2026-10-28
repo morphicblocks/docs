@@ -32,20 +32,21 @@ Die **Reihenfolge** von `elements` ist die Reihenfolge der Teile auf der
 Kachel; ordne die Liste um, um sie neu anzuordnen.
 
 Mode-Namen sind dir überlassen. Ein „Mode" kann eine Gerüst-Stufe sein
-(`iconic`, `conceptual`, `python-text`), eine natürliche Sprache (`english`,
-`deutsch`), eine Barrierefreiheits-Variante, was deine Anwendung braucht.
+(`icon-tiles`, `concept-tiles`, `python-text-tiles`), eine natürliche Sprache (`english-tiles`,
+`german-tiles`), eine Barrierefreiheits-Variante, was deine Anwendung braucht.
 
 Halte jeden Mode-Namen **verschieden von deinen Element- und Preset-Namen**.
 Einen Mode nach einem Element zu benennen (ein `python`-Mode, der das
 `python`-Element zeigt) gibt einem Wort zwei Bedeutungen; das Framework warnt,
-wenn Element-, Mode- oder Preset-Namen kollidieren.
+wenn Element-, Mode-, Preset-, View- oder Kategorie-Namen kollidieren. Muster,
+die sie auseinanderhalten, stehen unter [Namen](/de/concepts/naming/).
 
 ## Blöcke oder Text auf einer Kachel
 
 `render` sagt pro Code-Element, ob eine Kachel es als ziehbaren Mini-Block oder
 als seinen Quelltext zeichnet. Weglassen heißt `block-based`, aber wo ein Mode
 beides mischt, liest sich die Datei leichter, wenn `block-based` ausgeschrieben
-ist, wie oben in `side-by-side`.
+ist, wie oben in `concept-python-tiles`.
 
 Der Text liest sich genau so, wie der Codespace den Block schreiben würde:
 Feldwerte und Slot-Vorgaben eingesetzt (`for i in range(3):`), ein leerer Slot

@@ -30,21 +30,22 @@ only; [views](/concepts/presets-and-views/) show a code element instead.
 The **order** of `elements` is the order the parts appear on the tile; reorder
 the list to rearrange it.
 
-Mode names are up to you. A "mode" can be a scaffolding level (`iconic`,
-`conceptual`, `python-text`), a natural language (`english`, `deutsch`), an
+Mode names are up to you. A "mode" can be a scaffolding level (`icon-tiles`,
+`concept-tiles`, `python-text-tiles`), a natural language (`english-tiles`, `german-tiles`), an
 accessibility variant, whatever your application needs.
 
 Keep each mode name **distinct from your element and preset names**. Naming a
 mode after an element (a `python` mode showing the `python` element) makes one
-word mean two things; the framework warns when an element, mode, or preset
-name collides.
+word mean two things; the framework warns when an element, mode, preset,
+view or category name collides. See [Naming](/concepts/naming/) for patterns
+that keep them apart.
 
 ## Blocks or text on a tile
 
 `render` says, per code element, whether a tile draws it as a mini block you
 can drag or as its source text. Leaving it out means `block-based`, but
 writing `block-based` out where a mode mixes both makes the file easier to
-read, as in `side-by-side` above.
+read, as in `concept-python-tiles` above.
 
 The text reads exactly as the codespace would write the block: field values and
 slot defaults filled in (`for i in range(3):`), an empty slot as its type
